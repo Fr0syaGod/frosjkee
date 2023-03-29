@@ -233,7 +233,7 @@ function create_dialog(dialog_id, dialogType, dialogHeader, dialogText, button_1
 	if(button_2 != "") {
 	    var btn_2 = document.createElement('div');
 	    btn_2.innerText = button_2;
-	    btn_2.className = "clickBtn red_btn";
+	    btn_2.className = "clickBtn green_btn";
 	    btn_2.onclick = function () { response = 0; callcack_dialog_response(); };        
 	    buttons.append(btn_2);
     }
