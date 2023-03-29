@@ -45,7 +45,7 @@ body {
 
 .dialogHeader {
 	font-size: 1.2vw;
-	color: #f2133f;
+	color: #2A4ED6;
 	font-family: 'Proxima Nova Ex';
 	/* text-align: center; */
 	letter-spacing: -0.5px;
@@ -75,7 +75,7 @@ body {
 	text-align: center;
 }
 
-.clickBtn:hover { background: #f2133f; color: #fff; }
+.clickBtn:hover { background: #2A4ED6; color: #fff; }
 
 .dialog_input {
 	width: 100%;
@@ -184,13 +184,13 @@ span {
 }
 
 .white_back {
-	background-color: #f2133f;
+	background-color: #2A4ED6;
 	color: #fff;
-	border: 1px solid #f2133f;
+	border: 1px solid #2A4ED6;
 }
 
 .white_back:hover {
-    background-color: #f2133f;
+    background-color: #2A4ED6;
 }
 
 .white_back:hover span {
