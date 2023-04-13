@@ -341,7 +341,9 @@ progress::-webkit-progress-value {
         background-repeat: none;
     }    
     .hud-server-logo {
-        width: 60px;
+        width: 100px;
+        position: relative;
+        left: 110px;
     }
     .kill-list {
         position: absolute;
@@ -412,7 +414,9 @@ progress::-webkit-progress-value {
         background-repeat: none;
     }    
     .hud-server-logo {
-        width: 60px;
+        width: 100px;
+        position: relative;
+        left: 110px;
     }
     .kill-list {
         position: absolute;
