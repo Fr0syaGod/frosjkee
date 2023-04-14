@@ -377,7 +377,7 @@ function notify(type, text, color) {
         document.getElementById('run_value').innerText = value;
     });       
     cef.on("update-player-info", (version, id, uid) => {
-        document.getElementById("server-info").innerHTML = `arcanarp.online (v. ${version}/ID: ${id}/UID: ${uid})`;
+        document.getElementById("server-info").innerHTML = `alliance.rp (v. ${version}/ID: ${id}/UID: ${uid})`;
     });
     cef.on("insert-to-kill", (name1, gunid, name2) => {
         add_kill_list_item(name1, gunid, name2);
