@@ -336,9 +336,13 @@ function notify(type, text, color) {
     cef.emit("game:data:pollPlayerStats", true, 50);
     cef.on("game:data:playerStats", (hp, max_hp, arm, breath, wanted, weapon, ammo, max_ammo, money, speed) => {
 
-        if(show_speed === 1) {
-            document.getElementById("speed-text").innerHTML = `${Math.round(speed)}<div class="kmh">км/ч</div>`;
+        if (show_speed === 1) {
+          const speedStr = Math.round(speed).toString().padStart(3, '0');
+          const speedElem = document.getElementById("speed-text");
+          speedElem.innerHTML = `${speedStr}<div class="kmh">км/ч</div>`;
+          speedElem.style.opacity = 0.7;
         }
+
     
         document.getElementById("arm_progress").value = `${arm}`;
         document.getElementById('arm_value').innerText = Math.round(arm);
