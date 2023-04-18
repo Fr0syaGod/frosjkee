@@ -31,7 +31,6 @@ display: flex;
 .digit:first-child {
   margin-left: -0.25em;
 }
-
 .kmh {
   font-size: 0.7em;
   margin-left: 0.05em;
@@ -64,7 +63,7 @@ display: flex;
         bottom: 4.8vw;
         width: 100px;
         font-size: 2.5vw;
-		display: flex;
+		 display: flex;
   opacity: 0.7;
 }
 
@@ -87,15 +86,6 @@ display: flex;
   font-size: 0.7em;
   margin-left: 0.05em;
 }
-
-.digit:first-child {
-  margin-left: -0.25em;
-}
-
-.kmh {
-  font-size: 0.7em;
-  margin-left: 0.05em;
-    } 
     .indicators {
         bottom: 1.3vw;
         left: 0.9vw;
@@ -128,7 +118,7 @@ display: flex;
         bottom: 4.8vw;
         width: 70px;
         font-size: 2.8vw;
-display: flex;
+ display: flex;
   opacity: 0.7;
 }
 
@@ -199,7 +189,7 @@ display: flex;
         width: 65px;
         bottom: 4.8vw;
         font-size: 2.8vw;
-		display: flex;
+		 display: flex;
   opacity: 0.7;
 }
 
@@ -222,13 +212,6 @@ display: flex;
   font-size: 0.7em;
   margin-left: 0.05em;
 }
-  .digit:first-child {
-    margin-left: -0.25em;
-  }
-  .kmh {
-    font-size: 0.7em;
-    margin-left: 0.05em;
-    }     
     .indicators {
         bottom: 1.3vw;
         left: 0.9vw;
