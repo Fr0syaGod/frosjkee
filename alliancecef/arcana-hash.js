@@ -350,7 +350,7 @@ function notify(type, text, color) {
 		kmhElem.className = "kmh";
 		kmhElem.innerHTML = "км/ч";
 		speedElem.appendChild(kmhElem);
-		speedElem.style.opacity = 0.7;
+		speedElem.style.opacity = 0.5;
 	  }
     
         document.getElementById("arm_progress").value = `${arm}`;
