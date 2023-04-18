@@ -6,32 +6,20 @@
 
 #speed-text {
     font-family: 'Font 700';
-    color: #2a4ed6;
+    color: #009e39;
     position: absolute;
     right: 4vw;
     bottom: 4.8vw;
     font-size: 2.5vw;
     text-align: center;
     line-height: 1.5vw;
-        display: flex;
-    opacity: 0.7;
-  }
-  .digit {
-    width: 0.4em;
-    margin-right: 0.05em;
-    text-align: center;
-    font-size: 1.5em;
-    font-weight: bold;
-    color: #fff;
-    background-color: rgba(0, 0, 0, 0.5);
-  }
-  .digit:first-child {
-    margin-left: -0.25em;
-  }
-  .kmh {
-    font-size: 0.7em;
-    margin-left: 0.05em;
-  }
+}
+
+.kmh {
+    font-size: 0.85vw;
+    color: rgba(255, 255, 255, 0.384);
+}
+
 .indicators {
     position: absolute;
     bottom: 1.3vw;
@@ -60,25 +48,7 @@
         bottom: 4.8vw;
         width: 100px;
         font-size: 2.5vw;
-		    display: flex;
-    opacity: 0.7;
-  }
-  .digit {
-    width: 0.4em;
-    margin-right: 0.05em;
-    text-align: center;
-    font-size: 1.5em;
-    font-weight: bold;
-    color: #fff;
-    background-color: rgba(0, 0, 0, 0.5);
-  }
-  .digit:first-child {
-    margin-left: -0.25em;
-  }
-  .kmh {
-    font-size: 0.7em;
-    margin-left: 0.05em;
-  }
+    } 
     .indicators {
         bottom: 1.3vw;
         left: 0.9vw;
@@ -111,25 +81,7 @@
         bottom: 4.8vw;
         width: 70px;
         font-size: 2.8vw;
-           display: flex;
-    opacity: 0.7;
-  }
-  .digit {
-    width: 0.4em;
-    margin-right: 0.05em;
-    text-align: center;
-    font-size: 1.5em;
-    font-weight: bold;
-    color: #fff;
-    background-color: rgba(0, 0, 0, 0.5);
-  }
-  .digit:first-child {
-    margin-left: -0.25em;
-  }
-  .kmh {
-    font-size: 0.7em;
-    margin-left: 0.05em;
-  }
+    }     
     .indicators {
         bottom: 1.3vw;
         left: 0.9vw;
@@ -178,25 +130,7 @@
         width: 65px;
         bottom: 4.8vw;
         font-size: 2.8vw;
-	    display: flex;
-    opacity: 0.7;
-  }
-  .digit {
-    width: 0.4em;
-    margin-right: 0.05em;
-    text-align: center;
-    font-size: 1.5em;
-    font-weight: bold;
-    color: #fff;
-    background-color: rgba(0, 0, 0, 0.5);
-  }
-  .digit:first-child {
-    margin-left: -0.25em;
-  }
-  .kmh {
-    font-size: 0.7em;
-    margin-left: 0.05em;
-  }
+    }     
     .indicators {
         bottom: 1.3vw;
         left: 0.9vw;
