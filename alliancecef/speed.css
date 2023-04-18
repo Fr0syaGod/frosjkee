@@ -13,28 +13,25 @@
     font-size: 2.5vw;
     text-align: center;
     line-height: 1.5vw;
-display: flex;
-  opacity: 0.7;
-}
-
-.digit {
-  width: 0.4em;
-  margin-right: 0.05em;
-  text-align: center;
-  font-size: 1.5em;
-  font-weight: bold;
-  color: transparent; /* изменение цвета на прозрачный */
-  background-color: rgba(0, 0, 0, 0.5);
-  -webkit-background-clip: text; /* добавление эффекта clip, чтобы показать фон через текст */
-}
-
-.digit:first-child {
-  margin-left: -0.25em;
-}
-.kmh {
-  font-size: 0.7em;
-  margin-left: 0.05em;
-}
+        display: flex;
+    opacity: 0.7;
+  }
+  .digit {
+    width: 0.4em;
+    margin-right: 0.05em;
+    text-align: center;
+    font-size: 1.5em;
+    font-weight: bold;
+    color: #fff;
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+  .digit:first-child {
+    margin-left: -0.25em;
+  }
+  .kmh {
+    font-size: 0.7em;
+    margin-left: 0.05em;
+  }
 .indicators {
     position: absolute;
     bottom: 1.3vw;
@@ -63,29 +60,25 @@ display: flex;
         bottom: 4.8vw;
         width: 100px;
         font-size: 2.5vw;
-		 display: flex;
-  opacity: 0.7;
-}
-
-.digit {
-  width: 0.4em;
-  margin-right: 0.05em;
-  text-align: center;
-  font-size: 1.5em;
-  font-weight: bold;
-  color: transparent; /* изменение цвета на прозрачный */
-  background-color: rgba(0, 0, 0, 0.5);
-  -webkit-background-clip: text; /* добавление эффекта clip, чтобы показать фон через текст */
-}
-
-.digit:first-child {
-  margin-left: -0.25em;
-}
-
-.kmh {
-  font-size: 0.7em;
-  margin-left: 0.05em;
-}
+		    display: flex;
+    opacity: 0.7;
+  }
+  .digit {
+    width: 0.4em;
+    margin-right: 0.05em;
+    text-align: center;
+    font-size: 1.5em;
+    font-weight: bold;
+    color: #fff;
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+  .digit:first-child {
+    margin-left: -0.25em;
+  }
+  .kmh {
+    font-size: 0.7em;
+    margin-left: 0.05em;
+  }
     .indicators {
         bottom: 1.3vw;
         left: 0.9vw;
@@ -118,29 +111,25 @@ display: flex;
         bottom: 4.8vw;
         width: 70px;
         font-size: 2.8vw;
- display: flex;
-  opacity: 0.7;
-}
-
-.digit {
-  width: 0.4em;
-  margin-right: 0.05em;
-  text-align: center;
-  font-size: 1.5em;
-  font-weight: bold;
-  color: transparent; /* изменение цвета на прозрачный */
-  background-color: rgba(0, 0, 0, 0.5);
-  -webkit-background-clip: text; /* добавление эффекта clip, чтобы показать фон через текст */
-}
-
-.digit:first-child {
-  margin-left: -0.25em;
-}
-
-.kmh {
-  font-size: 0.7em;
-  margin-left: 0.05em;
-}
+           display: flex;
+    opacity: 0.7;
+  }
+  .digit {
+    width: 0.4em;
+    margin-right: 0.05em;
+    text-align: center;
+    font-size: 1.5em;
+    font-weight: bold;
+    color: #fff;
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+  .digit:first-child {
+    margin-left: -0.25em;
+  }
+  .kmh {
+    font-size: 0.7em;
+    margin-left: 0.05em;
+  }
     .indicators {
         bottom: 1.3vw;
         left: 0.9vw;
@@ -189,29 +178,25 @@ display: flex;
         width: 65px;
         bottom: 4.8vw;
         font-size: 2.8vw;
-		 display: flex;
-  opacity: 0.7;
-}
-
-.digit {
-  width: 0.4em;
-  margin-right: 0.05em;
-  text-align: center;
-  font-size: 1.5em;
-  font-weight: bold;
-  color: transparent; /* изменение цвета на прозрачный */
-  background-color: rgba(0, 0, 0, 0.5);
-  -webkit-background-clip: text; /* добавление эффекта clip, чтобы показать фон через текст */
-}
-
-.digit:first-child {
-  margin-left: -0.25em;
-}
-
-.kmh {
-  font-size: 0.7em;
-  margin-left: 0.05em;
-}
+	    display: flex;
+    opacity: 0.7;
+  }
+  .digit {
+    width: 0.4em;
+    margin-right: 0.05em;
+    text-align: center;
+    font-size: 1.5em;
+    font-weight: bold;
+    color: #fff;
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+  .digit:first-child {
+    margin-left: -0.25em;
+  }
+  .kmh {
+    font-size: 0.7em;
+    margin-left: 0.05em;
+  }
     .indicators {
         bottom: 1.3vw;
         left: 0.9vw;
