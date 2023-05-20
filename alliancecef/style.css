@@ -47,6 +47,11 @@ body {
     /* margin: 20px; */
 }
 
+.currency-symbol {
+  font-weight: bold;
+}
+
+
 .hud-one-line {
     display: flex;
     align-items: center;
