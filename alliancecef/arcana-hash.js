@@ -27,7 +27,7 @@ setInterval(function () {
 
 function MoneyUpdate(money) {
     const block = document.getElementById('hud-money');
-    block.innerHTML = pad(money, 9) + '₴';
+    block.innerHTML = pad(money, 9) + '<span class="currency-symbol">₴</span>';
 }
 
 var show_speed = 0;
