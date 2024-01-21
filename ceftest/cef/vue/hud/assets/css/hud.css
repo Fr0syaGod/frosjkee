@@ -1,0 +1,138 @@
+@font-face {
+	font-family: "Gilroy-Bold"; 
+
+	src: url("../fonts/Gilroy-Medium.ttf") format("truetype"); 
+	font-style: normal; 
+	font-weight: normal; 
+} 
+			
+
+body {
+	user-select: none;
+	font-family: "Gilroy-Bold"; 
+}
+
+p {margin: 0;}
+
+.container_left {
+	float: right;
+	padding: 15px;
+}
+
+.container_hud {
+	background: linear-gradient(to top left, #2A3A33DD, #626064DD);
+	padding: 20px;
+	width: 230px;
+	/* border-radius: 10px; */
+}
+
+.block_time { display: block; }
+
+.time {
+	color: #fff;
+	font-size: 16pt;
+	font-weight: 500;
+	padding-right: 5px;
+}
+
+.date {
+	color: rgba(255, 255, 255, 0.5);
+}
+
+.block {
+	display: flex;
+	margin-top: 10px;
+}
+
+.weap {
+    /* margin-top: 40px; */
+	background-color: rgba(0, 0, 0, 0.21);
+	padding: 10px;
+	margin-top: 8px;
+    position: absolute;
+    background-image: url(../img/0.png);
+    background-repeat: no-repeat;
+    background-size: 55px;
+    background-position: center;
+    width: 65px;
+    height: 65px;
+    /* padding: 8px; */
+    /* right: 225px; */
+}
+
+.block_money {
+	/* display: flex; */
+	margin: 5px;
+	margin-left: 55%;
+}
+
+.params {
+	margin-bottom: 10px;
+	/* margin-left: 5px; */
+	display: inline-block;
+}
+
+
+.bank_money {
+	/* margin-left: 20px; */
+	/* display: inline-block; */
+}
+
+.container_position {
+	display: flex;
+	margin-top: 20px;
+}
+
+.help-buttons {
+	border-radius: 5px;
+	text-align: center;
+	background: linear-gradient(90deg, rgba(215,179,77,1) 0%, rgba(222,147,49,1) 100%);
+	padding: 7px;
+	margin-bottom: 5px;
+	font-weight: 600;
+	margin-right: 6px;
+	color: #fff;
+}
+
+.help-buttons2 {
+	color: #fff;
+	margin-bottom: 5px;
+	font-weight: 500;
+	font-size: 10pt;
+}
+
+.progress-bar
+{
+   transition: width 1s linear;
+}
+  
+.progress-bar:after
+{
+   animation: progress_bar 0.8s linear infinite;
+}
+
+progress {
+    position: absolute;
+    background: rgba(0, 0, 0, 0.001);
+    height: 10px;
+    width: 230px;
+    /* box-shadow: 1px 1px 11px #ccc; */
+}
+
+progress::-webkit-progress-bar {
+	background: rgba(0, 0, 0, 0.21);
+}
+
+progress::-webkit-progress-value {
+    background-color: #f04245;
+}
+
+.progress-bar {
+    display: flex;
+    align-items: center;
+    margin-top: 15px;
+}
+
+#arm_progress::-webkit-progress-value {
+	background-color: #fff;
+}

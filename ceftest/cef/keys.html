@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>  
+    <head>
+        <meta charset="UTF-8">
+    </head>
+    <body>
+    
+    </body>
+    <script>
+        window.addEventListener('keydown', function(event) {
+            var code = event.keyCode;
+            var key = String.fromCharCode(event.keyCode);
+            cef.emit("cef_key_down", code, key);
+            //if (event.code == 'KeyZ' && (event.ctrlKey || event.metaKey)) {
+            //  alert('Отменить!')
+            //}
+            if(code == '1') {
+                cef.emit("cef_show_f2_help");
+            }
+          });
+          window.addEventListener('keyup', function(event) {
+            var code = event.keyCode;
+            if(code == '1') {
+                cef.set_focus(false);
+                cef.hide(true);
+            }
+          });
+    </script>
+</html>

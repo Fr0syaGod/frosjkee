@@ -1,0 +1,115 @@
+body {
+    /*background: url(../img/background_2.png);*/
+    background-repeat: no-repeat;
+    font-family: "Proxima Nova";
+    letter-spacing: -0.2px;
+    overflow-y: hidden;
+    text-align: center;
+    /*background: linear-gradient(75deg, #1e1c27, #202028);*/
+}
+
+#login_container, #recovery_container {
+    font-family: Proxima Nova;
+    margin-top: 30px;
+    background: linear-gradient(to top left, #2A3A33DD, #626064DD);
+    padding: 15px;
+    border-radius: 10px;
+    width: 300px;
+    margin: 20% auto;    
+}
+
+#register_container {
+    font-family: Proxima Nova;
+    margin-top: 30px;
+    background: linear-gradient(to top left, #2A3A33DD, #626064DD);
+    padding: 15px;
+    border-radius: 10px;
+    width: 300px;
+    margin: 15% auto;    
+}
+
+.description {
+    color: #ffcc00;
+    font-size: 13pt;
+    font-weight: 600;    
+}
+
+.input_login {
+    width: 100%;
+    padding: 15px;
+    border: 0;
+    outline: 0;
+    border-radius: 6px;
+    background: rgba(37, 37, 37, 0.5);
+    margin-top: 15px;
+    font-family: Proxima Nova;
+    color: #999;
+    font-size: 11pt;
+    font-weight: 600;
+    transition: .3s;
+    text-align: center;
+}
+
+.input_login::placeholder {
+    color: #999;
+}
+
+.info_input {
+    color: #d3d3d3;
+    font-size: 11pt;
+    width: 100%;
+}
+
+.input_login:focus {
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.3);
+}
+
+.loginBtn {
+    background: linear-gradient(90deg, #32be45, #4fe063);
+    padding: 10px;
+    border-radius: 8px;
+    color: #fff;
+    font-size: 11pt;
+    font-weight: 600;
+    text-align: center;
+}
+
+.recovery-password {
+    margin-top: 10px;
+    background: rgba(255, 255, 255, 0.15);
+    padding: 7px;
+    border-radius: 8px;
+    color: #d3d3d3;
+    font-size: 11pt;
+    font-weight: 400;
+    text-align: center;
+    transition: .3s;
+}
+
+.recovery-password:hover {
+    background: #fff;
+    color: #252525;
+}
+
+.selectSex {
+    margin-top: 15px;
+    background: rgba(255, 255, 255, 0.15);
+    padding: 15px;
+    border-radius: 10px;
+}
+
+.typeSex {
+    background: rgba(37, 37, 37, 0.2);
+    margin: 15px;
+    padding:  10px;
+    border-radius: 5px;
+    color: #d3d3d3;
+}
+
+.typeSex_active {
+    background: #fff;
+    color: #252525;
+    margin: 15px;
+    padding:  10px;
+    border-radius: 5px;    
+}

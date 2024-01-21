@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <style> 
+        body {
+            /*background: url(./img/background_2.png);*/
+        }
+        @font-face {
+        	font-family: "Gilroy-Bold"; 
+        
+        	src: url("Gilroy-Medium.ttf") format("truetype"); 
+        	font-style: normal; 
+        	font-weight: normal; 
+        } 
+        
+        .box {
+            font-family: "Gilroy-Bold";
+            text-shadow: 1px 1px 40px rgba(0, 0, 0, 0.589);
+            color: #fff;
+            font-size: 45px;
+            font-weight: 700;
+            width: 450px;
+            margin: 10% auto;
+            text-align: center;
+            letter-spacing: -2px;
+            transition: .3s;
+            line-height: 45px;
+        }               
+        .user_name {
+            font-size: 40px;
+            color: #ffcc00;
+        }
+        .timer {
+            font-family: "Gilroy-Bold";
+            background: linear-gradient(to bottom, #626064DD, #2A3A33DD);
+            box-shadow: 1px 1px 25px rgba(0, 0, 0, 0.514);
+            width: 200px;
+            margin-left: 86px;
+            margin-top: 19.7%;
+            padding: 18px;
+            transition: .3s;
+            text-align: center;
+        }
+        .headerTimer {
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            font-size: 10pt;
+            color: rgba(255, 255, 255, 0.5);
+            font-weight: 500;
+        }
+        .timerValue {
+            font-size: 25pt;
+            font-weight: 700;
+            color: #fff;
+            /*text-shadow: 1px 1px 4px #ffffff6d;*/
+        }
+        .helpTimer {
+            font-size: 11.5pt;
+            font-weight: 500;
+            color: #ffcc00;
+            letter-spacing: -0.5px;
+        }
+        .box1 {
+            font-family: "Gilroy-Bold";
+            text-shadow: 1px 1px 30px rgba(0, 0, 0, 0.589);
+            color: #fff;
+            font-size: 30px;
+            font-weight: 600;
+            text-align: right;            
+            position: absolute;
+            right: 0;
+            bottom: 15%;
+            margin-right: 45px;
+            letter-spacing: -0.5px;
+        }
+        #desc {
+            font-size: 25px;
+            color: #ffcc00;
+        }
+        #money {
+            position: relative;
+            float: right;
+            font-family: "Gilroy-Bold";
+            font-weight: 700;
+            font-size: 40px;
+            text-align: right;
+            margin-top: 50px;
+            margin-right: 30px;
+        }
+        #position_1 { color: #66cc00; text-shadow: 1px 1px 40px rgba(0, 0, 0, 0.589); }
+        #position_2 { color: #ff6347; text-shadow: 1px 1px 30px rgba(0, 0, 0, 0.589); }
+        #position_3 { color: #3399ff; text-shadow: 1px 1px 30px rgba(0, 0, 0, 0.589); }
+        #position_4 { color: #fff; text-shadow: 1px 1px 30px rgba(0, 0, 0, 0.589); }
+        #position_5 {
+            font-family: "Gilroy-Bold";
+            font-weight: 700;
+            text-align: center;
+            margin-top: 170px;
+            color: #ff6347; 
+            text-shadow: 1px 1px 30px rgba(0, 0, 0, 0.589);
+            font-size: 45px;            
+            text-transform: uppercase;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="alert" class="box1" style="opacity: 0;">
+        <div id="desc">Ваш персонаж голоден</div>
+        <div class="hello">Восполните этот параметр</div>
+    </div>    
+    <div id="notify" class="box" style="opacity: 0;">
+        <div class="hello">Добро пожаловать!</div>
+        <div id="userName" class="user_name">Antonio Montano</div>
+    </div>
+    <div id="timer" class="timer" style="opacity: 0;">
+        <div class="headerTimer">Принятие вызова</div>
+        <div style="display: flex; align-items: center; justify-content: center;">
+            <img src="img/clock_hour_minute_second_time_timer_watch_icon_123193.svg" width="35px" style="margin-right: 5px; filter: invert(1);">
+            <div id="timer_value" class="timerValue">9:59</div>
+        </div>
+        <div class="helpTimer" id="helpTimerName">Вам необходимо добраться за указанное время</div>
+    </div>
+    <div id="money" class="box2" style="opacity: 1;">
+        <div id="position_1" style="opacity: 0;"></div>
+        <div id="position_2" style="opacity: 0;"></div>
+        <div id="position_3" style="opacity: 0;"></div>
+        <div id="position_4" style="opacity: 0;"></div>
+    </div>
+    <div id="position_5" style="opacity: 1;"></div>
+</body>
+<script>
+    let time = 0;
+    let intervalId;
+
+    function ConvertTime(seconds) {
+        var time_string,
+            hours =  Math.floor((seconds / 3600)),
+            minutes = Math.floor((seconds / 60) - (hours * 60));
+    
+        seconds = Math.floor(seconds - ((hours * 3600) + (minutes * 60)));
+    
+        if(hours > 0) time_string = `${hours}:${minutes}:${seconds}`; //format(time_string, sizeof time_string, "%02d:%02d:%02d", hours, minutes, seconds);
+        else time_string = `${minutes}:${seconds}`;
+        return time_string;
+    }
+
+    cef.on("game_text", (position, text, time) => {
+        if(position == 1) {
+            document.getElementById("position_1").innerHTML = `+${text.toLocaleString('ru')} РУБ.`;
+            document.getElementById("position_1").style.opacity = '1';
+
+            timerId = setTimeout(function(){
+                document.getElementById('position_1').style.opacity = '0';
+            }, time);              
+        }
+        if(position == 2) {
+            document.getElementById("position_2").innerHTML = `${text.toLocaleString('ru')} РУБ.`;
+            document.getElementById("position_2").style.opacity = '1';
+
+            timerId = setTimeout(function(){
+                document.getElementById('position_2').style.opacity = '0';
+            }, time);              
+        }    
+        if(position == 3) {
+            document.getElementById("position_5").innerHTML = `${text}`;
+            document.getElementById("position_5").style.opacity = '1';
+
+            timerId = setTimeout(function(){
+                document.getElementById('position_5').style.opacity = '0';
+            }, time);                  
+        } 
+
+        if(position == 4) {
+            document.getElementById("position_1").innerHTML = `<span style='color: #fff;'>+${text.toLocaleString('ru')} КР.`;
+            document.getElementById("position_1").style.opacity = '1';
+
+            timerId = setTimeout(function(){
+                document.getElementById('position_1').style.opacity = '0';
+            }, time);              
+        }        
+    });
+
+    cef.on("draw_time", (date, time) => {
+        document.getElementById('position_3').style.opacity = '1';
+        document.getElementById('position_4').style.opacity = '1';
+        document.getElementById("position_3").innerHTML = `${date}`;
+        document.getElementById("position_4").innerHTML = `${time}`;
+
+        timerId = setTimeout(function(){
+            document.getElementById('position_3').style.opacity = '0';
+            document.getElementById('position_4').style.opacity = '0';
+        }, 4000);         
+    });
+
+    cef.on("show_alert", (text) => {
+        document.getElementById('alert').style.opacity = '1';
+        document.getElementById("desc").innerText = `${text}`;
+
+        timerId = setTimeout(function(){
+            document.getElementById('alert').style.opacity = '0';
+        }, 8000);        
+    });
+
+    cef.on("show_timer", (seconds, timerName, helpName) => {
+        document.getElementById("timer").style.opacity = '1';
+        document.getElementById("helpTimerName").innerHTML = `${helpName}`;
+        document.getElementsByClassName("headerTimer")[0].innerHTML = `${timerName}`;
+        time = seconds;
+
+        intervalId = setInterval(function() {
+            document.getElementById("timer_value").innerHTML = `${ConvertTime(time)}`;
+            time = time - 1;
+            if(time <= 0) {
+                document.getElementById("timer").style.opacity = '0';
+                cef.emit("timer_faller");
+                clearInterval(intervalId);
+            }
+        }, 1000);
+    });
+    cef.on("hide_time", () => {
+        clearInterval(intervalId);
+        document.getElementById("timer").style.opacity = '0'; 
+    });
+
+    cef.on("show_hello", (userName) => {
+        document.getElementById('notify').style.opacity = '1';
+        document.getElementById("userName").innerText = `${userName}`;
+
+        timerId = setTimeout(function(){
+            document.getElementById('notify').style.opacity = '0';
+        }, 5000);
+    });         
+</script>
+
+</html>

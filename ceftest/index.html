@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=windows-1251">
+    <link rel="stylesheet" type="text/css" href="index_files/hud.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com/">
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="">
+    <link href="index_files/css2.css" rel="stylesheet">    
+</head>
+
+<body>
+
+    <div class="speed" style="display: block;">
+		<div class="speed-box">
+			<svg width="231" height="201" id="circle" viewBox="0 0 231 201" fill="none" xmlns="http://www.w3.org/2000/svg">
+				<path d="M226.661 115.753C226.661 54.5009 177.006 4.84592 115.753 4.84592C54.5009 4.84592 4.84595 54.5009 4.84595 115.753C4.84595 147.716 18.3664 176.52 40 196.759" stroke="white" stroke-width="10" stroke-linecap="round"></path>
+                <text x="45" y="185" font-size="10" fill="#fff" font-weight="bold">0</text>
+                <text x="25" y="155" font-size="10" fill="#fff" font-weight="bold">40</text>
+                <text x="15" y="115" font-size="10" fill="#fff" font-weight="bold">80</text>
+                <text x="25" y="75" font-size="10" fill="#fff" font-weight="bold">120</text>
+                <text x="55" y="40" font-size="10" fill="#fff" font-weight="bold">160</text>
+                <text x="100" y="25" font-size="10" fill="#fff" font-weight="bold">200</text>
+                <text x="150" y="35" font-size="10" fill="#fff" font-weight="bold">240</text>
+                <text x="185" y="70" font-size="10" fill="#fff" font-weight="bold">280</text>
+                <text x="200" y="115" font-size="10" fill="#fff" font-weight="bold">300</text>
+			</svg>
+			<div class="strelka"></div>
+			<div class="speed-text">044</div>
+			<div class="turn-icon">
+					<div class="turn-left"><img src="index_files/turn.svg" alt="" class="icon"></div>
+					<div class="turn-right"><img src="index_files/turn.svg" alt="" class="icon"></div>
+			</div>
+		</div>
+		<div class="fuel-box">
+			<svg width="125" height="120" id="circle-fuel" viewBox="0 0 250 90" fill="none" xmlns="http://www.w3.org/2000/svg">
+				<path d="M226.661 115.753C226.661 54.5009 177.006 4.84592 115.753 4.84592C54.5009 4.84592 4.84595 54.5009 4.84595 115.753" stroke="white" stroke-width="10" stroke-linecap="round"></path>
+        		<text x="15" y="120" font-size="14" fill="#fff" font-weight="bold">E</text>
+                <text x="105" y="35" font-size="14" fill="#fff" font-weight="bold">50%</text>
+                <text x="210" y="120" font-size="14" fill="#fff" font-weight="bold">F</text>
+			</svg>
+			<div class="fuel"></div>
+		</div>	
+
+		<div class="icon-speed">
+			<img src="index_files/engine.svg" class="icon-engine icon">
+			<img src="index_files/lock.svg" class="icon-lock icon">
+			<img src="index_files/lights.svg" class="icon-lights icon">
+		</div>
+	</div>
+
+    <div class="box" id="hud-container" style="display: block;">
+        <div class="logoName">
+            <div class="time_date">
+                <img src="index_files/time.png" alt="" class="margin-right: 10px;" width="20px">
+                <div class="block">
+                    <div id="time" class="time">16:19</div>
+                    <div id="date" class="date">03.03.2023</div>
+                </div>
+                <img src="index_files/quince.png" class="logo" alt="" width="50px">
+                <div class="block">
+                    <div class="serverName">Quince</div>
+                    <div class="rolePlay">Roleplay</div>
+                </div>
+            </div>
+            <div class="fist">
+                <img id="weapon" class="img_fist" src="index_files/0.png" alt="" width="55px">
+                <div class="block progresss">
+                    <div class="progress-bar">
+                        <progress id="hp_progress" value="30" max="100"></progress>
+                        <img class="img" src="index_files/health.png" alt="" width="16px">
+                    </div>                
+                    <div class="progress-bar">
+                        <progress id="armour_progress" class="armour" value="30" max="100"></progress>
+                        <img class="img" src="index_files/armour.png" alt="" width="16px">
+                    </div>   
+                    <div class="progress-bar">
+                        <progress id="eat_progress" class="eat" value="30" max="100"></progress>
+                        <img class="img" style="margin-left: 11.5px;" src="index_files/eat.png" alt="" width="14px">
+                    </div>                    
+                    <div class="progress-bar" id="breath-zone" style="display: none;">
+                        <progress id="breath_progress" class="breath" value="30" max="100"></progress>
+                        <img class="img" style="margin-left: 11.5px;" src="index_files/breath.png" alt="" width="14px">
+                    </div>                           
+                </div>                  
+            </div>
+
+			<div class="moneyClass">
+				<div class="money" id="money">1 000 000</div>
+                <img src="index_files/green_ruble.png" class="logoRub" width="18px">
+			</div>
+        </div>
+    </div>
+
+    <script>
+        const arrowSpeed = document.getElementsByClassName('strelka')[0];
+        const speedValue = document.getElementsByClassName('speed-text')[0];
+
+        const zeroLength = 3;
+
+        function updateSpeed(speed) {
+            arrowSpeed.style = `transform: rotate(${58 + (speed / 1.75)}deg);`;
+
+            speedValue.innerHTML = speed.toString().padStart(zeroLength, '0');
+        
+        }
+
+        function updateFuel(fuel) {
+            document.getElementsByClassName("fuel")[0].style = `transform: rotate(${85 + (fuel * 5)}deg);`;;   
+        }
+
+        setInterval(function() {
+            var d = new Date();
+            var month = d.getMonth() + 1;
+            document.getElementById("time").innerText = `${d.getHours().toString().padStart(2, '0') + ":" + d.getMinutes().toString().padStart(2, '0')}`;
+            document.getElementById("date").innerText = `${d.getDate().toString().padStart(2, '0')}.${month.toString().padStart(2, '0')}.${d.getFullYear()}`;
+        }, 1000);   
+        cef.emit("game:hud:setComponentVisible", "interface", false);
+        cef.emit("game:data:pollPlayerStats", true, 50);
+        cef.on("game:data:playerStats", (hp, max_hp, arm, breath, wanted, weapon, ammo, max_ammo, money, speed) => {
+            document.getElementById('hp_progress').value = `${hp}`;
+            document.getElementById('armour_progress').value = `${arm}`;     
+            var moneyInt = (money).toLocaleString('ru');
+            document.getElementById("money").innerText = `${moneyInt}`;
+
+            updateSpeed(Math.round(speed));
+
+            if(weapon > 0) {
+                document.getElementById("ammo").style = "display: block;"; 
+                document.getElementById("ammo").innerText = `${ammo} / ${max_ammo}`;
+                document.getElementById("weapon").src = `img/${weapon}.png`;
+
+            }
+            else {
+                document.getElementById("ammo").style = "display: none;";
+                document.getElementById("weapon").src = "img/0.png";
+            }
+
+            if(breath > 0) {
+                document.getElementById("breath-zone").style = "display: block";
+                document.getElementById('breath_progress').value = `${breath}`;
+            }
+            else {
+                document.getElementById("breath-zone").style = "display: none;";
+            }
+        });
+
+        cef.on("show-hud", () => {
+            document.getElementById("hud-container").style = "display: block;";
+        });
+
+        cef.on("hide-hud", () => {
+            document.getElementById("hud-container").style = "display: none;";
+        });        
+       
+        cef.on("update-eat", (eat) => {
+            document.getElementById('eat_progress').value = `${eat}`;     
+        });        
+
+        cef.on("update-speed-icon", (icon, value) => {
+            let opacity;
+            if(value === 0) opacity = 0.5;
+            else opacity = 1;
+
+            if(icon === 1) {
+                document.getElementsByClassName("icon-engine")[0].style = `opacity: ${opacity};`;
+            }
+            if(icon === 2) {
+                document.getElementsByClassName("icon-lock")[0].style = `opacity: ${opacity};`;
+            }
+            if(icon === 3) {
+                document.getElementsByClassName("icon-lights")[0].style = `opacity: ${opacity};`;
+            }
+        });
+
+        cef.on("update-speed-fuel", (fuel) => {
+            updateFuel(fuel);
+        }); 
+        
+        cef.on("update-speed-turn", (type, value) => {
+            let opacity;
+            if(value === 0) opacity = 0.5;
+            else opacity = 1;
+
+            if(type === 1) {
+                document.getElementsByClassName("turn-left")[0].style = `opacity: ${opacity};`;
+            }
+            if(type === 2) {
+                document.getElementsByClassName("turn-right")[0].style = `opacity: ${opacity};`;
+            }
+        });        
+
+        cef.on("show-speed", () => {
+            document.getElementsByClassName("speed")[0].style = "display: block";
+        });
+        cef.on("hide-speed", () => {
+            document.getElementsByClassName("speed")[0].style = "display: none";
+        });        
+        
+    </script>
+
+
+</body></html>

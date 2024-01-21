@@ -1,0 +1,78 @@
+@font-face {
+    font-family: 'Roboto-Rg';
+    src: local('Roboto'), local('Roboto-Regular'), url('fonts/Roboto.woff2') format('woff2'), url('fonts/Roboto.woff') format('woff'), url('fonts/Roboto.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Roboto Bold';
+    src: url('./fonts/Robotobold.ttf') format('truetype');
+    font-weight: 900;
+    font-style: normal;
+}
+
+#game__chat {
+    bottom:50px; 
+    margin: 1.5vw;
+    /*color: #fff;*/
+    font-family: 'Proxima Nova Ex';
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, 1);
+    letter-spacing: -0.3px;
+    line-height: 20px;
+    max-width: 700px;
+    font-size: 0.88vw;
+    max-height: 300px;
+}
+
+#chat__box {
+    max-height: 310px;
+    overflow: hidden;
+}
+
+#chat__input {
+    width: 93%;
+    margin-top: 10px;
+    font-family: 'Proxima Nova Sm';
+    letter-spacing: -0.23px;
+    font-size: 14px;
+    padding: 8px 13px;
+    background-color: rgb(46, 44, 44);
+    outline: 0;
+    color: rgba(255, 255, 255, 0.35);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+#chat__input::placeholder {
+    color: rgba(255, 255, 255, 0.35);
+    font-family: 'Proxima Nova Sm';
+}
+
+#after {
+    position: relative;
+    display: flex;
+
+  }
+
+  #after input + label:after {
+    content: attr(data-fon);
+    position: absolute;
+    right: 60px;
+    top: 18px;
+    align-content: center;
+    color: rgb(182, 181, 181);
+  }
+
+  .input-wrapper:hover:after {
+    content: attr(data-title);
+    position: absolute;
+    left: 95%; top: 25%;
+    z-index: 1;
+    background: rgba(255, 255, 255, 0.65);
+    font-size: 11px;
+    width: 55%;
+    text-shadow: none;
+    padding: 7px;
+    color: #353535;
+    backdrop-filter: blur(5px);
+   }

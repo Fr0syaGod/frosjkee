@@ -1,0 +1,97 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+        <link rel="stylesheet" type="text/css" href="css/captcha.css" />    
+    </head>
+    <body>
+        <div class="container">
+            <div class="header">Міні-гра</div>
+            <div>
+               <progress id="captcha" value="0" max="100"></progress>
+            </div>
+ 
+            <div class="help">Натисніть клавішу Y</div>
+    </body>
+    <script>           
+        var playerKey = 'Y';
+        let timerId;
+
+        window.addEventListener("keyup", (event) => {
+            var code = event.keyCode;
+            var key = String.fromCharCode(event.keyCode);
+            
+            //document.getElementsByClassName("help")[0].innerHTML = `${code} | ${key}`;
+
+            if(key == `${playerKey}`) {
+                document.getElementById("captcha").value += 10;
+
+                if(document.getElementById("captcha").value == 10) {
+                    function sayHi() {
+                        document.getElementById("captcha").style = 'display: none;';
+                        cef.emit("captcha_false");
+                    }
+                    timerId = setTimeout(sayHi, 10000);                   
+                }
+
+                var rand = getRandomInt(15);
+                switch(rand) {
+                    case 1: 
+                    case 2: {
+                        document.getElementsByClassName("help")[0].innerHTML = `Натисніть клавішу X`;
+                        playerKey = 'X';
+                        break;
+                    }
+                    case 3: 
+                    case 4: {
+                        document.getElementsByClassName("help")[0].innerHTML = `Натисніть клавішу Y`;
+                        playerKey = 'Y';
+                        break;
+                    }
+                    case 5: 
+                    case 6: {
+                        document.getElementsByClassName("help")[0].innerHTML = `Натисніть клавішу F`;
+                        playerKey = 'F';
+                        break;
+                    }                    
+                    case 7: 
+                    case 8: {
+                        document.getElementsByClassName("help")[0].innerHTML = `Натисніть клавішу Z`;
+                        playerKey = 'Z';
+                        break;
+                    }
+                    case 9: 
+                    case 10: {
+                        document.getElementsByClassName("help")[0].innerHTML = `Натисніть клавішу U`;
+                        playerKey = 'U';
+                        break;
+                    }
+                    case 11: 
+                    case 12: {
+                        document.getElementsByClassName("help")[0].innerHTML = `Натисніть клавішу N`;
+                        playerKey = 'N';
+                        break;
+                    }
+                    case 13: 
+                    case 14: 
+                    case 15: {
+                        playerKey = 'C';
+                        document.getElementsByClassName("help")[0].innerHTML = `Натисніть клавішу C`;
+                        break;
+                    }
+                }
+                if(document.getElementById("captcha").value >= 100) {
+                    cef.emit("captcha_yes");
+                    clearTimeout(timerId);                    
+                    //cef.hide(true);
+                    return;
+                }                
+            }
+        });        
+
+        function getRandomInt(max) {
+            return Math.floor(Math.random() * max);
+        }          
+    </script>  
+</html>

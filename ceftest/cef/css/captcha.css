@@ -1,0 +1,77 @@
+@font-face {
+    font-family: 'Proxima Nova Bl';
+    src: url('../fonts/ProximaNova-Semibold.ttf') format('truetype');
+    font-weight: 600;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'KTFJermilov-Solid';
+    src: url('../fonts/KTFJermilov-Solid.ttf') format('truetype');
+    font-weight: 600;
+    font-style: normal;
+}
+
+body {
+    /* background: url(../img/background_2.png); */
+    background-repeat: no-repeat;
+    font-family: "Proxima Nova Bl";
+    letter-spacing: -0.2px;
+    overflow-y: hidden;
+    text-align: center;
+
+    transition: 1s;
+}
+
+.container {
+    margin: 0;
+    position: absolute;
+    bottom: 0%;
+    left: 50%;
+    margin-right: -50%;
+    transform: translate(-50%, -50%);
+    padding: 25px 30px;
+    width: 270px;
+    background: linear-gradient(to bottom, #626064DD, #2A3A33DD);
+    box-shadow: 10px 10px 425px rgba(0, 0, 0, 0.814);
+    /*margin: 45% auto;*/
+    text-align: center;
+    padding: 20px 20px;
+}
+
+progress {
+    border-radius: 0px;
+    width: 100%;
+    transition: 0.5s;
+    height: 30px;
+  }
+  progress::-webkit-progress-bar {
+    border-radius: 0px;
+    background: rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  progress::-webkit-progress-value {
+    background: #ffcc00bd;
+    background-image: -webkit-gradient(linear, 0 0, 100% 100%, color-stop(0.25, rgba(255, 255, 255, 0.2)), color-stop(0.25, transparent), color-stop(0.5, transparent), color-stop(0.5, rgba(255, 255, 255, 0.2)), color-stop(0.75, rgba(255, 255, 255, 0.2)), color-stop(0.75, transparent), to(transparent));
+    border-radius: 0px;
+    box-shadow: 1px 1px 10px #ffcc004d;
+    transition: 0.25s;
+  }
+
+.help {
+    margin-top: 15px;
+    font-size: 16px;
+    letter-spacing: -0.5px;
+    color: rgba(255, 255, 255, 0.5);
+    /*text-transform: uppercase;*/
+}
+
+.header {
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    font-family: "KTFJermilov-Solid";
+    font-size: 10pt;
+    color: #FFCC00;
+    font-size: 22px;
+    margin-bottom: 10px;
+}

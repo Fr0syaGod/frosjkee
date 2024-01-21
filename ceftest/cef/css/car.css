@@ -1,0 +1,27 @@
+@font-face {
+	font-family: "Gilroy-Bold"; 
+
+	src: url("../fonts/Gilroy-Medium.ttf") format("truetype"); 
+	font-style: normal; 
+	font-weight: normal; 
+} 
+
+body {
+	user-select: none;
+	font-family: "Gilroy-Bold"; 
+}
+
+.buyCar {
+	color: #fff;
+	width: 250px;
+	background: rgba(0,0,0,0.5);
+	padding: 10px;
+	position: absolute;
+	right: 0;
+	bottom: 10px;
+}
+
+button {
+	font-family: "Gilroy-Bold";
+	margin: 3px;
+}

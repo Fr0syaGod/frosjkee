@@ -1,0 +1,349 @@
+@font-face {
+    font-family: 'Proxima Nova Bl';
+    src: url('./fonts/ProximaNova-Black.ttf') format('truetype');
+    font-weight: 900;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Proxima Nova Ex';
+    src: url('./fonts/ProximaNova-Extrabld.ttf') format('truetype');
+    font-weight: 800;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Proxima Nova Th';
+    src: url('./fonts/ProximaNovaT-Thin.ttf') format('truetype');
+    font-weight: 100;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Proxima Nova Lt';
+    src: url('./fonts/ProximaNova-Light.ttf') format('truetype');
+    font-weight: 300;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Proxima Nova Bold';
+    src: url('./fonts/ProximaNova-Bold.ttf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Proxima Nova Rg';
+    src: url('./fonts/ProximaNova-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Proxima Nova Sm';
+    src: url('./fonts/ProximaNova-Semibold.ttf') format('truetype');
+    font-weight: 600;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'PF DinDisplay Pro';
+    src: url('./fonts/PFDinDisplayPro-BoldItalic.ttf') format('truetype');
+    font-weight: bold;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'PF DinDisplay Pro';
+    src: url('./fonts/PFDinDisplayPro-BlackItalic.ttf') format('truetype');
+    font-weight: 900;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'PF DinDisplay Pro';
+    src: url('./fonts/PFDinDisplayPro-Thin.ttf') format('truetype');
+    font-weight: 100;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'PF DinDisplay Pro';
+    src: url('./fonts/-ThinItalic.ttf') format('truetype');
+    font-weight: 100;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'PF DinDisplay Pro';
+    src: url('./fonts/PFDinDisplayPro-Italic.ttf') format('truetype');
+    font-weight: normal;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'PF DinDisplay Pro';
+    src: url('./fonts/-MediumItalic.ttf') format('truetype');
+    font-weight: 500;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'PF DinDisplay Pro';
+    src: url('./fonts/PFDinDisplayPro-LightItalic.ttf') format('truetype');
+    font-weight: 300;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'PF DinDisplay Pro';
+    src: url('./fonts/PFDinDisplayPro-Black.ttf') format('truetype');
+    font-weight: 900;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'PF DinDisplay Pro';
+    src: url('./fonts/PFDinDisplayPro-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'PF DinDisplay Pro';
+    src: url('./fonts/PFDinDisplayPro-Light.ttf') format('truetype');
+    font-weight: 300;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'PF DinDisplay Pro';
+    src: url('./fonts/PFDinDisplayPro-Bold.ttf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'PF DinDisplay Pro';
+    src: url('./fonts/PFDinDisplayPro-Medium.ttf') format('truetype');
+    font-weight: 500;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Montserrat';
+    src: url('./fonts/Montserrat-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Montserrat';
+    src: url('./fonts/Montserrat-Bold.ttf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Montserrat';
+    src: url('./fonts/Montserrat-Medium.ttf') format('truetype');
+    font-weight: 500;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Montserrat';
+    src: url('./fonts/Montserrat-Black.ttf') format('truetype');
+    font-weight: 900;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Montserrat';
+    src: url('./fonts/Montserrat-SemiBold.ttf') format('truetype');
+    font-weight: 600;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Montserrat';
+    src: url('./fonts/Montserrat-ExtraBold.ttf') format('truetype');
+    font-weight: 700;
+    font-style: normal;
+}
+
+body {
+    /*background: #999;*/
+    /*background: url(../img/back.png);*/
+    background-size: cover;
+	overflow-x: none;
+}
+
+#dialog_container {
+	font-family: 'Proxima Nova Rg';
+	color: #fff;
+	letter-spacing: -0.2px;
+	font-size: 15px;
+	background: linear-gradient(to top, rgba(23, 31, 19, 0.847), rgba(23, 26, 13, 0.847));
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-right: -50%;
+    transform: translate(-50%, -50%);
+    padding: 25px 30px;
+    max-width: 800px;
+    width: auto;
+	border-radius: 6px;
+}
+
+.dialogHeader {
+	font-size: 23px;
+	color: #3986d3;
+	font-family: 'Proxima Nova Ex';
+	text-align: center;
+	letter-spacing: -0.5px;
+	margin-bottom: 15px;
+}
+
+.buttons {
+	margin-top: 10px;
+	display: flex;
+	justify-content: center;
+	user-select: none;
+}
+
+.clickBtn {
+	background: linear-gradient(90deg, rgba(207,121,51,1) 0%, rgba(255,153,69,1) 100%);
+	padding: 10px 14px;
+	margin-right: 5px;
+	margin-left: 5px;
+	opacity: 1;
+	border-radius: 3px;
+	font-family: 'Proxima Nova Sm';
+	font-size: 14px;
+	transition: opacity 0.5s;
+	width: 120px;
+	text-align: center;
+}
+
+.red_btn {
+	background: linear-gradient(90deg, rgba(207,77,51,1) 0%, rgba(255,94,69,1) 100%);
+}
+
+.clickBtn:hover { opacity: 1; }
+
+.dialog_input {
+	width: 100%;
+	background-color: rgba(0, 0, 0, 0.7);
+	outline: 0;
+	border: 1px solid rgba(255, 255, 255, 0.2);
+	font-family: 'Proxima Nova Bold';
+	padding: 10px 10px;
+	margin-top: 10px;
+	border-radius: 5px;
+	letter-spacing: -0.5px;
+	font-size: 15px;
+	color: #fff;
+}
+
+.dialogItem {
+	background-color: rgba(17, 16, 16, 0.7);
+	margin-bottom: 5px;
+	border: 1px solid rgba(255, 255, 255, 0.2);
+	padding: 11px 15px;
+	text-align: center;
+	min-width: 320px;
+	border-radius: 5px;
+	font-family: 'Proxima Nova Bold';
+	letter-spacing: -0.5px;
+	font-size: 15px;
+
+	transition: 0.3s;
+}
+
+.dialogItem:hover {
+    background-color: rgba(49, 49, 49, 0.65);
+	/*color: #fff;*/
+}
+
+.tablist_headers {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    text-align: center;
+    align-self: end;
+}
+
+.dialogItemHeader {
+    margin-left: 10px;
+    min-width: 200px;
+    margin-right: 10px;
+}
+
+.styleDialogTablist {
+    padding-left: 10px;
+    padding-right: 10px;
+    font-size: 10.5pt;
+    color: #fff;
+    border-radius: 9px;
+
+    transition: 0.5s;
+    margin-bottom: 10px;
+}
+
+.dialogText {
+	max-height: 500px;
+	width: 100%;
+	font-family: 'Proxima Nova Sm';
+    overflow-y: auto;  
+}
+
+span {
+	color: var(--i);
+	transition: 0.4s;
+}
+
+.dialogItem:hover span {
+  color: var(--g);
+}
+
+::-webkit-scrollbar {
+    position: absolute;
+    width: 3px;       
+    right: 0;      
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(35, 36, 40, 0.15);     
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 255, 255, 0.5);  
+}
+
+.active_text {
+	color: #252525;
+	/*color: var(--b);*/
+}
+
+.white_back {
+	background-color: #ff9945;
+	color: #353535;
+	border: 1px solid #ff9945;
+}
+
+.white_back:hover {
+    background-color: #ff9945;
+}
+
+.white_back:hover span {
+  color: #252525;
+}
+
+.noback {
+	background: none;
+	border: 0;
+}

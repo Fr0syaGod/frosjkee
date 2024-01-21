@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>hud</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <link href="assets/css/hud.css" rel="stylesheet" />
+    <link href="assets/css/car.css" rel="stylesheet" />
+</head>
+<body>
+    <div v-show="buy_car_show === 1" id="buyCar" class="buyCar">
+        <div class="header">Покупка транспорта</div>
+        <div class="modelName">
+            <div class="modelHeader">Модель транспорта</div>
+            <div class="carName">{{ carName }}</div>
+        </div>
+        <div class="modelName">
+            <div class="modelHeader">Стоимость</div>
+            <div class="carName green">{{ carPrice.toLocaleString('ru') }} руб.</div>
+        </div>
+
+        <div id="colours"  class="modelColors">
+            <div v-on:click="callback_event(5, 1)" style="background: #000" class="selectColor">0</div>
+            <div v-on:click="callback_event(5, 2)" style="background: #fff; color: #000;" class="selectColor">1</div> 
+            <div v-on:click="callback_event(5, 3)" style="background: #2A77A1;" class="selectColor">2</div>
+            <div v-on:click="callback_event(5, 4)" style="background: #840410" class="selectColor">3</div>   
+            <div v-on:click="callback_event(5, 5)" style="background: #263739" class="selectColor">4</div>
+            <div v-on:click="callback_event(5, 6)" style="background: #86446E" class="selectColor">5</div>   
+            <div v-on:click="callback_event(5, 7)" style="background: #000" class="selectColor">6</div>
+            <div v-on:click="callback_event(5, 8)" style="background: #000" class="selectColor">7</div>                                                 
+            <div v-on:click="callback_event(5, 9)" style="background: #000" class="selectColor">8</div>
+            <div v-on:click="callback_event(5, 10)" style="background: #000" class="selectColor">9</div>   
+            <div v-on:click="callback_event(5, 11)" style="background: #000" class="selectColor">10</div>
+            <div v-on:click="callback_event(5, 12)" style="background: #000" class="selectColor">11</div>                           
+            <div v-on:click="callback_event(5, 13)" style="background: #000" class="selectColor">12</div>
+            <div v-on:click="callback_event(5, 14)" style="background: #000" class="selectColor">13</div>   
+            <div v-on:click="callback_event(5, 15)" style="background: #000" class="selectColor">14</div>
+            <div v-on:click="callback_event(5, 16)" style="background: #000" class="selectColor">15</div>   
+            <div v-on:click="callback_event(5, 17)" style="background: #000" class="selectColor">16</div>
+            <div v-on:click="callback_event(5, 18)" style="background: #000" class="selectColor">17</div>                                       
+        </div>
+
+        <div class="info">
+            Используйте клавиши <span class="strelka">←</span><span class="strelka">→</span>для навигации по списку транспортных средств
+        </div>
+
+        <button v-on:click="callback_event(1, 0)" class="btnBuy">Купить транспорт</button>
+        <button v-on:click="callback_event(2, 0)" class="btnExit">Выйти из меню</button>
+        <!-- <button v-on:click="callback_event(4, 0)" class="selectCar">Далее</button>
+        <button v-on:click="callback_event(3, 0)" class="selectCar">Отмена</button>
+        <button v-on:click="callback_event(1, 0)" class="selectCar">Купить</button>
+        <button v-on:click="callback_event(2, 0)" class="selectCar">Выйти</button> -->
+    </div>
+
+    <div id="hud" v-show="hud_is_show === 1" class="container_left">
+        <div class="container_hud">
+            <div class="block_time">
+                <span id="time" class="time">{{ time }}</span>
+                <span id="date" class="date">{{ date }}</span>
+            </div>
+            <div class="block">
+                <div id="weapon" class="weap"></div>
+                <div class="block_money">
+                    <div class="nal">
+                        <img src="assets/img/money.png" height="20px">
+                        <div class="params">
+                            <span style="font-weight:500; font-size: 12px; color: rgba(255, 255, 255, 0.5);">Наличные</span>
+                            <p style="font-weight:500; font-size: 15px; color: #fff;">{{ money }}₽</p>
+                        </div>
+                    </div>
+                    <div class="bank_money">
+                        <img src="assets/img/bank.png" height="20px">
+                        <div class="params">
+                            <span style="font-weight:500; font-size: 12px; color: rgba(255, 255, 255, 0.5);">Банк. счёт</span>
+                            <p style="font-weight:500; font-size: 15px; color: #fff;">{{ bank }}₽</p>
+                        </div>
+                    </div>                
+                </div>
+            </div>
+            <div class="progress-bar">
+                <progress id="hp_progress" value="30" max="100"></progress>
+            </div>    
+            <div class="progress-bar">
+                <progress id="arm_progress" value="30" max="100"></progress>
+            </div>                       
+            <div class="container_position">
+                <img src="assets/img/position.png" height="20px">
+                <span id="zone" style="margin-left: 10px; font-weight:500; font-size: 14px; color: rgba(255, 255, 255, 0.5);">{{ country }}</span>
+            </div>
+        </div>
+    </div>  
+    <script>
+        var car = new Vue({
+            el: '#buyCar',
+            data: {
+                buy_car_show: 0,
+                carName: 'ВАЗ-2105',
+                carPrice: 50000
+            },
+            methods: {
+                callback_event: function(type, color) {
+                    cef.emit("autosalon_callback", type, color);
+                    //this.carPrice = color;
+                }
+            }
+        });
+        var app = new Vue({
+            el: '#hud',
+            data: {
+                date: 0,
+                time: 0,
+                country: 'Арзамас',
+                money: 0,
+                bank: 0,
+                hud_is_show: 0
+            },
+            mounted: function () {
+                var _this = this;
+                this.timer = setInterval(function () {
+                    //_this.date = new Date();
+                    var d = new Date();
+                    _this.date = d.getDate().toString().padStart(2, '0') + "-" + d.getMonth().toString().padStart(2, '0') + "-" + d.getFullYear();
+                    _this.time = d.getHours().toString().padStart(2, '0') + ":" + d.getMinutes().toString().padStart(2, '0') + ":" + d.getSeconds().toString().padStart(2, '0');
+                }, 500); // 1000 мс временных интервалов
+                console.log(this.timer)
+            }
+        });
+
+        window.addEventListener("keyup", (event) => {
+            var code = event.keyCode;
+            var key = String.fromCharCode(event.keyCode);
+            
+            if(event.keyCode === 37) {
+                cef.emit("autosalon_callback", 3, 0);
+            }
+            if(event.keyCode === 39) {
+                cef.emit("autosalon_callback", 4, 0);
+            }
+        });    
+
+        document.getElementById("colours")
+        .addEventListener('wheel', function(event) {
+          if (event.deltaMode == event.DOM_DELTA_PIXEL) {
+            var modifier = 1;
+            // иные режимы возможны в Firefox
+          } else if (event.deltaMode == event.DOM_DELTA_LINE) {
+            var modifier = parseInt(getComputedStyle(this).lineHeight);
+          } else if (event.deltaMode == event.DOM_DELTA_PAGE) {
+            var modifier = this.clientHeight;
+          }
+          if (event.deltaY != 0) {
+            // замена вертикальной прокрутки горизонтальной
+            this.scrollLeft += modifier * event.deltaY;
+            event.preventDefault();
+          }
+        });        
+        
+        cef.on("showHud", () => {
+            app.hud_is_show = 1;
+            //document.getElementById("hud").style = "display: block;";
+        });        
+        cef.emit("game:hud:setComponentVisible", "interface", false);
+        cef.emit("game:data:pollPlayerStats", true, 50);
+        cef.on("game:data:playerStats", (hp, max_hp, arm, breath, wanted, weapon, ammo, max_ammo, money, speed) => {
+            document.getElementById("arm_progress").value = `${arm}`;
+            document.getElementById("hp_progress").value = `${hp}`; 
+
+            document.getElementById("weapon").style.backgroundImage = `url(assets/img/${weapon}.png)`;
+        });        
+        cef.on("updateHud", (u_money, u_bank, u_country) => {
+            app.money = u_money;
+            app.bank = u_bank;
+            app.country = u_country;
+        });
+        cef.on("showBuyCar", () => {
+            car.buy_car_show = 1;
+            cef.set_focus(true);
+        });
+        cef.on("hideBuyCar", () => {
+            car.buy_car_show = 0;
+            cef.set_focus(false);
+        });
+        cef.on("update_car_info", (car_price, car_name) => {
+            car.carName = car_name;
+            car.carPrice = car_price;
+        });
+    </script>
+</body>
+</html>
