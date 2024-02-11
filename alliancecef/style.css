@@ -29,23 +29,15 @@
 }
 
 body {
-    /*background-color: #888;
-}
-
-* {
-    padding: 0;
-    margin: 0;
-    box-sizing: border-box;
+    background-color: (transparency);
 }
 
 .hud-container {
-    /* position: absolute; */
-    /* right: 1%; */
 	background-color: (transparency);
     margin-left: auto;
     margin-right: 1vw;
     width: 16vw;
-    /* margin: 20px; */
+    margin: 20px; 
 }
 
 .currency-symbol {
