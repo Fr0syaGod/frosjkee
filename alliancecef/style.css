@@ -30,14 +30,19 @@
 
 body {
     background-color: (transparency);
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
 }
 
 .hud-container {
+    /* position: absolute; */
+    /* right: 1%; */
 	background-color: (transparency);
     margin-left: auto;
     margin-right: 1vw;
     width: 16vw;
-    margin: 20px; 
+    /* margin: 20px; */
 }
 
 .currency-symbol {
