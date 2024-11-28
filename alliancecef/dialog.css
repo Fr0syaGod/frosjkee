@@ -201,3 +201,130 @@ span {
 	background: none;
 	border: 0;
 }
+
+body {
+    overflow: hidden;
+}
+
+.npc-dialog {
+    position: absolute;
+    user-select: none;
+    /*background: rgba(28, 15, 15, 0.8);*/
+    display: none;
+    height: 100%;
+    width: 100%;
+    justify-content: center;
+    align-content: center;
+    font-family: Roboto;
+    flex-wrap: wrap;
+    top: 0;
+    left: 0;
+    font-family: 'Proxima Nova Bold';
+
+    background: radial-gradient(150% 50% at 50% 90%, rgba(0, 0, 0, 0.95) 0%, rgba(8, 13, 30, 0.0) 100%);
+}
+
+.npc-dialog-block {
+    position: absolute;
+    bottom: 4vw;
+}
+
+.npc-dialog-items {
+    margin-top: 1vw;
+    display: grid;
+    gap: 0.5vw;
+    grid-template-columns: auto auto auto;
+}
+
+.npc-dialog-title {
+    font-size: 1.3vw;
+    font-weight: 500;
+    color: #ff9945;
+    text-shadow: 1px 1px 1px rgba(0,0,0,0.5);
+}
+
+.npc-dialog-text {
+    color: #fff;
+    text-shadow: 1px 1px 1px rgba(0,0,0,0.5);
+}
+
+.npc-dialog-item {
+    font-family: 'Proxima Nova Bold';
+    min-width: 27.96vh;
+    height: 4.5vh;
+    background-color: #fff;
+    border: 1px solid rgba(30, 30, 30, 0.164);
+    color: #252525;
+    border-radius: .4vh;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    transition-duration: .25s;
+
+    font-size: 1.75vh;
+    font-weight: 400;
+}
+
+.npc-dialog-item:hover {
+    background-color: #2a4ed6;
+    color: #fff;
+}
+
+#drift-block {
+    color: #fff;
+    margin: 0;
+    position: absolute;
+    top: 10%;
+    left: 50%;
+    margin-right: -50%;
+    transform: translate(-50%, -50%);
+    padding: 1vw 1.5vw;
+    min-width: 20vh;
+    max-width: 100vh;
+    width: auto;
+
+    font-family: "Proxima Nova Bold";
+    font-style: italic;
+    font-size: 1.65vw;
+
+    /*background: #000;*/
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    display: none;
+    z-index: 10;
+}
+
+.drift-shadow {
+    position: absolute;
+    width: 130%;
+    height: 130%;
+    left: -15%;
+    top: -15%;
+
+    background: rgba(0, 0, 0, 0.83);
+    filter: blur(3vw);
+    border-radius: 164px;
+
+    z-index: -1;
+}
+
+#drift-score {
+    font-size: 2.15vw;
+    font-family: "Proxima Nova Ex";
+    color: #ff9945;
+    line-height: 0.75;
+    margin-bottom: 0.25vw;
+
+    transition: .3s;
+}
+
+#drift-combo {
+    font-size: 1.3vw;
+    background: #ff6347;
+    font-style: normal;
+    width: 3.2vw;
+    /*padding: 0.1vw 1vw;*/
+    text-align: center;
+}
