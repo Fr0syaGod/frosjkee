@@ -24,10 +24,10 @@ cef.on("hide-npc-dialog", () => {
     cef.set_focus(false);
 });
 
-cef.on("insert-npc-button", (buttonText) => {
+cef.on("insert-npc-button", (index, buttonText) => {
     let button = document.createElement("div");
     button.className = "npc-dialog-item";
     button.innerHTML = buttonText;
-    button.id = document.getElementsByClassName("npc-dialog-item").length + 1;
+    button.id = index;
     document.getElementsByClassName("npc-dialog-items")[0].append(button);
 });
