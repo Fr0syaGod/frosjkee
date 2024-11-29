@@ -1,10 +1,5 @@
 let npcid = 1;
 
-$(".npc-dialog-item").on("click", function (el) {
-    let action = $(this).attr("id");
-    cef.emit("npc-dialog-action", action);
-});
-
 cef.on("show-npc-dialog", (npc, title, text) => {
     let test = document.querySelectorAll('.npc-dialog-item');
     test.forEach( e => e.remove() );
@@ -29,5 +24,8 @@ cef.on("insert-npc-button", (index, buttonText) => {
     button.className = "npc-dialog-item";
     button.innerHTML = buttonText;
     button.id = index;
+    button.onclick = function () {
+        cef.emit("npc-dialog-action", action);
+    };
     document.getElementsByClassName("npc-dialog-items")[0].append(button);
 });
