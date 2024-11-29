@@ -1,54 +1,33 @@
-let npcid = 1; // Изначальный NPC ID
+let npcid = 1;
 
-// Обработчик кликов по кнопкам
-$(document).on("click", ".npc-dialog-item", function () {
-    let action = $(this).attr("id"); // Получаем ID нажатой кнопки
-    console.log("Кнопка нажата, ID:", action); // Лог для отладки
-    if (action) {
-        cef.emit("npc-dialog-action", action); // Отправляем событие на сервер
-    }
+$(".npc-dialog-item").on("click", function (el) {
+    let action = $(this).attr("id");
+    cef.emit("npc-dialog-action", action);
 });
 
-// Событие для отображения диалога
 cef.on("show-npc-dialog", (npc, title, text) => {
     let test = document.querySelectorAll('.npc-dialog-item');
-    test.forEach(e => e.remove()); // Удаляем старые кнопки
-
-    npcid = npc; // Обновляем NPC ID
-    console.log("Открыт диалог для NPC ID:", npcid); // Лог для отладки
-
-    $(".npc-dialog").css("display", "flex"); // Показываем диалог
-    $(".npc-dialog-title").text(title); // Заголовок диалога
-    $(".npc-dialog-text").text(text); // Текст диалога
-    cef.set_focus(true); // Устанавливаем фокус на диалог
-
-    // Вставляем кнопки
-    npcButtons.forEach((buttonText, index) => {
-        let button = document.createElement("div");
-        button.className = "npc-dialog-item";
-        button.id = index + 1; // Устанавливаем ID кнопки
-        button.innerHTML = buttonText;
-        document.getElementsByClassName("npc-dialog-items")[0].append(button);
-    });
+    test.forEach( e => e.remove() );
+    npcid = npc;
+    $(".npc-dialog").css("display", "flex");
+    $(".npc-dialog-title").text(title);
+    $(".npc-dialog-text").text(text);
+    cef.set_focus(true);
 });
 
-// Событие для обновления текста диалога
 cef.on("update-npc-text", (text) => {
-    $(".npc-dialog-text").text(text); // Обновляем текст в диалоге
+    $(".npc-dialog-text").text(text);
 });
 
-// Событие для скрытия диалога
 cef.on("hide-npc-dialog", () => {
-    $(".npc-dialog").css("display", "none"); // Скрываем диалог
-    cef.set_focus(false); // Убираем фокус с диалога
+    $(".npc-dialog").css("display", "none");
+    cef.set_focus(false);
 });
 
-// Массив кнопок для NPC
-const npcButtons = [
-    "Получить паспорт",
-    "Создать семью",
-    "Подробнее о налогах",
-    "Написать жалобу",
-    "Переименовать семью",
-    "Закрыть диалог"
-];
+cef.on("insert-npc-button", (buttonText) => {
+    let button = document.createElement("div");
+    button.className = "npc-dialog-item";
+    button.innerHTML = buttonText;
+    button.id = document.getElementsByClassName("npc-dialog-item").length + 1;
+    document.getElementsByClassName("npc-dialog-items")[0].append(button);
+});
