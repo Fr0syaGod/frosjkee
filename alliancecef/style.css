@@ -35,6 +35,38 @@
     box-sizing: border-box;
 }
 
+.help-panel {
+    position: absolute;
+    top: 50%;
+    left: 20px;
+    transform: translateY(-50%);
+    font-family: 'Roboto', sans-serif;
+    font-size: 14px;
+    color: #fff;
+    text-shadow: 1px 1px 4px #000;
+}
+
+.help-line {
+    margin-top: 5px;
+    display: flex;
+    align-items: center;
+}
+
+.help-line:first-child {
+    margin-top: 0px;
+}
+
+.help-key {
+    min-width: 20px;
+    padding: 7px 10px;
+    margin-right: 5px;
+    color: #0048ff;
+    background: rgba(255,255,255, 100);
+    border-radius: 4px;
+    text-transform: uppercase;
+    text-align: center;
+}
+
 .hud-container {
     /* position: absolute; */
     /* right: 1%; */

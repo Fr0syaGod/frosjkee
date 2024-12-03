@@ -228,8 +228,19 @@ function notify(type, text, color) {
     cef.on("hide-speed", () => {
         document.getElementById("speed-car").style = "display: none";
         show_speed = 0;
-    });        
-    
+    });     
+
+     // Показать help-panel
+    cef.on("show-helppanel", () => {
+        document.getElementById("help-panel").style.display = "flex"; // Показываем блок
+    });
+
+    // Скрыть help-panel
+    cef.on("hide-helppanel", () => {
+        document.getElementById("help-panel").style.display = "none"; // Скрываем блок
+    });
+
+
     function update_icon(icon, value) {
         var cstyle = "";
         if(value === 1) { cstyle="filter: grayscale(0);" }
