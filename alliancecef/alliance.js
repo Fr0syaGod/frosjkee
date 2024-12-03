@@ -4,27 +4,6 @@ function pad(n, width, z) {
   return n.length >= width ? n : new Array(width - n.length + 1).join(z) + n;
 }
 
-var fpsOut = document.getElementById('fps');
-//
-const getFPS = () =>
-    new Promise(resolve =>
-        requestAnimationFrame(t1 =>
-        requestAnimationFrame(t2 => resolve(1000 / (t2 - t1)))
-    )
-)
-
-
-setInterval(function () {
-    getFPS().then(fps => {
-        var color = "";
-        if(fps < 10) color = "#f04245";
-        if(fps > 10 && fps <= 30) color = "#ffcc00";
-        if(fps > 30) color = "#6699ff";
-        fpsOut.style = `color: ${color};`;
-        fpsOut.innerHTML = Math.round(fps);
-    });
-}, 1000);  
-
 function MoneyUpdate(money) {
     const block = document.getElementById('hud-money');
     block.innerHTML = pad(money, 9) + '<span class="currency-symbol">₴</span>';
