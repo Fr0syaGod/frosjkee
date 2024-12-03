@@ -232,7 +232,10 @@ function notify(type, text, color) {
 
      // Показать help-panel
     cef.on("show-helppanel", () => {
-        document.getElementById("help-panel").style.display = "flex"; // Показываем блок
+        const helpPanel = document.getElementById("help-panel");
+        helpPanel.style.display = "flex"; // Показываем блок
+        helpPanel.style.top = "50%"; // Убедимся, что позиция правильная
+        helpPanel.style.transform = "translateY(-50%)"; // Центруем по вертикали
     });
 
     // Скрыть help-panel
