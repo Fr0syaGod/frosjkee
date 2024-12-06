@@ -8,7 +8,13 @@ function MoneyUpdate(money) {
     const block = document.getElementById('hud-money');
     block.innerHTML = pad(money, 9) + '<span class="currency-symbol">₴</span>';
 }
+const canvas = document.getElementById('speedometer-canvas');
+const ctx = canvas.getContext('2d');
 
+// Центр спидометра
+const centerX = canvas.width / 2;
+const centerY = canvas.height / 2;
+const radius = 200;
 var show_speed = 0;
 
 function notify_right_text(type, text, color, right_text) {
@@ -285,7 +291,36 @@ function notify(type, text, color) {
     });       
     cef.on("capture-text", (text) => {
         document.getElementById("capture-time-text").innerHTML = text;
-    });                  
+    });    
+
+	function drawSpeedometer(speed) {
+		ctx.clearRect(0, 0, canvas.width, canvas.height); // Очистка Canvas
+
+		// Отрисовка шкалы
+		ctx.beginPath();
+		ctx.arc(centerX, centerY, radius, 0.75 * Math.PI, 0.25 * Math.PI, false); // 270° шкала
+		ctx.lineWidth = 10;
+		ctx.strokeStyle = "#333";
+		ctx.stroke();
+
+		// Заливка шкалы
+		const maxSpeed = 300; // Максимальная скорость
+		const speedRatio = Math.min(speed / maxSpeed, 1); // Нормализация скорости
+		ctx.beginPath();
+		ctx.arc(centerX, centerY, radius, 0.75 * Math.PI, (0.75 + 1.5 * speedRatio) * Math.PI, false);
+		ctx.lineWidth = 10;
+		ctx.strokeStyle = "#00ff00";
+		ctx.stroke();
+
+		// Отрисовка стрелки
+		const angle = 0.75 * Math.PI + 1.5 * speedRatio * Math.PI; // Угол для стрелки
+		ctx.beginPath();
+		ctx.moveTo(centerX, centerY);
+		ctx.lineTo(centerX + radius * 0.8 * Math.cos(angle), centerY + radius * 0.8 * Math.sin(angle));
+		ctx.lineWidth = 5;
+		ctx.strokeStyle = "#ff0000";
+		ctx.stroke();
+	}
     function add_kill_list_item(name1, gunId, name2) {
         var count = document.getElementsByClassName('kill-list-item').length;
         if(count >= 5) {
@@ -328,10 +363,11 @@ function notify(type, text, color) {
     cef.emit("game:hud:setComponentVisible", "interface", false);
     cef.emit("game:data:pollPlayerStats", true, 50);
     cef.on("game:data:playerStats", (hp, max_hp, arm, breath, wanted, weapon, ammo, max_ammo, money, speed) => {
-
-         if(show_speed === 1) {
-            document.getElementById("speed-text").innerHTML = `${Math.round(speed)}<div class="kmh">км/ч</div>`;
-        }
+		if (show_speed === 1) {
+        document.getElementById("speed-text").innerHTML = `${Math.round(speed)}<div class="kmh">км/ч</div>`;
+        drawSpeedometer(speed); // Обновление стрелки
+		}
+	});
     
         document.getElementById("arm_progress").value = `${arm}`;
         document.getElementById('arm_value').innerText = Math.round(arm);

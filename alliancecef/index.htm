@@ -87,26 +87,27 @@
             <div class="capture-score" id="score-two">0</div>
         </div>        
     </div>
-     <div id="speed-car" style="display: none;">
-        <img id="speed-back" src="img\speed_back.png" width="500px" alt="">
-        <div id="speed-text">100<div class="kmh">км/ч</div></div>
-        
-        <div class="indicators">
-            <!-- <img src="img/speed/engine.png" alt=""> -->
-            <!-- <img style="filter: grayscale(1000%);" src="img/speed/engine.png" alt=""> -->
-            <div class="indication-container">
-                <img src="img\speed\health.png" alt="">
-                <div class="indicator-text" id="chealth">82 %</div>
-            </div>
-            <div class="indication-container" style="margin-left: 0.5vw;">
-                <img src="img\speed\fuel.png" alt="">
-                <div class="indicator-text" id="fuel">100 л</div>
-            </div>
-            <div class="indication-container" style="margin-left: 1.2vw;">
-                <img src="img\speed\icon.png" alt="">
-                <div class="indicator-text" id="icon-car">00000 км</div>
-            </div>            
-        </div>         
+     <div id="speed-car" style="display: none; position: relative;">
+    <img id="speed-back" src="img\speed_back.png" width="500px" alt="">
+    <canvas id="speedometer-canvas" width="500" height="500" style="position: absolute; top: 0; left: 0;"></canvas>
+    <div id="speed-text">100<div class="kmh">км/ч</div></div>
+    
+    <div class="indicators">
+        <div class="indication-container">
+            <img src="img\speed\health.png" alt="">
+            <div class="indicator-text" id="chealth">82 %</div>
+        </div>
+        <div class="indication-container" style="margin-left: 0.5vw;">
+            <img src="img\speed\fuel.png" alt="">
+            <div class="indicator-text" id="fuel">100 л</div>
+        </div>
+        <div class="indication-container" style="margin-left: 1.2vw;">
+            <img src="img\speed\icon.png" alt="">
+            <div class="indicator-text" id="icon-car">00000 км</div>
+				</div>
+			</div>
+		</div>
+    
         <div class="icon-key">
             <img id="key" src="img\speed\key.png" alt="">
         </div>            
