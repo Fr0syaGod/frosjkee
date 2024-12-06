@@ -12,10 +12,12 @@ let leftRight = [];
 let marginBottom;
 let marginRight;
 
+// Функция для случайного числа в диапазоне
 function randomMaker(range) {
     return Math.floor(Math.random() * range);
 }
 
+// Функция для создания снежинок
 function initSnow() {
     marginBottom = window.innerHeight;
     marginRight = window.innerWidth;
@@ -30,19 +32,19 @@ function initSnow() {
         snowflake.style.zIndex = "1000";
         snowflake.style.pointerEvents = "none";
         
-        // Вычисление случайного размера снежинки
+        // Случайный размер снежинки
         let snowflakeSize = randomMaker(snowSizeRange) + snowMinSize;
         snowflake.style.width = `${snowflakeSize}px`;
         
-        // Применение фильтра для улучшения видимости снежинок
+        // Применение фильтров для улучшения видимости
         snowflake.style.filter = "brightness(1.5) drop-shadow(0 0 10px white)";
         
-        // Определяем скорость падения снежинки
+        // Случайная скорость падения снежинки
         snowflake.sink = sinkSpeed * snowflakeSize / 5;
         
-        // Устанавливаем случайное начальное положение
+        // Начальные координаты
         snowflake.posX = randomMaker(marginRight - snowflakeSize);
-        snowflake.posY = randomMaker(-marginBottom); // Начинает сверху
+        snowflake.posY = randomMaker(-marginBottom); 
         snowflake.style.left = `${snowflake.posX}px`;
         snowflake.style.top = `${snowflake.posY}px`;
         
@@ -60,16 +62,17 @@ function initSnow() {
     moveSnow();
 }
 
+// Функция для движения снежинок
 function moveSnow() {
     if (!snowEnabled) return;
 
     for (let i = 0; i < snowElements.length; i++) {
         coordinates[i] += xMove[i];
         
-        // Перемещение снежинки по оси Y (падение)
+        // Движение по оси Y (падение)
         snowElements[i].posY += snowElements[i].sink;
         
-        // Сдвиг снежинок по оси X для создания эффекта движения
+        // Движение по оси X (колебания)
         snowElements[i].style.left = `${snowElements[i].posX + leftRight[i] * Math.sin(coordinates[i])}px`;
         snowElements[i].style.top = `${snowElements[i].posY}px`;
 
@@ -77,13 +80,14 @@ function moveSnow() {
         if (snowElements[i].posY >= marginBottom - parseInt(snowElements[i].style.width) || 
             parseInt(snowElements[i].style.left) > (marginRight - 3 * leftRight[i])) {
             snowElements[i].posX = randomMaker(marginRight - parseInt(snowElements[i].style.width));
-            snowElements[i].posY = -marginBottom; // Возвращаем наверх
+            snowElements[i].posY = -marginBottom; 
         }
     }
 
     snowTimer = setTimeout(moveSnow, 25);
 }
 
+// Остановка снега
 function stopSnow() {
     snowElements.forEach(snowflake => {
         if (snowflake.parentNode) {
@@ -95,13 +99,30 @@ function stopSnow() {
     clearTimeout(snowTimer);
 }
 
-// Обработчики CEF
+// Управление состоянием снега через CEF
+cef.on("toggle-snow", () => {
+    if (snowEnabled) {
+        snowEnabled = false;
+        stopSnow();
+    } else {
+        snowEnabled = true;
+        initSnow();
+    }
+});
+
+// Получаем статус снега через CEF
+cef.on("get-snow-status", () => {
+    cef.invoke("snow-status", snowEnabled ? 1 : 0);
+});
+
+// Включение снега по событию
 cef.on("start-snow", () => {
     if (snowEnabled) return;
     snowEnabled = true;
     initSnow();
 });
 
+// Остановка снега по событию
 cef.on("stop-snow", () => {
     if (!snowEnabled) return;
     snowEnabled = false;
