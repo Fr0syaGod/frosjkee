@@ -1,7 +1,7 @@
 let snowEnabled = false;
 let snowTimer;
 let snowElements = [];
-let snowImage = "img/snowflake.png"; // Убедитесь, что файл существует
+let snowImage = "img/flakewin.png"; 
 let snowMax = 250;
 let snowMaxSize = 30;
 let snowMinSize = 10;
