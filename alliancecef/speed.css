@@ -20,24 +20,6 @@
     color: rgba(255, 255, 255, 0.384);
 }
 
-#speed-back {
-    width: 30vw;
-    position: relative;
-}
-
-#speed-arrow {
-    position: absolute;
-    width: 1.5vw; /* Ширина стрелки */
-    height: 15vw; /* Длина стрелки */
-    background-color: #ff0000; /* Цвет стрелки */
-    top: 50%; /* Центрирование по вертикали */
-    left: 50%; /* Центрирование по горизонтали */
-    transform-origin: center bottom; /* Точка вращения стрелки */
-    transform: rotate(0deg); /* Начальное положение стрелки */
-    border-radius: 0.2vw;
-    z-index: 5; /* Поверх остальных элементов */
-}
-
 .indicators {
     position: absolute;
     bottom: 1.3vw;
@@ -52,51 +34,137 @@
     color: #fff;
 }
 
-/* Медиазапросы для адаптивности */
-@media (max-width: 1920px) {
+#speed-back {
+    width: 30vw;
+}
+
+.icon-engine, .icon-lock, .icon-key, .icon-lights {
+    position: absolute;
+}
+
+@media (max-width: 1920px){
     #speed-text {
         right: 4vw;
         bottom: 4.8vw;
+        width: 100px;
         font-size: 2.5vw;
-    }
+    } 
     .indicators {
         bottom: 1.3vw;
         left: 0.9vw;
     }
-    #speed-arrow {
-        width: 1.3vw;
-        height: 13vw;
+    .icons-speed {
+        bottom: 2vw;
+        right: 12.5vw;
+    }
+    .icon-engine {
+        bottom: 1vw;
+        right: 11.8vw;
+    }
+    .icon-lock {
+        bottom: 7.2vw;
+        right: 13vw;
+    }
+    .icon-lights {
+        bottom: 12.5vw;
+        right: 9vw;
+    }
+    .icon-key {
+        bottom: 13vw;
+        right: 2vw;
     }
 }
 
-@media (max-width: 1366px) {
+@media(max-width: 1366px){
     #speed-text {
         right: 4vw;
         bottom: 4.8vw;
+        width: 70px;
         font-size: 2.8vw;
-    }
+    }     
     .indicators {
         bottom: 1.3vw;
         left: 0.9vw;
+        font-size: 1.1vw;
     }
-    #speed-arrow {
-        width: 1.1vw;
-        height: 11vw;
+    .indicators img {
+        width: 2.7vw;
     }
+    .icons-speed {
+        bottom: 2vw;
+        right: 12.5vw;
+    }
+    .icon-engine {
+        bottom: 1vw;
+        right: 11.8vw;
+    }
+    .icon-lock {
+        bottom: 7.2vw;
+        right: 13vw;
+    }
+    .icon-lights {
+        bottom: 12.65vw;
+        right: 9vw;
+    }
+    .icon-key {
+        bottom: 13vw;
+        right: 2vw;
+    }    
+    .icon-key img {
+        width: 2.5vw;
+    }
+    .icon-lights img {
+        width: 2.5vw;
+    }
+    .icon-lock img {
+        width: 2.5vw;
+    }
+    .icon-engine img {
+        width: 2.5vw;
+    }            
 }
 
-@media (max-width: 1280px) {
+@media (max-width: 1280px){
     #speed-text {
         right: 4vw;
+        width: 65px;
         bottom: 4.8vw;
         font-size: 2.8vw;
-    }
+    }     
     .indicators {
         bottom: 1.3vw;
         left: 0.9vw;
+        font-size: 1.1vw;
     }
-    #speed-arrow {
-        width: 1vw;
-        height: 10vw;
+    .indicators img {
+        width: 2.7vw;
     }
+    .icon-engine {
+        bottom: 1vw;
+        right: 11.8vw;
+    }
+    .icon-lock {
+        bottom: 7.2vw;
+        right: 13vw;
+    }
+    .icon-lights {
+        bottom: 12.65vw;
+        right: 9vw;
+    }
+    .icon-key {
+        bottom: 13vw;
+        right: 2vw;
+    }    
+    .icon-key img {
+        width: 2.5vw;
+    }
+    .icon-lights img {
+        width: 2.5vw;
+    }
+    .icon-lock img {
+        width: 2.5vw;
+    }
+    .icon-engine img {
+        width: 2.5vw;
+    }        
 }
