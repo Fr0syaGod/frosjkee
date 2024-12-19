@@ -44,7 +44,7 @@
     font-size: 14px;
     color: #fff;
     text-shadow: 1px 1px 4px #000;
-    display: flex;
+    display: none;
     flex-direction: column; /* Располагаем элементы вертикально */
     gap: 5px; /* Задаём расстояние между строками */
 }
