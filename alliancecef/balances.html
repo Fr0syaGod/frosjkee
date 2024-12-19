@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Преобразование кабинетов</title>
+    <style>
+        body {
+            font-family: 'Poppins', Arial, sans-serif;
+            background: linear-gradient(to right, #f7b42c, #fc575e);
+            color: #fff;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .container {
+            text-align: center;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 20px 40px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        input {
+            font-size: 1rem;
+            padding: 10px;
+            margin: 10px 0;
+            width: 80%;
+            border: none;
+            border-radius: 5px;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        input:focus {
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+        }
+
+        button {
+            font-size: 1rem;
+            padding: 10px 20px;
+            background: #fc575e;
+            border: none;
+            border-radius: 5px;
+            color: #fff;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 5px;
+        }
+
+        button:hover {
+            background: #f7b42c;
+            transform: scale(1.05);
+        }
+
+        .output {
+            margin-top: 20px;
+            font-weight: bold;
+            animation: slideUp 0.5s ease-out;
+        }
+
+        @keyframes fadeIn {
+            0% { opacity: 0; transform: translateY(-20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideUp {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Преобразование кабинетов</h1> 
+        <p>Введите числа через пробел:</p>
+        <input type="text" id="numberInput" placeholder="Пример: 175 176">
+        <button onclick="addPrefix()">Преобразовать</button>
+        <div class="output" id="output"></div>
+        <button id="copyButton" onclick="copyToClipboard()" style="display: none;">Копировать</button>
+    </div>
+
+    <script>
+        function addPrefix() {
+            const input = document.getElementById('numberInput').value;
+            const numbers = input.split(/\s+/).filter(num => num.trim() !== '');
+            const result = numbers.map(num => `C${num}`).join(', '); //добавляет с к числу, чуть мусорный код но работает
+            const outputDiv = document.getElementById('output');
+            outputDiv.textContent = result;
+            outputDiv.style.animation = 'none';
+            setTimeout(() => {
+                outputDiv.style.animation = '';
+            }, 10);
+
+            const copyButton = document.getElementById('copyButton');
+            if (result) {
+                copyButton.style.display = 'inline-block';
+            } else {
+                copyButton.style.display = 'none';
+            }
+        }
+
+        function copyToClipboard() {
+            const outputText = document.getElementById('output').textContent;
+            navigator.clipboard.writeText(outputText).then(() => {
+                alert('Скопировано в буфер');
+            }).catch(err => {
+                alert('Ошибка при копировании, неизвестно: ' + err);
+            });
+        }
+    </script>
+</body>
+</html>
