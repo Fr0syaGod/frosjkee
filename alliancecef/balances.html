@@ -5,9 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Преобразование кабинетов</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
         body {
             font-family: 'Poppins', Arial, sans-serif;
-            background: linear-gradient(to right, #f7b42c, #fc575e);
+            background: url('Mobs/mob.gif') no-repeat center center fixed;
+            background-size: cover;
             color: #fff;
             margin: 0;
             padding: 0;
@@ -20,7 +23,7 @@
 
         .container {
             text-align: center;
-            background: rgba(0, 0, 0, 0.5);
+            background: rgba(0, 0, 0, 0.6); /* Затемнённый фон для лучшей читаемости */
             padding: 20px 40px;
             border-radius: 15px;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
@@ -70,6 +73,13 @@
             animation: slideUp 0.5s ease-out;
         }
 
+        .copy-message {
+            margin-top: 10px;
+            font-size: 0.9rem;
+            color: #ffd700;
+            display: none;
+        }
+
         @keyframes fadeIn {
             0% { opacity: 0; transform: translateY(-20px); }
             100% { opacity: 1; transform: translateY(0); }
@@ -79,8 +89,6 @@
             0% { opacity: 0; transform: translateY(20px); }
             100% { opacity: 1; transform: translateY(0); }
         }
-
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
     </style>
 </head>
 <body>
@@ -89,15 +97,18 @@
         <p>Введите числа через пробел:</p>
         <input type="text" id="numberInput" placeholder="Пример: 175 176">
         <button onclick="addPrefix()">Преобразовать</button>
+        <button onclick="clearFields()">Очистить</button>
         <div class="output" id="output"></div>
         <button id="copyButton" onclick="copyToClipboard()" style="display: none;">Копировать</button>
+        <p id="copyMessage" class="copy-message">Скопировано!</p>
     </div>
 
     <script>
         function addPrefix() {
-            const input = document.getElementById('numberInput').value;
-            const numbers = input.split(/\s+/).filter(num => num.trim() !== '');
-            const result = numbers.map(num => `C${num}`).join(', '); //добавляет с к числу, чуть мусорный код но работает
+            const input = document.getElementById('numberInput').value.trim();
+            const numbers = input.split(/\s+/).filter(num => num !== '');
+            const result = numbers.map(num => `C${num}`).join(', ');
+
             const outputDiv = document.getElementById('output');
             outputDiv.textContent = result;
             outputDiv.style.animation = 'none';
@@ -106,19 +117,24 @@
             }, 10);
 
             const copyButton = document.getElementById('copyButton');
-            if (result) {
-                copyButton.style.display = 'inline-block';
-            } else {
-                copyButton.style.display = 'none';
-            }
+            copyButton.style.display = result ? 'inline-block' : 'none';
+        }
+
+        function clearFields() {
+            document.getElementById('numberInput').value = '';
+            document.getElementById('output').textContent = '';
+            document.getElementById('copyButton').style.display = 'none';
+            document.getElementById('copyMessage').style.display = 'none';
         }
 
         function copyToClipboard() {
             const outputText = document.getElementById('output').textContent;
             navigator.clipboard.writeText(outputText).then(() => {
-                alert('Скопировано в буфер');
-            }).catch(err => {
-                alert('Ошибка при копировании, неизвестно: ' + err);
+                const copyMessage = document.getElementById('copyMessage');
+                copyMessage.style.display = 'block';
+                setTimeout(() => {
+                    copyMessage.style.display = 'none';
+                }, 2000);
             });
         }
     </script>
