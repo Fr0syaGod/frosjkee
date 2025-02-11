@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Тестирование</title>
     <style>
-        /* Основные стили */
         body {
             font-family: 'Arial', sans-serif;
             margin: 0;
@@ -18,25 +17,15 @@
             color: white;
             text-align: center;
         }
-
-        #sidebar {
+        #sidebar, #content {
             width: 25%;
             background: rgba(255, 255, 255, 0.1);
             padding: 20px;
             border-radius: 10px;
             backdrop-filter: blur(10px);
-            margin-right: 20px;
+            margin: 10px;
             text-align: left;
         }
-
-        #content {
-            width: 25%;
-            background: rgba(255, 255, 255, 0.1);
-            padding: 10px;
-            border-radius: 5px;
-            backdrop-filter: blur(10px);
-        }
-
         button {
             background: #007bff;
             color: white;
@@ -47,12 +36,10 @@
             border-radius: 5px;
             transition: background 0.3s ease, transform 0.2s ease;
         }
-
         button:hover {
             background: #0056b3;
             transform: scale(1.05);
         }
-
         input {
             padding: 10px;
             margin: 10px 0;
@@ -61,266 +48,75 @@
             width: 100%;
             box-sizing: border-box;
         }
-
-        .test-item {
-            display: flex;
-            align-items: center;
-            margin: 10px 0;
-        }
-
-        .test-item input {
-            margin-right: 10px;
-        }
-
-        #resultsPanel, #testPanel {
-            display: none;
-            animation: fadeIn 0.5s ease;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        h1, h2 {
-            margin: 0;
-            padding: 10px 0;
-        }
-
-        #adminPanel {
-            display: none;
-        }
-
-        #clearResultsButton {
-            display: none; /* Скрываем кнопку по умолчанию */
-        }
+        #resultsPanel, #testPanel, #adminPanel { display: none; }
     </style>
 </head>
 <body>
     <div id="sidebar">
         <button onclick="showAdminLogin()">Вход администратора</button>
-        <button id="clearResultsButton" onclick="clearResults()">Очистить оценки</button>
+        <button id="clearResultsButton" onclick="clearResults()" style="display: none;">Очистить оценки</button>
         <div id="adminLogin" style="display:none;">
             <input type="password" id="adminPass" placeholder="Введите пароль">
             <button onclick="checkAdmin()">Войти</button>
         </div>
         <ul id="resultList"></ul>
     </div>
-    
     <div id="content">
         <h1>Тестирование</h1>
         <input type="text" id="userName" placeholder="Введите имя">
         <button onclick="startTest()">Начать тест</button>
-        
-        <div id="adminPanel">
-            <h2>Создать тест</h2>
-            <div id="createTestSection">
-                <input type="text" id="testTitle" placeholder="Название теста">
-                <button onclick="createTest()">Создать тест</button>
-            </div>
-            <div id="testBuilder" style="display:none;">
-                <input type="text" id="question" placeholder="Введите вопрос">
-                <div id="answers">
-                    <input type="text" placeholder="Вариант ответа" class="answer">
-                </div>
-                <button onclick="addAnswer()">Добавить вариант</button>
-                <button onclick="saveQuestion()">Сохранить вопрос</button>
-                <button onclick="saveTest()">Сохранить тест</button>
-            </div>
-            <h2>Управление тестами</h2>
-            <div id="testList"></div>
-            <button onclick="deleteSelectedTests()">Удалить выбранные тесты</button>
-            <h2>Выбор активного теста</h2>
-            <select id="testSelector">
-                <option value="-1">Выберите тест</option>
-            </select>
-            <button onclick="setActiveTest()">Сделать активным</button>
-        </div>
-        
         <div id="testPanel">
             <div id="testContent"></div>
         </div>
-        
         <div id="resultsPanel">
             <h2>Результаты</h2>
             <p id="score"></p>
         </div>
     </div>
-    
     <script>
-        let tests = JSON.parse(localStorage.getItem('tests')) || [];
-        let results = JSON.parse(localStorage.getItem('results')) || [];
-        let currentTest = null;
-        let activeTestIndex = localStorage.getItem('activeTestIndex'); // Загружаем активный тест
-        let correctAnswers = 0;
-        let currentQuestionIndex = 0; // Текущий вопрос
-
-        // Инициализация при загрузке страницы
-        function init() {
-            updateTestList();
-            updateTestSelector();
-            if (activeTestIndex !== null) {
-                document.getElementById('testSelector').value = activeTestIndex;
-            }
-        }
-
+        let data = JSON.parse(localStorage.getItem('data')) || { tests: [], results: [], activeTestIndex: null };
+        function saveData() { localStorage.setItem('data', JSON.stringify(data)); }
         function showAdminLogin() { document.getElementById('adminLogin').style.display = 'block'; }
         function checkAdmin() {
-			if (document.getElementById('adminPass').value === 'fil12345') {
-				document.getElementById('adminPanel').style.display = 'block';
-				document.getElementById('clearResultsButton').style.display = 'block'; // Показываем кнопку
-				updateResults();
-				updateTestList();
-				updateTestSelector();
-			} else alert('Неверный пароль');
-		}
-
-        function createTest() {
-            let testTitle = document.getElementById('testTitle').value;
-            if (!testTitle) return alert('Введите название теста');
-            currentTest = { title: testTitle, questions: [] };
-            document.getElementById('createTestSection').style.display = 'none';
-            document.getElementById('testBuilder').style.display = 'block';
-        }
-        function addAnswer() {
-            let input = document.createElement('input');
-            input.type = 'text';
-            input.className = 'answer';
-            input.placeholder = 'Вариант ответа';
-            document.getElementById('answers').appendChild(input);
-        }
-        function saveQuestion() {
-            let question = document.getElementById('question').value;
-            let answers = Array.from(document.getElementsByClassName('answer')).map(a => a.value);
-            if (!question || answers.some(a => !a)) return alert('Заполните вопрос и все варианты ответов');
-            let correct = prompt("Введите номер правильного ответа (начиная с 1):");
-            if (correct < 1 || correct > answers.length) return alert('Некорректный номер правильного ответа');
-            currentTest.questions.push({ question, answers, correct: answers[correct - 1] });
-            document.getElementById('question').value = '';
-            document.getElementById('answers').innerHTML = '<input type="text" placeholder="Вариант ответа" class="answer">';
-        }
-        function saveTest() {
-            if (currentTest.questions.length === 0) return alert('Добавьте хотя бы один вопрос');
-            tests.push(currentTest);
-            localStorage.setItem('tests', JSON.stringify(tests));
-            document.getElementById('testBuilder').style.display = 'none';
-            document.getElementById('createTestSection').style.display = 'block';
-            document.getElementById('testTitle').value = '';
-            updateTestList();
-            updateTestSelector();
-        }
-        function updateTestList() {
-            let testList = document.getElementById('testList');
-            testList.innerHTML = '';
-            tests.forEach((test, index) => {
-                let div = document.createElement('div');
-                div.className = 'test-item';
-                div.innerHTML = `
-                    <input type="checkbox" id="test${index}" value="${index}">
-                    <label for="test${index}">${test.title}</label>
-                `;
-                testList.appendChild(div);
-            });
-        }
-        function deleteSelectedTests() {
-            let selectedTests = Array.from(document.querySelectorAll('#testList input[type="checkbox"]:checked'))
-                .map(checkbox => parseInt(checkbox.value));
-            if (selectedTests.length === 0) return alert('Выберите тесты для удаления');
-            tests = tests.filter((test, index) => !selectedTests.includes(index));
-            localStorage.setItem('tests', JSON.stringify(tests));
-            updateTestList();
-            updateTestSelector();
-            alert('Выбранные тесты удалены');
-        }
-        function updateTestSelector() {
-            let selector = document.getElementById('testSelector');
-            selector.innerHTML = '<option value="-1">Выберите тест</option>';
-            tests.forEach((test, index) => {
-                let option = document.createElement('option');
-                option.value = index;
-                option.text = test.title;
-                if (index == activeTestIndex) option.selected = true;
-                selector.appendChild(option);
-            });
-        }
-        function setActiveTest() {
-            let selectedIndex = document.getElementById('testSelector').value;
-            if (selectedIndex === "-1") return alert('Выберите тест');
-            activeTestIndex = selectedIndex;
-            localStorage.setItem('activeTestIndex', activeTestIndex); // Сохраняем активный тест
-            alert('Активный тест выбран');
+            if (document.getElementById('adminPass').value === 'fil12345') {
+                document.getElementById('adminPanel').style.display = 'block';
+                document.getElementById('clearResultsButton').style.display = 'block';
+                updateResults();
+            } else alert('Неверный пароль');
         }
         function startTest() {
             let userName = document.getElementById('userName').value;
-            if (!userName) return alert('Введите имя');
-            if (tests.length === 0 || activeTestIndex === null) return alert('Тестов пока нет или не выбран активный тест!');
-            currentTest = tests[activeTestIndex];
-            correctAnswers = 0;
-            currentQuestionIndex = 0; // Сбрасываем индекс вопроса
+            if (!userName || data.tests.length === 0 || data.activeTestIndex === null) return alert('Ошибка');
+            let test = data.tests[data.activeTestIndex];
+            let correctAnswers = 0, currentIndex = 0;
             document.getElementById('testPanel').style.display = 'block';
-            showQuestion(currentQuestionIndex); // Показываем первый вопрос
-        }
-        function showQuestion(index) {
-            const testContent = document.getElementById('testContent');
-            testContent.innerHTML = ''; // Очищаем контейнер
-            
-            const question = currentTest.questions[index];
-            const div = document.createElement('div');
-            div.innerHTML = `
-                <p>Вопрос ${index + 1} из ${currentTest.questions.length}</p>
-                <h3>${question.question}</h3>
-                ${question.answers.map(a => `
-                    <button onclick="answer('${a}')">${a}</button>
-                `).join('')}
-            `;
-            
-            testContent.appendChild(div);
-        }
-        function answer(selected) {
-            const question = currentTest.questions[currentQuestionIndex];
-            if (selected === question.correct) {
-                correctAnswers++;
+            showQuestion(currentIndex);
+            function showQuestion(index) {
+                let q = test.questions[index];
+                document.getElementById('testContent').innerHTML = `<h3>${q.question}</h3>` +
+                    q.answers.map((a, i) => `<button onclick="answer('${a}', ${q.correct === a}, ${index})">${a}</button>`).join('');
             }
-            
-            // Переходим к следующему вопросу
-            currentQuestionIndex++;
-            
-            if (currentQuestionIndex < currentTest.questions.length) {
-                showQuestion(currentQuestionIndex); // Показываем следующий вопрос
-            } else {
-                showResults(); // Завершаем тест
+            window.answer = function(selected, isCorrect, index) {
+                if (isCorrect) correctAnswers++;
+                if (++index < test.questions.length) showQuestion(index);
+                else showResults();
+            }
+            function showResults() {
+                data.results.push({ userName, score: (correctAnswers / test.questions.length) * 100 });
+                saveData();
+                document.getElementById('resultsPanel').style.display = 'block';
+                document.getElementById('score').innerText = `Оценка: ${(correctAnswers / test.questions.length) * 100}%`;
             }
         }
-        function showResults() {
-			let userName = document.getElementById('userName').value;
-			let score = (correctAnswers / currentTest.questions.length) * 100;
-			results.push({ userName, score });
-			localStorage.setItem('results', JSON.stringify(results));
-
-			document.getElementById('testPanel').style.display = 'none';
-			document.getElementById('resultsPanel').style.display = 'block';
-			document.getElementById('score').innerText = `Вы ответили верно на ${correctAnswers} из ${currentTest.questions.length} вопросов. Ваша оценка: ${score.toFixed(2)}%`;
-
-			// Убираем вызов updateResults() здесь, чтобы оценки не были видны обычным пользователям
-		}
-
         function updateResults() {
             let list = document.getElementById('resultList');
-            list.innerHTML = '';
-            results.forEach(r => {
-                let li = document.createElement('li');
-                li.innerText = `${r.userName}: ${r.score.toFixed(2)}%`;
-                list.appendChild(li);
-            });
+            list.innerHTML = data.results.map(r => `<li>${r.userName}: ${r.score.toFixed(2)}%</li>`).join('');
         }
         function clearResults() {
-            results = [];
-            localStorage.setItem('results', JSON.stringify(results));
+            data.results = [];
+            saveData();
             updateResults();
         }
-
-        // Инициализация при загрузке страницы
-        init();
     </script>
 </body>
 </html>
