@@ -288,7 +288,7 @@ progress::-webkit-progress-value {
 }
 
 .hud-server-time img {
-    width: 1.2vw; /* Smaller icons */
+    width: 1.5vw; /* Smaller icons */
 }
 
 #server-time, #server-date {
