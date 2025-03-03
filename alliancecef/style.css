@@ -269,8 +269,8 @@ progress::-webkit-progress-value {
 /* Server DateTime */
 .hud-server-datetime {
     position: absolute;
-    bottom: 20%;
-    left: 5%;
+    bottom: 23%;
+    left: 6.5%;
     text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
     display: flex;
     color: #fff;
@@ -516,8 +516,8 @@ progress::-webkit-progress-value {
     }
     
     .hud-server-datetime {
-        width: 13vw;
-        font-size: 0.8vw;
+		width: 10vw;
+        font-size: 0.7vw;
     } 
     
     .hud-server-logo {
