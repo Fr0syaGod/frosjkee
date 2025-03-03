@@ -492,10 +492,10 @@ progress::-webkit-progress-value {
         width: 13vw;
     }
     
-    .hud-server-datetime {
-        width: 10vw;
-        font-size: 0.7vw;
-    }
+	.hud-server-datetime {
+        width: 11.5vw;
+        font-size: 0.8vw;
+    } 
     
     .hud-server-logo {
         width: 2.2vw;
@@ -516,9 +516,9 @@ progress::-webkit-progress-value {
     }
     
     .hud-server-datetime {
-        width: 11vw;
-        font-size: 0.7vw;
-    }
+        width: 13vw;
+        font-size: 0.8vw;
+    } 
     
     .hud-server-logo {
         width: 2.2vw;
