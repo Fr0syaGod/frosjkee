@@ -35,23 +35,27 @@
     box-sizing: border-box;
 }
 
+/* Modern Help Panel */
 .help-panel {
     position: absolute;
     top: 50%;
-    left: 20px;
+    left: 10px;
     transform: translateY(-50%);
-    font-family: 'Roboto', sans-serif;
-    font-size: 14px;
+    font-family: 'Font 700', sans-serif;
+    font-size: 12px;
     color: #fff;
-    text-shadow: 1px 1px 4px #000;
+    text-shadow: 1px 1px 2px #000;
     display: none;
-    flex-direction: column; /* Располагаем элементы вертикально */
-    gap: 5px; /* Задаём расстояние между строками */
+    flex-direction: column;
+    gap: 3px;
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 8px;
+    padding: 8px;
+    backdrop-filter: blur(5px);
 }
 
-
 .help-line {
-    margin-top: 5px;
+    margin-top: 2px;
     display: flex;
     align-items: center;
 }
@@ -61,45 +65,47 @@
 }
 
 .help-key {
-    min-width: 20px;
-    padding: 7px 10px;
+    min-width: 15px;
+    padding: 4px 6px;
     margin-right: 5px;
     color: #0048ff;
-    background: rgba(255,255,255, 100);
+    background: rgba(255, 255, 255, 0.9);
     border-radius: 4px;
     text-transform: uppercase;
     text-align: center;
     font-weight: bold;
-    font-size: 16px;
+    font-size: 13px;
 }
 
+/* Modern Main HUD Container */
 .hud-container {
-    /* position: absolute; */
-    /* right: 1%; */
-	background-color: (transparency);
+    background-color: (transparency);
     margin-left: auto;
     margin-right: 1vw;
-    width: 16vw;
-    /* margin: 20px; */
+    width: 14vw; /* Reduced width */
+    position: absolute;
+    right: 0;
+    top: 10px;
 }
 
 .currency-symbol {
-  font-weight: bold;
+    font-weight: bold;
 }
 
-
-.hud-one-line {
+/* Header Section */
+.hud-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    margin-bottom: 5px;
 }
 
 .hud-server-name {
     font-family: 'Font 900';
-    font-size: 1.3vw;
+    font-size: 1.1vw; /* Reduced font size */
     text-transform: uppercase;
     color: #2a4ed6;
-    text-shadow: 1px 1px 5px rgba(0,0,0,0.35);
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.35);
 }
 
 .hud-server-number {
@@ -107,50 +113,76 @@
     text-transform: uppercase;
     font-family: 'Font 700';
     color: #fff;
-    text-shadow: 1px 1px 5px rgba(0,0,0,0.5);
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
     letter-spacing: 0.3px;
+    font-size: 0.8vw; /* Reduced font size */
+}
+
+.hud-server-logo {
+    width: 2.5vw; /* Smaller logo */
+    margin-right: 0.5vw;
 }
 
 .hud-line {
-    background-color: rgba(255, 255, 255, 0.411);
+    background-color: rgba(255, 255, 255, 0.4);
     width: 100%;
-    height: 2px;
-    box-shadow: 0px 0px 10px rgba(0,0,0,0.4);
+    height: 1px;
+    box-shadow: 0px 0px 5px rgba(0,0,0,0.3);
+    margin: 3px 0;
 }
 
-.hud-two-line {
-    margin-top: 10px;
+/* Stats Section */
+.hud-stats {
     display: flex;
     align-items: center;
-    justify-content: space-between;    
+    justify-content: space-between;
+    margin: 5px 0;
+    background-color: rgba(0, 0, 0, 0.3);
+    border-radius: 6px;
+    padding: 5px;
+}
+
+.hud-weapon {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.hud-server-fist {
+    width: 2.8vw; /* Smaller gun icon */
+}
+
+.hud-bars {
+    flex-grow: 1;
+    margin-left: 5px;
 }
 
 progress {
     background: rgba(0, 0, 0, 0.001);
-    height: 8px;
-    width: 10vw;
-	border-radius: 10px;
+    height: 6px; /* Thinner progress bars */
+    width: 8vw; /* Narrower progress bars */
+    border-radius: 10px;
 }
 
 progress::-webkit-progress-bar {
-	background: rgba(0, 0, 0, 0.425);
-	border-radius: 10px;
+    background: rgba(0, 0, 0, 0.425);
+    border-radius: 10px;
 }
 
 progress::-webkit-progress-value {
     background-color: #f04245;
-	border-radius: 10px;
+    border-radius: 10px;
 }
 
 .progress-bar {
-	border-radius: 10px;
+    border-radius: 10px;
     display: flex;
     align-items: center;
-    margin-bottom: 5px;
+    margin-bottom: 3px; /* Less spacing */
 }
 
 #arm_progress::-webkit-progress-value {
-	background-color: #fff;
+    background-color: #fff;
 }
 
 #run_progress::-webkit-progress-value {
@@ -160,88 +192,103 @@ progress::-webkit-progress-value {
 #hp_value, #arm_value, #run_value {
     padding-left: 5px;
     font-family: 'MuseoSansCyrl-700Italic';
-    font-size: 0.8vw;
+    font-size: 0.7vw; /* Smaller text */
     color: #fff;
-    text-shadow: 1px 1px 5px rgba(0,0,0,0.5);
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
 }
 
 #ammo_value {
     font-family: 'MuseoSansCyrl-700Italic';
-    font-size: 0.8vw;
+    font-size: 0.4vw; /* Меньше размер текста */
     position: absolute;
-    margin-left: 1%;
-    margin-top: -0.3%;
+    top: 100%; /* Опустить текст ниже */
+    left: 39%;
+    transform: translate(-50%, -40%); /* Сместить вниз */
     color: #fff;    
     text-align: center;
-    text-shadow: 1px 1px 5px rgba(0,0,0,0.5);
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 4px;
+    padding: 2px 6px;
 }
 
-#ammo_value_source {
-    position: absolute;
-    margin-left: 1.5%;
-    margin-top: -0.3%;
-    background-image: url(img/0.png); 
-    background-size: 20px; 
-    width: 20px; 
-    height: 20px; 
-    background-repeat: none;
-}
 
+/* Money Display */
 .hud-money {
     font-family: 'Gilroy-SemiboldItalic';
     color: #64b95b;
-    font-size: 1.8vw;
-    text-shadow: 1px 1px 5px rgba(0,0,0,0.5);
-    letter-spacing: 2.5px;
+    font-size: 1.4vw; /* Smaller text */
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+    letter-spacing: 1px;
     text-align: right;
+    margin: 3px 0;
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 6px;
+    padding: 3px 6px;
 }
 
+/* Wanted Level Block */
 .hud-suspect-block {
-    margin-top: 15px;
+    margin-top: 5px;
     font-family: 'Gilroy-SemiboldItalic';
     color: #fff;
-    font-size: 1.6vh;
+    font-size: 0.8vw; /* Smaller font */
     border-radius: 6px;
-    background-color: rgba(0, 0, 0, 0.425);
-    background: linear-gradient(to right, #161163, #4b203c);
-    padding: 10px;
+    background: linear-gradient(to right, rgba(22, 17, 99, 0.8), rgba(75, 32, 60, 0.8));
+    padding: 5px 10px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    align-content: center;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+.hud-suspect-wanted {
+    display: flex;
+    align-items: center;
 }
 
 #wanted_5, #wanted_4, #wanted_3, #wanted_2, #wanted_1, #wanted_0 {
-    width: 1.2vw;
+    width: 0.9vw; /* Smaller icons */
+    margin-left: 2px;
 }
 
+/* Notification Block */
 #notify-right-bock {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-top: 0.7vw;
+    margin-top: 5px;
     color: #fff;
     font-family: 'Font 700';
     font-size: 0.7vw;
-    padding: 10px;
+    padding: 5px 8px;
     border-radius: 6px;
-    background: linear-gradient(to right, #7b78a7, #645fa421);
+    background: linear-gradient(to right, rgba(123, 120, 167, 0.8), rgba(100, 95, 164, 0.1));
 }
 
+/* Server DateTime */
 .hud-server-datetime {
     position: absolute;
-    bottom: 23.5%;
-    left: 6.5%;
-    text-shadow: 1px 1px 5px rgba(0,0,0,0.5);
+    bottom: 20%;
+    left: 5%;
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
     display: flex;
     color: #fff;
-    width: 11.5vw;
+    width: 10vw; /* More compact */
     justify-content: space-between;
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 8px;
+    padding: 5px;
+    font-size: 0.7vw;
 }
 
 .hud-server-time {
     display: flex;
     align-items: center;
+}
+
+.hud-server-time img {
+    width: 1.2vw; /* Smaller icons */
 }
 
 #server-time, #server-date {
@@ -254,44 +301,53 @@ progress::-webkit-progress-value {
     left: 1vw;
     bottom: 0.5vw;
     font-family: 'Font 700';
-    font-size: 0.75vw;
+    font-size: 0.65vw; /* Smaller text */
     color: rgba(255, 255, 255, 0.7);
     text-shadow: 1px 1px 1px rgba(0,0,0,0.65);
+    background-color: rgba(0, 0, 0, 0.3);
+    border-radius: 4px;
+    padding: 3px 6px;
 }
 
+/* Kill List */
 .kill-list {
     position: absolute;
-    right: 2%;
-    margin-top: 1%;
-	z-index: 1000;
-	color:  #252525;
+    right: 1%;
+    top: 5%;
+    z-index: 1000;
+    color: #252525;
 }
 
 .kill-list-item {
-    min-width: 300px;
-    max-width: 500px;    
-    margin-top: 10px;
+    min-width: 250px; /* Smaller width */
+    max-width: 400px; /* Smaller max width */
+    margin-top: 5px; /* Less spacing */
     display: flex;
     align-items: center;
     font-family: 'Font 700';
+    font-size: 0.8vw; /* Smaller text */
     color: #fff;
-
-    text-shadow: 1px 1px 10px rgba(0,0,0,0.5);
+    text-shadow: 1px 1px 5px rgba(0,0,0,0.5);
     justify-content: space-between;
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 6px;
+    padding: 3px;
 }
 
 .kill-list-img {
-    width: 40px; margin-left: 30px; margin-right: 30px;
+    width: 25px; /* Smaller image */
+    margin-left: 15px;
+    margin-right: 15px;
 }
 
+/* Capture Info */
 #capture-info {
     display: flex;
     justify-content: space-between;
-    background-color: #fff;
-    padding: 15px 25px;
-    /* border-radius: 10px; */
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 10px 20px;
     align-items: center;
-    box-shadow: 0px 0px 10px rgba(0,0,0,0.4);    
+    box-shadow: 0px 0px 8px rgba(0,0,0,0.3);    
     font-family: 'Font 700';
     border-radius: 10px;
     margin: 0;
@@ -300,7 +356,7 @@ progress::-webkit-progress-value {
     left: 50%;
     margin-right: -50%;
     transform: translate(-50%, -50%);
-    width: 28vw;
+    width: 25vw; /* Slightly smaller */
 }
 
 .capture-one-command {
@@ -310,7 +366,7 @@ progress::-webkit-progress-value {
 
 .capture-center {
     text-align: center;
-    font-size: 1vw;
+    font-size: 0.9vw; /* Smaller text */
 }
 
 #capture-time {
@@ -318,7 +374,7 @@ progress::-webkit-progress-value {
 }
 
 #capture-time-text {
-    font-size: 0.85vw;
+    font-size: 0.75vw; /* Smaller text */
     color: rgba(0, 0, 0, 0.5);
     letter-spacing: -0.5px;
 }
@@ -326,175 +382,29 @@ progress::-webkit-progress-value {
 .capture-name {
     text-transform: uppercase;
     font-family: 'Font 700';
-    font-size: 0.85vw;
+    font-size: 0.75vw; /* Smaller text */
     color: rgba(0, 0, 0, 0.5);
+    margin-right: 5px;
 }
 
 .capture-score {
     font-family: 'Font 900';
-    font-size: 1.5vw;
+    font-size: 1.3vw; /* Smaller text */
     color: #f2143d;
-    text-shadow: 1px 1px 3px rgba(0,0,0,0.235);    
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.235);
+    margin-right: 5px;
 }
 
-@media (max-height: 768px){
-    .hud-server-datetime {
-        width: 11.5vw;
-        font-size: 0.8vw;
-    } 
-    .hud-server-time img {
-        width: 1.5vw;
-    }
-    .hud-server-number {
-        text-align: right;
-        text-transform: uppercase;
-        font-family: 'Font 700';
-        color: #fff;
-        text-shadow: 1px 1px 5px rgba(0,0,0,0.5);
-        letter-spacing: 0.3px;
-        font-size: 1vw;
-    }
-    progress {
-        background: rgba(0, 0, 0, 0.001);
-        height: 8px;
-        width: 8vw;
-        border-radius: 10px;
-    }    
-    #ammo_value {
-        font-family: 'MuseoSansCyrl-700Italic';
-        font-size: 0.8vw;
-        position: absolute;
-        margin-left: 1.5%;
-        margin-top: -0.3%;
-        color: #fff;    
-        text-align: center;
-        text-shadow: 1px 1px 5px rgba(0,0,0,0.5);
-    }
-    
-    #ammo_value_source {
-        position: absolute;
-        margin-left: 1.9%;
-        margin-top: -0.3%;
-        background-image: url(img/0.png); 
-        background-size: 20px; 
-        width: 20px; 
-        height: 20px; 
-        background-repeat: none;
-    }    
-    .hud-server-logo {
-        width: 100px;
-        position: relative;
-        left: 110px;
-    }
-    .kill-list {
-        position: absolute;
-        right: 3%;
-        margin-top: 1%;
-
-        font-size: 1vw;
-    }    
-    .kill-list-item {
-        min-width: 200px;
-        max-width: 400px;    
-        margin-top: 10px;
-        display: flex;
-        align-items: center;
-        font-family: 'Font 700';
-        color: #fff;
-    
-        text-shadow: 1px 1px 10px rgba(0,0,0,0.5);
-        justify-content: space-between;
-    }    
-    .kill-list-img {
-        width: 30px; margin-left: 20px; margin-right: 20px;
-    }    
-}
-
-@media (max-width: 1280px){
-    .hud-server-datetime {
-        width: 13vw;
-        font-size: 0.8vw;
-    } 
-    .hud-server-time img {
-        width: 1.5vw;
-    }
-    .hud-server-number {
-        text-align: right;
-        text-transform: uppercase;
-        font-family: 'Font 700';
-        color: #fff;
-        text-shadow: 1px 1px 5px rgba(0,0,0,0.5);
-        letter-spacing: 0.3px;
-        font-size: 1vw;
-    }
-    progress {
-        background: rgba(0, 0, 0, 0.001);
-        height: 8px;
-        width: 8vw;
-        border-radius: 10px;
-    }    
-    #ammo_value {
-        font-family: 'MuseoSansCyrl-700Italic';
-        font-size: 0.8vw;
-        position: absolute;
-        margin-left: 1.5%;
-        margin-top: -0.3%;
-        color: #fff;    
-        text-align: center;
-        text-shadow: 1px 1px 5px rgba(0,0,0,0.5);
-    }
-    
-    #ammo_value_source {
-        position: absolute;
-        margin-left: 1.9%;
-        margin-top: -0.3%;
-        background-image: url(img/0.png); 
-        background-size: 20px; 
-        width: 20px; 
-        height: 20px; 
-        background-repeat: none;
-    }    
-    .hud-server-logo {
-        width: 100px;
-        position: relative;
-        left: 110px;
-    }
-    .kill-list {
-        position: absolute;
-        right: 3%;
-        margin-top: 1%;
-
-        font-size: 1vw;
-    }    
-    .kill-list-item {
-        min-width: 200px;
-        max-width: 400px;    
-        margin-top: 10px;
-        display: flex;
-        align-items: center;
-        font-family: 'Font 700';
-        color: #fff;
-    
-        text-shadow: 1px 1px 10px rgba(0,0,0,0.5);
-        justify-content: space-between;
-    }    
-    .kill-list-img {
-        width: 30px; margin-left: 20px; margin-right: 20px;
-    }
-}
-
+/* Capture Kill */
 #capture-kill {
-
-
-    background-color: rgba(219, 67, 67, 0.795);
-    padding: 10px 25px;
-
-    box-shadow: 0px 0px 10px rgba(0,0,0,0.4);    
+    background-color: rgba(219, 67, 67, 0.8);
+    padding: 8px 20px;
+    box-shadow: 0px 0px 8px rgba(0,0,0,0.4);    
     font-family: 'Font 700';
-    border-radius: 10px;
+    border-radius: 8px;
     margin: 0;
     position: absolute;
-    bottom: 12%;
+    bottom: 10%;
     color: #FFF;
     font-size: 0.7vw;
     letter-spacing: 0.5px;
@@ -502,14 +412,123 @@ progress::-webkit-progress-value {
     text-align: center;
     margin-right: -50%;
     transform: translate(-50%, -50%);
-    width: 28vw;
+    width: 25vw; /* Slightly smaller */
 }
 
+/* FPS Display */
 #fps {
     position: absolute;
     font-family: 'Proxima Nova Bold';
     left: 0.2vw;
     top: 0;
-    font-size: 0.95vw;
-    text-shadow: 0px 0px 4px rgba(0, 0, 0, 0.3);
+    font-size: 0.8vw; /* Smaller text */
+    text-shadow: 0px 0px 3px rgba(0, 0, 0, 0.3);
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 4px;
+    padding: 2px 5px;
+}
+
+/* Spectate Menu */
+#spectate-menu {
+    background-color: rgba(0, 0, 0, 0.8);
+    border-radius: 8px;
+    font-size: 0.75vw;
+}
+
+/* Key Help */
+#key-help {
+    position: absolute;
+    bottom: 10%;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgba(0, 0, 0, 0.7);
+    border-radius: 6px;
+    padding: 5px 10px;
+    font-family: 'Font 700';
+    color: #fff;
+    text-align: center;
+    font-size: 0.8vw;
+}
+
+#key-help-name {
+    color: #0048ff;
+    font-weight: bold;
+    margin-bottom: 3px;
+}
+
+/* Speed Car */
+#speed-car {
+    position: absolute;
+    bottom: 5%;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+#speed-text {
+    font-size: 1.8vw;
+    font-family: 'Font 900';
+}
+
+.kmh {
+    font-size: 0.9vw;
+    font-family: 'Font 700';
+}
+
+.indicators {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 5px;
+}
+
+.indicator-text {
+    font-family: 'Font 700';
+    font-size: 0.75vw;
+}
+
+/* Media Queries for Responsive Design */
+@media (max-height: 768px) {
+    .hud-container {
+        width: 13vw;
+    }
+    
+    .hud-server-datetime {
+        width: 10vw;
+        font-size: 0.7vw;
+    }
+    
+    .hud-server-logo {
+        width: 2.2vw;
+    }
+    
+    progress {
+        width: 7vw;
+    }
+    
+    .hud-money {
+        font-size: 1.2vw;
+    }
+}
+
+@media (max-width: 1280px) {
+    .hud-container {
+        width: 13vw;
+    }
+    
+    .hud-server-datetime {
+        width: 11vw;
+        font-size: 0.7vw;
+    }
+    
+    .hud-server-logo {
+        width: 2.2vw;
+    }
+    
+    progress {
+        width: 7vw;
+    }
+    
+    .hud-money {
+        font-size: 1.2vw;
+    }
 }

@@ -1,8 +1,8 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-	<meta charset="utf-8">
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+    <meta charset="utf-8">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="speed.css">
     <link rel="stylesheet" href="notify.css">
@@ -10,32 +10,37 @@
     <link rel="stylesheet" href="spectate.css">
 </head>
 <body>
+    <!-- Compact datetime display -->
     <div class="hud-server-datetime">
         <div class="hud-server-time">
-            <img src="img\time.png" width="25px">
+            <img src="img\time.png" width="20px">
             <div id="server-time">22:35</div>
         </div>
         <div class="hud-server-time">
-            <img src="img\date.png" width="25px">
+            <img src="img\date.png" width="20px">
             <div id="server-date">10.01.2023</div>
         </div>
     </div>
+
+    <!-- Main HUD container - Made more compact -->
     <div class="hud-container">
-        <div class="hud-one-line">
+        <!-- Server info header -->
+        <div class="hud-header">
             <img class="hud-server-logo" src="img\logo.png"> 
             <div class="hud-server-name-block">
                 <div class="hud-server-name">Alliance</div>
                 <div class="hud-server-number">перший сервер</div>
             </div>
         </div>
-        <div class="hud-line"></div>
-        <div class="hud-two-line">
-            <div>
-                <img id="fist" class="hud-server-fist" src="img\guns\24.png" width="80px">
+        
+        <!-- Stats container with health, armor and ammo -->
+        <div class="hud-stats">
+            <div class="hud-weapon">
+                <img id="fist" class="hud-server-fist" src="img\guns\24.png">
                 <div id="ammo_value_source" style="display: none;"></div>
-                <div id="ammo_value" style="display: block;">10/10</div>
+                <div id="ammo_value">10/10</div>
             </div>
-            <div>
+            <div class="hud-bars">
                 <div class="progress-bar">
                     <progress id="hp_progress" value="30" max="100"></progress>
                     <div id="hp_value">30</div>
@@ -46,36 +51,43 @@
                 </div>                  
             </div>
         </div>
-        <div class="hud-line" style="margin-top: 15px;"></div>
+
+        <!-- Money display -->
         <div id="hud-money" class="hud-money">
-         100000<span class="currency-symbol">₴</span>
+            100000<span class="currency-symbol">₴</span>
         </div>
 
-
+        <!-- Wanted level - Only displays when needed -->
         <div id="suspect-block" class="hud-suspect-block">
             <div class="hud-suspect-text">Ви у розшуку</div>
             <div class="hud-suspect-wanted">
-                <img id="wanted_5" style="opacity: 0.5" src="img\wanted.png" width="25px">
-                <img id="wanted_4" style="opacity: 0.5" src="img\wanted.png" width="25px">
-                <img id="wanted_3" style="opacity: 0.5" src="img\wanted.png" width="25px">
-                <img id="wanted_2" style="opacity: 0.5" src="img\wanted.png" width="25px">
-                <img id="wanted_1" style="opacity: 0.5" src="img\wanted.png" width="25px">
-                <img id="wanted_0" style="opacity: 0.5" src="img\wanted.png" width="25px">
+                <img id="wanted_5" style="opacity: 0.5" src="img\wanted.png">
+                <img id="wanted_4" style="opacity: 0.5" src="img\wanted.png">
+                <img id="wanted_3" style="opacity: 0.5" src="img\wanted.png">
+                <img id="wanted_2" style="opacity: 0.5" src="img\wanted.png">
+                <img id="wanted_1" style="opacity: 0.5" src="img\wanted.png">
+                <img id="wanted_0" style="opacity: 0.5" src="img\wanted.png">
             </div>
         </div>
 
+        <!-- Notifications - Kept as is -->
         <div id="notify-right-bock" style="display: none;">
             <div id="notify-bock-text"></div>
-            <img src="img\notify\bock\notify1.png" width="30px" id="notify-right-img">
+            <img src="img\notify\bock\notify1.png" width="25px" id="notify-right-img">
         </div>        
     </div>
+
+    <!-- Server info footer - Made more compact -->
     <div id="server-info">alliance.rp (v. 16/ID: 35/UID: 454545)</div>
-    <div id="kill_list" class="kill-list">
-    </div>
+
+    <!-- Kill list - Kept as is but will be styled more compact -->
+    <div id="kill_list" class="kill-list"></div>
+
+    <!-- Capture related elements - Kept as is -->
     <div id="capture-kill" style="display: none"></div>
     <div id="capture-info" style="display: none;">
         <div class="capture-one-command">
-            <div class="capture-score" style="padding-right: 10px;" id="score-one">2</div>
+            <div class="capture-score" id="score-one">2</div>
             <div class="capture-name" id="name-one">Хукнет</div>
         </div>
         <div class="capture-center">
@@ -83,26 +95,26 @@
             <div id="capture-time-text">продлений: 2</div>
         </div>
         <div class="capture-one-command">
-            <div class="capture-name" style="padding-right: 10px;" id="name-two">Хукнет</div>
+            <div class="capture-name" id="name-two">Хукнет</div>
             <div class="capture-score" id="score-two">0</div>
         </div>        
     </div>
-     <div id="speed-car" style="display: none;">
-        <img id="speed-back" src="img\speed_back.png" width="500px" alt="">
+
+    <!-- Speed car display - Kept as is -->
+    <div id="speed-car" style="display: none;">
+        <img id="speed-back" src="img\speed_back.png" width="450px" alt="">
         <div id="speed-text">100<div class="kmh">км/ч</div></div>
         
         <div class="indicators">
-            <!-- <img src="img/speed/engine.png" alt=""> -->
-            <!-- <img style="filter: grayscale(1000%);" src="img/speed/engine.png" alt=""> -->
             <div class="indication-container">
                 <img src="img\speed\health.png" alt="">
                 <div class="indicator-text" id="chealth">82 %</div>
             </div>
-            <div class="indication-container" style="margin-left: 0.5vw;">
+            <div class="indication-container">
                 <img src="img\speed\fuel.png" alt="">
                 <div class="indicator-text" id="fuel">100 л</div>
             </div>
-            <div class="indication-container" style="margin-left: 1.2vw;">
+            <div class="indication-container">
                 <img src="img\speed\icon.png" alt="">
                 <div class="indicator-text" id="icon-car">00000 км</div>
             </div>            
@@ -120,16 +132,31 @@
             <img id="engine" src="img\speed\engine.png" alt="">
         </div>
     </div>
+
+    <!-- Notifications - Kept as is -->
     <div id="notify-center" style="display: none;">
         <img src="img\notify\icon1.png" id="notify-center-img" alt="">
         <div id="notify-center-text"></div>
     </div>
-    <div id="notify-bock-frame">                     
-    </div>           
+    <div id="notify-bock-frame"></div>
+
+    <!-- Key help - More compact -->
     <div id="key-help" style="display: none;">
         <div id="key-help-name">ПРобел</div>
         <div id="key-help-text">Bзять рабочий транспорт</div>
     </div>
+
+    <!-- Help panel - More compact and styled -->
+    <div id="help-panel" class="help-panel">
+        <div class="help-line"><span class="help-key">M</span>Меню гравця</div>
+        <div class="help-line"><span class="help-key">J</span>Панель лідера</div>
+        <div class="help-line"><span class="help-key">H</span>Гудок</div>
+        <div class="help-line"><span class="help-key">X</span>Голосовий чат</div>
+        <div class="help-line"><span class="help-key">T</span>Текстовый чат</div>
+        <div class="help-line"><span class="help-key">F11</span>Керування голосовим чатом</div>
+    </div>
+
+    <!-- Spectate menu - Kept as is -->
     <div id="spectate-menu" style="display: none;">
         <div class="dialogHeader">Панель наблюдения</div>
         <div id="spectate-menu-row">
@@ -173,6 +200,8 @@
             <div class="spectate-menu-row-value" id="spectate-player-10">04.02.2023 12:36:31</div>
         </div>                 
     </div>
+
+    <!-- NPC dialog - Kept as is -->
     <div class="npc-dialog">
         <div class="npc-dialog-block">
             <div class="npc-dialog-title">Справочная</div>
@@ -187,19 +216,15 @@
             </div>
         </div>
     </div>
+
+    <!-- Drift block - Kept as is -->
     <div id="drift-block">
         <div class="drift-shadow"></div>
         <div id="drift-score">0</div>
         <div id="drift-combo">x1.1</div>
-        </div>
-        <div id="help-panel" class="help-panel">
-        <div class="help-line"><span class="help-key">M</span>Меню гравця</div>
-        <div class="help-line"><span class="help-key">J</span>Панель лідера</div>
-        <div class="help-line"><span class="help-key">H</span>Гудок</div>
-        <div class="help-line"><span class="help-key">X</span>Голосовий чат</div>
-        <div class="help-line"><span class="help-key">T</span>Текстовый чат</div>
-        <div class="help-line"><span class="help-key">F11</span>Керування голосовим чатом</div>
     </div>
+
+    <!-- Scripts - Maintained as is -->
     <script src="alliance.js"></script>
     <script src="js\dialog.js"></script>
     <script src="js\spectate.js"></script>
