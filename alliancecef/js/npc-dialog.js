@@ -1,4 +1,4 @@
-let npcid = 10;
+let npcid = null;
 
 
 cef.on("show-npc-dialog", (npc, title, text) => {
