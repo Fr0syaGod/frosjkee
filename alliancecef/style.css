@@ -438,25 +438,7 @@ progress::-webkit-progress-value {
 }
 
 /* Key Help */
-#key-help {
-    position: absolute;
-    bottom: 10%;
-    left: 50%;
-    transform: translateX(-50%);
-    background-color: rgba(0, 0, 0, 0.7);
-    border-radius: 6px;
-    padding: 5px 10px;
-    font-family: 'Font 700';
-    color: #fff;
-    text-align: center;
-    font-size: 0.8vw;
-}
 
-#key-help-name {
-    color: #0048ff;
-    font-weight: bold;
-    margin-bottom: 3px;
-}
 /* Media Queries for Responsive Design */
 @media (max-height: 768px) {
     .hud-container {
