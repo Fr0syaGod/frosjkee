@@ -1,4 +1,4 @@
-let npcid = 1;
+let npcid = 10;
 
 
 cef.on("show-npc-dialog", (npc, title, text) => {
@@ -34,7 +34,7 @@ cef.on("insert-npc-button", (index, buttonText) => {
     
     button.onclick = function () {
       
-        cef.emit("npc-dialog-action", index);
+        cef.emit("npc-dialog-action", npcid, index);
     };
 
     
