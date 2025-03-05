@@ -90,6 +90,7 @@
 
 .currency-symbol {
     font-weight: bold;
+    font-family: 'Montserrat', sans-serif;
 }
 
 /* Header Section */
@@ -149,8 +150,10 @@
 }
 
 .hud-server-fist {
-    width: 2.8vw; /* Smaller gun icon */
+    width: 2.8vw; 
+    filter: drop-shadow(2px 2px 3px rgba(0, 0, 0, 0.5)); 
 }
+
 
 .hud-bars {
     flex-grow: 1;
@@ -205,7 +208,7 @@ progress::-webkit-progress-value {
         margin-top: 102.5%;
         color: #fff;    
         text-align: center;
-        text-shadow: 1px 1px 5px rgba(0,0,0,0.5);
+        text-shadow: 2px 2px 5px rgba(0,0,0,0.5);
 }
 
 
@@ -221,6 +224,7 @@ progress::-webkit-progress-value {
     background-color: rgba(0, 0, 0, 0.2);
     border-radius: 6px;
     padding: 3px 6px;
+    text-shadow: 3px 3px 2px rgba(0, 0, 0, 0.5);
 }
 
 /* Wanted Level Block */
@@ -294,10 +298,10 @@ progress::-webkit-progress-value {
 
 #server-info {
     position: absolute;
-    left: 1vw;
-    bottom: 0.5vw;
+    left: 0; /* Прижимаем к левому краю */
+    bottom: 0; /* Прижимаем к нижнему краю */
     font-family: 'Font 700';
-    font-size: 0.65vw; /* Smaller text */
+    font-size: 0.65vw;
     color: rgba(255, 255, 255, 0.7);
     text-shadow: 1px 1px 1px rgba(0,0,0,0.65);
     background-color: rgba(0, 0, 0, 0.3);
@@ -305,11 +309,12 @@ progress::-webkit-progress-value {
     padding: 3px 6px;
 }
 
+
 /* Kill List */
 .kill-list {
-    right: 2%;
+    position: absolute;
+    right: 3%;
     margin-top: 1%;
-	z-index: 1000;
 	color:  #252525;
     color: #252525;
 }
@@ -380,13 +385,14 @@ progress::-webkit-progress-value {
     font-family: 'Font 700';
     font-size: 0.85vw; /* Smaller text */
     color: rgba(0, 0, 0, 0.5);
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.235);
     margin-right: 5px;
 }
 
 .capture-score {
     font-family: 'Font 900';
     font-size: 1.3vw; /* Smaller text */
-    color: #f2143d;
+    color: #2a4ed6;
     text-shadow: 1px 1px 2px rgba(0,0,0,0.235);
     margin-right: 5px;
 }
@@ -394,7 +400,7 @@ progress::-webkit-progress-value {
 /* Capture Kill */
 #capture-kill {
     background-color: rgba(219, 67, 67, 0.8);
-    padding: 8px 20px;
+    padding: 10px 25px
     box-shadow: 0px 0px 8px rgba(0,0,0,0.4);    
     font-family: 'Font 700';
     border-radius: 8px;
@@ -408,7 +414,7 @@ progress::-webkit-progress-value {
     text-align: center;
     margin-right: -50%;
     transform: translate(-50%, -50%);
-    width: 25vw; /* Slightly smaller */
+    width: 26vw; /* Slightly smaller */
 }
 
 /* FPS Display */
