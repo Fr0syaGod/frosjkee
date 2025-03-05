@@ -307,10 +307,10 @@ progress::-webkit-progress-value {
 
 /* Kill List */
 .kill-list {
-    position: absolute;
-    right: 1%;
-    top: 5%;
-    z-index: 1000;
+    right: 2%;
+    margin-top: 1%;
+	z-index: 1000;
+	color:  #252525;
     color: #252525;
 }
 
@@ -362,7 +362,7 @@ progress::-webkit-progress-value {
 
 .capture-center {
     text-align: center;
-    font-size: 0.9vw; /* Smaller text */
+    font-size: 1vw; /* Smaller text */
 }
 
 #capture-time {
@@ -370,7 +370,7 @@ progress::-webkit-progress-value {
 }
 
 #capture-time-text {
-    font-size: 0.75vw; /* Smaller text */
+    font-size: 0.85vw; /* Smaller text */
     color: rgba(0, 0, 0, 0.5);
     letter-spacing: -0.5px;
 }
@@ -378,7 +378,7 @@ progress::-webkit-progress-value {
 .capture-name {
     text-transform: uppercase;
     font-family: 'Font 700';
-    font-size: 0.75vw; /* Smaller text */
+    font-size: 0.85vw; /* Smaller text */
     color: rgba(0, 0, 0, 0.5);
     margin-right: 5px;
 }
@@ -451,37 +451,6 @@ progress::-webkit-progress-value {
     font-weight: bold;
     margin-bottom: 3px;
 }
-
-/* Speed Car */
-#speed-car {
-    position: absolute;
-    bottom: 5%;
-    left: 50%;
-    transform: translateX(-50%);
-}
-
-#speed-text {
-    font-size: 1.8vw;
-    font-family: 'Font 900';
-}
-
-.kmh {
-    font-size: 0.9vw;
-    font-family: 'Font 700';
-}
-
-.indicators {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    margin-top: 5px;
-}
-
-.indicator-text {
-    font-family: 'Font 700';
-    font-size: 0.75vw;
-}
-
 /* Media Queries for Responsive Design */
 @media (max-height: 768px) {
     .hud-container {
