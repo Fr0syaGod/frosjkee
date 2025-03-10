@@ -207,22 +207,18 @@ body {
 }
 
 .npc-dialog {
-    position: absolute;
-    user-select: none;
-    /*background: rgba(28, 15, 15, 0.8);*/
-    display: none;
-    height: 100%;
-    width: 100%;
-    justify-content: center;
-    align-content: center;
-    font-family: Roboto;
-    flex-wrap: wrap;
+    position: fixed;  /* Лучше использовать fixed, чтобы диалог был зафиксирован на экране */
     top: 0;
     left: 0;
-    font-family: 'Proxima Nova Bold';
-
-    background: radial-gradient(150% 50% at 50% 90%, rgba(0, 0, 0, 0.95) 0%, rgba(8, 13, 30, 0.0) 100%);
+    right: 0;
+    bottom: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: radial-gradient(circle at center, rgba(0, 0, 0, 0.95) 0%, rgba(8, 13, 30, 0) 100%);
+    z-index: 9999;  /* Поставь высокий z-index для обеспечения поверх других элементов */
 }
+
 
 .npc-dialog-block {
     position: absolute;
