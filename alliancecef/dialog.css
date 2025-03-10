@@ -225,12 +225,9 @@ body {
 }
 
 .npc-dialog-block {
-     bottom: 4vw;
-     left: 50%;
-     transform: translateX(-50%);
-     position: fixed; /* Вместо absolute */
- }
- 
+    position: absolute;
+    bottom: 4vw;
+}
 
 .npc-dialog-items {
     margin-top: 1vw;
@@ -272,7 +269,6 @@ body {
     background-color: #2a4ed6;
     color: #fff;
 }
-
 
 #drift-block {
     color: #fff;
