@@ -207,23 +207,28 @@ body {
 }
 
 .npc-dialog {
-    position: fixed;  /* Лучше использовать fixed, чтобы диалог был зафиксирован на экране */
+    position: fixed;  /* фиксированное положение */
     top: 0;
     left: 0;
-    right: 0;
-    bottom: 0;
+    width: 100%;
+    height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
     background: radial-gradient(circle at center, rgba(0, 0, 0, 0.95) 0%, rgba(8, 13, 30, 0) 100%);
-    z-index: 9999;  /* Поставь высокий z-index для обеспечения поверх других элементов */
+    z-index: 9999;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);  /* тень вокруг контейнера */
+    transition: box-shadow 0.3s ease-in-out;
 }
-
 
 .npc-dialog-block {
-    position: absolute;
+    position: relative;
     bottom: 4vw;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 2;
 }
+
 
 .npc-dialog-items {
     margin-top: 1vw;
