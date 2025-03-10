@@ -5,7 +5,7 @@
     bottom: 20%;
     /* top: /5%; */
     background-color: #fcfcfc;
-    width: 20vw;
+    width: 40vw;
     font-size: 0.95vw;
     border-radius: 0.6vw;
     right: 1%;
@@ -15,7 +15,7 @@
 #skin-menu-row {
     background-color: #f5f6f7;
     display: flex;
-    bottom: 20%;
+    bottom: 40%;
     font-size: 0.75vw;
     border-radius: 0.2vw;
     margin-top: 0.3vw;
