@@ -225,9 +225,12 @@ body {
 }
 
 .npc-dialog-block {
-    position: absolute;
-    bottom: 4vw;
-}
+     bottom: 4vw;
+     left: 50%;
+     transform: translateX(-50%);
+     position: fixed; /* Вместо absolute */
+ }
+ 
 
 .npc-dialog-items {
     margin-top: 1vw;
