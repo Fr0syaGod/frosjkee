@@ -8,6 +8,7 @@ cef.on("show-custom-dialog", (dialogId, title, text) => {
     $(".custom-dialog").css("display", "flex"); 
     $(".custom-dialog-title").text(title); 
     $(".custom-dialog-text").text(text); 
+    $(".color-selection-container").hide(); // Скрываем панель выбора цвета по умолчанию
     cef.set_focus(true); 
 });
 
@@ -32,6 +33,7 @@ cef.on("show-custom-secondary-dialog", (dialogId, title, text) => {
     $(".custom-dialog").css("display", "flex"); 
     $(".custom-dialog-title").text(title); 
     $(".custom-dialog-text").text(text); 
+    $(".color-selection-container").hide(); // Скрываем панель выбора цвета
     cef.set_focus(true); 
 });
 
@@ -69,4 +71,77 @@ document.addEventListener('keydown', function(event) {
         $(".custom-dialog").css("display", "none");
         cef.set_focus(false);
     }
+});
+
+// НОВЫЕ ФУНКЦИИ ДЛЯ ВЫБОРА ЦВЕТА
+
+// Показать панель выбора цвета
+cef.on("show-color-selection", (dialogId, title = "ВЫБЕРИТЕ ЦВЕТ АВТОМОБИЛЯ") => {
+    $(".color-selection-container").show();
+    $(".color-selection-title").text(title);
+});
+
+// Обработка нажатий на цветные кнопки
+$(document).on('click', '.color-box', function() {
+    const itemId = $(this).attr('id');
+    const color = $(this).css('background-color');
+    
+    // Сбросить все рамки
+    $('.color-box').css('border', '2px solid transparent');
+    // Подсветить выбранный цвет
+    $(this).css('border', '2px solid white');
+    
+    // Отправить событие выбора цвета - используем тот же обработчик, что и для обычных кнопок
+    cef.emit("custom-dialog-action", itemId);
+});
+
+// Скрыть панель выбора цвета
+cef.on("hide-color-selection", () => {
+    $(".color-selection-container").hide();
+});
+
+// Функция для инициализации цветных кнопок
+cef.on("initialize-color-buttons", () => {
+    // Если кнопки уже существуют, ничего не делаем
+    if (document.querySelectorAll('.color-box').length > 0) {
+        return;
+    }
+    
+    const colors = [
+        { id: 4, color: "white" },
+        { id: 5, color: "black" },
+        { id: 6, color: "red" },
+        { id: 7, color: "orange" },
+        { id: 8, color: "yellow" },
+        { id: 9, color: "lime" },
+        { id: 10, color: "cyan" },
+        { id: 11, color: "blue" },
+        { id: 12, color: "purple" },
+        { id: 13, color: "crimson" }
+    ];
+    
+    const colorGrid = document.querySelector('.color-grid');
+    if (!colorGrid) return;
+    
+    colors.forEach(colorData => {
+        let button = document.createElement("div");
+        button.className = "custom-dialog-item color-box";
+        button.id = colorData.id;
+        button.style.backgroundColor = colorData.color;
+        
+        button.onclick = function () {
+            // Сбросить все рамки
+            document.querySelectorAll('.color-box').forEach(box => {
+                box.style.border = '2px solid transparent';
+            });
+            
+            // Подсветить выбранный цвет
+            this.style.border = '2px solid white';
+            
+            // Отправить событие выбора цвета
+            cef.emit("custom-dialog-action", this.id);
+        };
+        
+        colorGrid.appendChild(button);
+    });
 });

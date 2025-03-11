@@ -21,15 +21,15 @@
 
 body {
     background-size: cover;
-	overflow-x: none;
+    overflow-x: none;
 }
 
 #dialog_container {
-	font-family: 'Proxima Nova Rg';
-	color: #fff;
-	letter-spacing: -0.2px;
-	font-size: 0.82vw;
-	background: #fcfcfc;
+    font-family: 'Proxima Nova Rg';
+    color: #fff;
+    letter-spacing: -0.2px;
+    font-size: 0.82vw;
+    background: #fcfcfc;
     margin: 0;
     position: absolute;
     top: 50%;
@@ -40,72 +40,72 @@ body {
     min-width: 20vh;
     max-width: 100vh;
     width: auto;
-	border-radius: 0.7vw;
+    border-radius: 0.7vw;
 }
 
 .dialogHeader {
-	font-size: 1.2vw;
-	color: #2a4ed6;
-	font-family: 'Proxima Nova Ex';
-	/* text-align: center; */
-	letter-spacing: -0.5px;
-	margin-bottom: 15px;
+    font-size: 1.2vw;
+    color: #2a4ed6;
+    font-family: 'Proxima Nova Ex';
+    /* text-align: center; */
+    letter-spacing: -0.5px;
+    margin-bottom: 15px;
 }
 
 .buttons {
-	margin-top: 15px;
-	display: flex;
-	justify-content: center;
-	user-select: none;
+    margin-top: 15px;
+    display: flex;
+    justify-content: center;
+    user-select: none;
 }
 
 .clickBtn {
-	background: #ecf0f1;
-	padding: 10px 14px;
-	margin-right: 5px;
-	margin-left: 5px;
+    background: #ecf0f1;
+    padding: 10px 14px;
+    margin-right: 5px;
+    margin-left: 5px;
     color: #303030;
-	opacity: 1;
-	border-radius: 6px;
-	font-family: 'Proxima Nova Bold';
-	font-size: 0.95vw;
-	transition: opacity 0.5s;
-	/* width: 120px; */
+    opacity: 1;
+    border-radius: 6px;
+    font-family: 'Proxima Nova Bold';
+    font-size: 0.95vw;
+    transition: opacity 0.5s;
+    /* width: 120px; */
     width: 100%;
-	text-align: center;
+    text-align: center;
 }
 
 .clickBtn:hover { background: #2a4ed6; color: #fff; }
 
 .dialog_input {
-	width: 100%;
-	background-color: #fff;
-	outline: 0;
-	border: 1px solid rgba(58, 58, 58, 0.2);
-	font-family: 'Proxima Nova Sm';
-	padding: 10px 10px;
-	margin-top: 10px;
-	/* border-radius: 5px; */
-	letter-spacing: -0.5px;
-	font-size: 0.85vw;
-	color: #255225;
+    width: 100%;
+    background-color: #fff;
+    outline: 0;
+    border: 1px solid rgba(58, 58, 58, 0.2);
+    font-family: 'Proxima Nova Sm';
+    padding: 10px 10px;
+    margin-top: 10px;
+    /* border-radius: 5px; */
+    letter-spacing: -0.5px;
+    font-size: 0.85vw;
+    color: #255225;
 }
 
 .dialogItem {
-	background-color: #fff;
-	/* margin-bottom: 5px; */
-	border: 1px solid rgba(30, 30, 30, 0.164);
+    background-color: #fff;
+    /* margin-bottom: 5px; */
+    border: 1px solid rgba(30, 30, 30, 0.164);
     border-bottom: 0;
-	padding: 11px 15px;
-	text-align: center;
-	min-width: 320px;
+    padding: 11px 15px;
+    text-align: center;
+    min-width: 320px;
     color: #252525;
-	/* border-radius: 5px; */
-	font-family: 'Proxima Nova Sm';
-	letter-spacing: -0.5px;
-	font-size: 15px;
+    /* border-radius: 5px; */
+    font-family: 'Proxima Nova Sm';
+    letter-spacing: -0.5px;
+    font-size: 15px;
 
-	transition: 0.3s;
+    transition: 0.3s;
 }
 
 .dialogItem:last-child {
@@ -114,7 +114,7 @@ body {
 
 .dialogItem:hover {
     background-color: rgba(49, 49, 49, 0.075);
-	/*color: #fff;*/
+    /*color: #fff;*/
 }
 
 .tablist_headers {
@@ -147,17 +147,17 @@ body {
 }
 
 .dialogText {
-	max-height: 500px;
-	width: 100%;
+    max-height: 500px;
+    width: 100%;
     margin-bottom: 5px;
     color: #252525;
-	font-family: 'Proxima Nova Sm';
+    font-family: 'Proxima Nova Sm';
     overflow-y: auto;  
 }
 
 span {
-	color: var(--i);
-	transition: 0.4s;
+    color: var(--i);
+    transition: 0.4s;
 }
 
 .dialogItem:hover span {
@@ -179,14 +179,14 @@ span {
 }
 
 .active_text {
-	color: #fff;
-	/*color: var(--b);*/
+    color: #fff;
+    /*color: var(--b);*/
 }
 
 .white_back {
-	background-color: #2a4ed6;
-	color: #fff;
-	border: 1px solid #2a4ed6;
+    background-color: #2a4ed6;
+    color: #fff;
+    border: 1px solid #2a4ed6;
 }
 
 .white_back:hover {
@@ -198,8 +198,8 @@ span {
 }
 
 .noback {
-	background: none;
-	border: 0;
+    background: none;
+    border: 0;
 }
 
 body {
@@ -387,4 +387,63 @@ body {
     width: 3.2vw;
     /*padding: 0.1vw 1vw;*/
     text-align: center;
+}
+
+/* Color selection styles */
+.color-selection-container {
+    position: absolute;
+    left: 25%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 35%;
+    max-width: 400px;
+}
+
+.color-selection-title {
+    font-size: 1.8vw;
+    font-weight: bold;
+    color: #fff;
+    text-shadow: 1px 1px 1px rgba(0,0,0,0.7);
+    text-align: center;
+    margin-bottom: 2vh;
+    text-transform: uppercase;
+}
+
+.color-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 1vh;
+    justify-content: center;
+}
+
+.color-box {
+    width: 5vw;
+    height: 5vw;
+    max-width: 60px;
+    max-height: 60px;
+    cursor: pointer;
+    transition: all 0.2s;
+    border: 2px solid transparent;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 0;
+    border-radius: .4vh;
+    min-width: auto;
+}
+
+.color-box:hover {
+    transform: scale(1.05);
+    border: 2px solid white;
+}
+
+.f1-button {
+    display: inline-block;
+    background-color: #FF5722;
+    color: white;
+    padding: 0.5vh 1vw;
+    font-size: 0.9vw;
+    border-radius: 2px;
+    margin-left: 1vw;
+    font-weight: bold;
 }
