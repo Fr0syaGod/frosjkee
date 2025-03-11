@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="notify.css">
     <link rel="stylesheet" href="dialog.css">
     <link rel="stylesheet" href="spectate.css">
+    <link rel="stylesheet" href="skinshop.css">
 </head>
 <body>
     <!-- Compact datetime display -->
@@ -156,6 +157,12 @@
         <div class="help-line"><span class="help-key">T</span>Текстовый чат</div>
         <div class="help-line"><span class="help-key">F11</span>Керування голосовим чатом</div>
     </div>
+    <div id="skin-menu" style="display: none;">
+        <div class="dialogHeader">Модний магазин одягу</div>
+        <div id="skin-menu-row">
+            <div id="skin-menu-row-name">Ціна</div>
+            <div class="skin-menu-row-value" id="skin-player-1">1000</div>
+         </div>
 
     <!-- Spectate menu - Kept as is -->
     <div id="spectate-menu" style="display: none;">
@@ -218,6 +225,21 @@
         </div>
     </div>
 
+    <div class="new-npc-dialog">
+        <div class="new-npc-dialog-block">
+            <div class="new-npc-dialog-title">Справочная</div>
+            <div class="new-npc-dialog-text">Здравствуйте, чем могу помочь?</div>
+            <div class="new-npc-dialog-items">
+                <div id="1" class="new-npc-dialog-item">Получить паспорт</div>
+                <div id="2" class="new-npc-dialog-item">Создать семью</div>
+                <div id="3" class="new-npc-dialog-item">Подробнее о налогах</div>
+                <div id="4" class="new-npc-dialog-item">Написать жалобу</div>
+                <div id="5" class="new-npc-dialog-item">Переименовать семью</div>
+                <div id="6" class="new-npc-dialog-item npc-dialog-close">Я не нуждаюсь в помощи</div>
+            </div>
+        </div>
+    </div>
+
     <!-- Drift block - Kept as is -->
     <div id="drift-block">
         <div class="drift-shadow"></div>
@@ -229,6 +251,7 @@
     <script src="alliance.js"></script>
     <script src="js\dialog.js"></script>
     <script src="js\spectate.js"></script>
+    <script src="js\skinshop.js"></script>
     <script src="js/npc-dialog.js"></script>
     <script src="js/drift.js"></script>
     <script src="js/snow.js"></script>
