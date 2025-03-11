@@ -1,33 +1,72 @@
-cef.on("show-new-npc-dialog", (npc, title, text) => {
-    let test = document.querySelectorAll('.new-npc-dialog-item');
-    test.forEach(e => e.remove());
-    otherNpcId = npc;
+let customDialogId = 1;
+
+cef.on("show-custom-dialog", (dialogId, title, text) => {
+    let buttons = document.querySelectorAll('.custom-dialog-item');
+    buttons.forEach(e => e.remove()); 
     
-    $(".new-npc-dialog").css("display", "flex");
-    $(".new-npc-dialog-title").text(title);
-    $(".new-npc-dialog-text").text(text);
-    
-    cef.set_focus(true);
+    customDialogId = dialogId; 
+    $(".custom-dialog").css("display", "flex"); 
+    $(".custom-dialog-title").text(title); 
+    $(".custom-dialog-text").text(text); 
+    cef.set_focus(true); 
 });
 
-cef.on("insert-new-npc-button", (index, buttonText) => {
+cef.on("insert-custom-button", (index, buttonText) => {
     let button = document.createElement("div");
-    button.className = "new-npc-dialog-item";
+    button.className = "custom-dialog-item";
     button.innerHTML = buttonText;
     button.id = index;
     
     button.onclick = function () {
-        cef.emit("new-npc-dialog-action", index);
+        cef.emit("custom-dialog-action", index);
     };
     
-    document.getElementsByClassName("new-npc-dialog-items")[0].append(button);
+    document.getElementsByClassName("custom-dialog-items")[0].append(button);
 });
 
-cef.on("update-new-npc-text", (text) => {
-    $(".new-npc-dialog-text").text(text);
+cef.on("show-custom-secondary-dialog", (dialogId, title, text) => {
+    let buttons = document.querySelectorAll('.custom-dialog-item');
+    buttons.forEach(e => e.remove()); 
+    
+    customDialogId = dialogId; 
+    $(".custom-dialog").css("display", "flex"); 
+    $(".custom-dialog-title").text(title); 
+    $(".custom-dialog-text").text(text); 
+    cef.set_focus(true); 
 });
 
-cef.on("hide-new-npc-dialog", () => {
-    $(".new-npc-dialog").css("display", "none");
+cef.on("insert-custom-secondary-button", (index, buttonText) => {
+    let button = document.createElement("div");
+    button.className = "custom-dialog-item";
+    button.innerHTML = buttonText;
+    button.id = index;
+    
+    button.onclick = function () {
+        cef.emit("custom-secondary-action", index);
+    };
+    
+    document.getElementsByClassName("custom-dialog-items")[0].append(button);
+});
+
+$(document).on('click', '.custom-dialog-close', function() {
+    cef.emit("custom-dialog-close");
+    $(".custom-dialog").css("display", "none");
     cef.set_focus(false);
+});
+
+cef.on("update-custom-text", (text) => {
+    $(".custom-dialog-text").text(text); 
+});
+
+cef.on("hide-custom-dialog", () => {
+    $(".custom-dialog").css("display", "none");
+    cef.set_focus(false); 
+});
+
+document.addEventListener('keydown', function(event) {
+    if (event.key === 'Escape') {
+        cef.emit("custom-dialog-close");
+        $(".custom-dialog").css("display", "none");
+        cef.set_focus(false);
+    }
 });

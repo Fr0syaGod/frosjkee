@@ -270,49 +270,46 @@ body {
     color: #fff;
 }
 
-.new-npc-dialog {
+.custom-dialog {
     position: absolute;
     user-select: none;
-    /*background: rgba(28, 15, 15, 0.8);*/
     display: none;
     height: 100%;
     width: 100%;
     justify-content: center;
     align-content: center;
-    font-family: Roboto;
     flex-wrap: wrap;
     top: 0;
     left: 0;
     font-family: 'Proxima Nova Bold';
-
     background: radial-gradient(150% 50% at 50% 90%, rgba(0, 0, 0, 0.95) 0%, rgba(8, 13, 30, 0.0) 100%);
 }
 
-.new-npc-dialog-block {
+.custom-dialog-block {
     position: absolute;
     bottom: 4vw;
 }
 
-.new-npc-dialog-items {
+.custom-dialog-items {
     margin-top: 1vw;
     display: grid;
     gap: 0.5vw;
     grid-template-columns: auto auto auto;
 }
 
-.new-npc-dialog-title {
+.custom-dialog-title {
     font-size: 1.3vw;
     font-weight: 500;
-    color: #ff9945;
+    color: #3e95ff;    /* Другой цвет для отличия */
     text-shadow: 1px 1px 1px rgba(0,0,0,0.5);
 }
 
-.new-npc-dialog-text {
+.custom-dialog-text {
     color: #fff;
     text-shadow: 1px 1px 1px rgba(0,0,0,0.5);
 }
 
-.new-npc-dialog-item {
+.custom-dialog-item {
     font-family: 'Proxima Nova Bold';
     min-width: 27.96vh;
     height: 4.5vh;
@@ -324,13 +321,12 @@ body {
     justify-content: center;
     align-items: center;
     transition-duration: .25s;
-
     font-size: 1.75vh;
     font-weight: 400;
 }
 
-.new-npc-dialog-item:hover {
-    background-color: #2a4ed6;
+.custom-dialog-item:hover {
+    background-color: #2767d6;    /* Другой цвет для отличия */
     color: #fff;
 }
 
