@@ -448,83 +448,88 @@ body {
     font-weight: bold;
 }
 
-/* Стили для компактного уведомления */
-/* Обновленные стили для компактного уведомления */
-.compact-notify {
-    position: relative;
+/* Стили для игрового уведомления как на скриншоте */
+.game-notify {
     background: #fff;
-    border-radius: 4px; /* Уменьшил радиус скругления */
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); /* Более легкая тень */
-    width: 300px; /* Чуть шире как на скриншоте */
+    border-radius: 4px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    width: 300px;
     overflow: hidden;
-    margin-bottom: 10px;
+    position: relative;
 }
 
-.compact-notify-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 10px 15px; /* Отступы как на скриншоте */
-    background-color: #2a4ed6; /* Чистый синий цвет без градиента */
+.game-notify-header {
+    background-color: #2a4ed6;
     color: #fff;
-}
-
-.compact-notify-title {
+    padding: 10px 15px;
+    font-family: 'Proxima Nova Bold', sans-serif;
     font-size: 14px;
-    font-weight: 600;
-    font-family: 'Proxima Nova Bold', sans-serif; /* Bold вместо Ex */
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
-.compact-notify-close {
-    width: 16px;
-    height: 16px;
-    background-color: transparent; /* Без фона */
-    color: #fff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+.game-notify-close {
     cursor: pointer;
     font-size: 14px;
     opacity: 0.8;
 }
 
-.compact-notify-close:hover {
+.game-notify-close:hover {
     opacity: 1;
 }
 
-.compact-notify-body {
+.game-notify-body {
     padding: 12px 15px;
+    display: flex;
+    align-items: flex-start;
 }
 
-.compact-notify-icon {
-    width: 24px; /* Немного меньше */
+.game-notify-icon {
+    width: 24px;
     height: 24px;
-    color: #2a4ed6; /* Синий цвет */
+    color: #2a4ed6;
     margin-right: 12px;
     flex-shrink: 0;
 }
 
-.compact-notify-message {
+.game-notify-message {
     font-size: 13px;
     color: #303030;
     line-height: 1.4;
     font-family: 'Proxima Nova Sm', sans-serif;
 }
 
-.compact-notify-message strong {
-    color: #2a4ed6; /* Синий цвет для выделения */
+.game-notify-message strong {
+    color: #2a4ed6;
     font-family: 'Proxima Nova Bold', sans-serif;
 }
 
-.compact-notify-progress {
+.game-notify-progress {
     height: 3px;
     width: 100%;
-    background-color: transparent; /* Без фона */
+    background-color: #2a4ed6;
 }
 
-.compact-notify-progress-bar {
-    height: 100%;
-    width: 0;
-    background-color: #2a4ed6; /* Чистый синий цвет */
-    animation: compact-notify-progress 4.5s linear forwards;
+@keyframes game-notify-fade-in {
+    0% {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes game-notify-fade-out {
+    0% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
 }

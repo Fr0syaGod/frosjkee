@@ -270,28 +270,25 @@
     </div>
 
     <!-- Компактное уведомление (пример) -->
-    <div class="compact-notify" style="display: none;">
-        <div class="compact-notify-header">
-            <div class="compact-notify-title">Уведомление системы</div>
-            <div class="compact-notify-close">✕</div>
+    <!-- Пример игрового уведомления (как на скриншоте) -->
+<div class="game-notify" style="display: none;">
+    <div class="game-notify-header">
+        Уведомление системы
+        <div class="game-notify-close">✕</div>
+    </div>
+    <div class="game-notify-body">
+        <div class="game-notify-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+            </svg>
         </div>
-        <div class="compact-notify-body">
-            <div class="compact-notify-content">
-                <div class="compact-notify-icon">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2a4ed6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
-                        <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
-                    </svg>
-                </div>
-                <div class="compact-notify-message">
-                    <strong>Администрация:</strong> Взгляните на последние обновления проекта Alliance!
-                </div>
-            </div>
-        </div>
-        <div class="compact-notify-progress">
-            <div class="compact-notify-progress-bar"></div>
+        <div class="game-notify-message">
+            <strong>Администрация:</strong> Взгляните на последние обновления проекта Alliance!
         </div>
     </div>
+    <div class="game-notify-progress"></div>
+</div>
 
     <!-- Scripts - Maintained as is -->
     <script src="alliance.js"></script>
