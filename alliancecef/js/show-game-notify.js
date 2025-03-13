@@ -9,41 +9,68 @@ function gameNotify(title, text, color = "2a4ed6") {
     
     // Создаем контейнер уведомления
     var notifyDiv = document.createElement("div");
-    notifyDiv.className = "game-notification"; // Добавляем класс для легкой идентификации
+    notifyDiv.className = "game-notification";
     notifyDiv.style.cssText = `
         position: absolute;
         top: 60%;
-        left: -320px; /* Начинаем за пределами экрана */
-        width: 320px !important;
-        max-width: 320px !important;
-        background-color: #ffffff;
-        border-radius: 4px;
-        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        left: 50px;
+        width: 320px;
+        background-color: #fff;
+        border-radius: 6px;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
         overflow: hidden;
-        z-index: 10000;
         opacity: 0;
-        transition: left 0.5s ease, opacity 0.5s ease;
+        transform: translateX(-100px);
+        z-index: 10000;
+        animation: notifySlideIn 0.5s ease forwards;
     `;
+    
+    // Добавляем стиль анимации
+    var styleEl = document.createElement('style');
+    styleEl.innerHTML = `
+        @keyframes notifySlideIn {
+            0% {
+                transform: translateX(-100px);
+                opacity: 0;
+            }
+            100% {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        
+        @keyframes notifyProgress {
+            0% {
+                width: 0;
+            }
+            100% {
+                width: 100%;
+            }
+        }
+    `;
+    document.head.appendChild(styleEl);
     
     // HTML содержимое уведомления
     var htmlContent = `
-        <div style="background-color: #${color}; color: #ffffff; padding: 10px 15px; display: flex; justify-content: space-between; align-items: center; font-family: 'Proxima Nova Bold', sans-serif; font-size: 14px;">
-            <div>${title}</div>
-            <div style="cursor: pointer; font-size: 16px; opacity: 0.8;">✕</div>
+        <div style="display: flex; align-items: center; justify-content: space-between; padding: 12px 15px; background: #${color}; color: #fff;">
+            <div style="font-size: 15px; font-weight: 600; font-family: 'Proxima Nova Bold', sans-serif;">${title}</div>
+            <div style="width: 20px; height: 20px; background-color: rgba(255, 255, 255, 0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 14px;">✕</div>
         </div>
-        <div style="padding: 15px; display: flex; align-items: center;">
-            <div style="margin-right: 15px; color: #${color};">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#${color}" stroke-width="2">
-                    <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
-                    <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
-                </svg>
-            </div>
-            <div style="font-size: 13px; color: #303030; line-height: 1.4; font-family: 'Proxima Nova Sm', sans-serif;">
-                ${text}
+        <div style="padding: 15px;">
+            <div style="display: flex; align-items: center; margin-bottom: 5px;">
+                <div style="margin-right: 15px; color: #${color};">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#${color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                        <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+                    </svg>
+                </div>
+                <div style="font-size: 13px; color: #303030; line-height: 1.4; font-family: 'Proxima Nova Sm', sans-serif;">
+                    ${text}
+                </div>
             </div>
         </div>
-        <div class="progress-container" style="height: 3px; width: 100%; position: relative; overflow: hidden;">
-            <div class="progress-bar" style="position: absolute; top: 0; left: 0; height: 100%; width: 100%; background-color: #${color}; transition: width 4.5s linear;"></div>
+        <div style="height: 3px; width: 100%; background-color: #e9ecef;">
+            <div style="height: 100%; width: 0; background: #${color}; animation: notifyProgress 4.5s linear forwards;"></div>
         </div>
     `;
     
@@ -52,25 +79,14 @@ function gameNotify(title, text, color = "2a4ed6") {
     // Добавляем уведомление в DOM
     document.body.appendChild(notifyDiv);
     
-    // Получаем кнопку закрытия и прогресс-бар
-    var closeBtn = notifyDiv.querySelector("div div:first-child div:last-child");
-    var progressBar = notifyDiv.querySelector(".progress-bar");
-    
-    // Анимация появления (с левой стороны)
-    setTimeout(function() {
-        notifyDiv.style.left = "50px";
-        notifyDiv.style.opacity = "1";
-    }, 10);
-    
-    // Анимация прогресс-бара
-    setTimeout(function() {
-        progressBar.style.width = "0%";
-    }, 50);
+    // Получаем кнопку закрытия
+    var closeBtn = notifyDiv.querySelector("div div:nth-child(2)");
     
     // Обработчик закрытия
     closeBtn.addEventListener('click', function() {
-        notifyDiv.style.left = "-320px";
-        notifyDiv.style.opacity = "0";
+        notifyDiv.style.opacity = '0';
+        notifyDiv.style.transform = 'translateX(-100px)';
+        notifyDiv.style.transition = 'opacity 0.5s, transform 0.5s';
         
         setTimeout(function() {
             if (document.body.contains(notifyDiv)) {
@@ -81,8 +97,9 @@ function gameNotify(title, text, color = "2a4ed6") {
     
     // Автоматическое закрытие
     setTimeout(function() {
-        notifyDiv.style.left = "-320px";
-        notifyDiv.style.opacity = "0";
+        notifyDiv.style.opacity = '0';
+        notifyDiv.style.transform = 'translateX(-100px)';
+        notifyDiv.style.transition = 'opacity 0.5s, transform 0.5s';
         
         setTimeout(function() {
             if (document.body.contains(notifyDiv)) {
