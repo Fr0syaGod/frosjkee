@@ -1,10 +1,19 @@
 function gameNotify(title, text, color = "2a4ed6") {
+    // Сначала удалим все существующие уведомления
+    var existingNotifications = document.querySelectorAll('.game-notification');
+    existingNotifications.forEach(function(notification) {
+        if (document.body.contains(notification)) {
+            document.body.removeChild(notification);
+        }
+    });
+    
     // Создаем контейнер уведомления
     var notifyDiv = document.createElement("div");
+    notifyDiv.className = "game-notification"; // Добавляем класс для легкой идентификации
     notifyDiv.style.cssText = `
         position: absolute;
         top: 60%;
-        left: 50px;
+        left: -320px; /* Начинаем за пределами экрана */
         width: 320px !important;
         max-width: 320px !important;
         background-color: #ffffff;
@@ -13,7 +22,7 @@ function gameNotify(title, text, color = "2a4ed6") {
         overflow: hidden;
         z-index: 10000;
         opacity: 0;
-        transform: translateY(-20px);
+        transition: left 0.5s ease, opacity 0.5s ease;
     `;
     
     // HTML содержимое уведомления
@@ -33,38 +42,36 @@ function gameNotify(title, text, color = "2a4ed6") {
                 ${text}
             </div>
         </div>
-        <div style="height: 3px; background-color: #${color}; width: 100%; position: relative;">
-            <div id="progress-bar-${Date.now()}" style="position: absolute; top: 0; right: 0; height: 100%; width: 100%; background-color: #${color};"></div>
+        <div class="progress-container" style="height: 3px; width: 100%; position: relative; overflow: hidden;">
+            <div class="progress-bar" style="position: absolute; top: 0; left: 0; height: 100%; width: 100%; background-color: #${color}; transition: width 4.5s linear;"></div>
         </div>
     `;
     
     notifyDiv.innerHTML = htmlContent;
     
-    // Независимый контейнер, добавляем напрямую в body
+    // Добавляем уведомление в DOM
     document.body.appendChild(notifyDiv);
     
     // Получаем кнопку закрытия и прогресс-бар
     var closeBtn = notifyDiv.querySelector("div div:first-child div:last-child");
-    var progressBarId = "progress-bar-" + Date.now();
-    var progressBar = document.getElementById(progressBarId);
+    var progressBar = notifyDiv.querySelector(".progress-bar");
     
-    // Анимация появления
+    // Анимация появления (с левой стороны)
     setTimeout(function() {
-        notifyDiv.style.transition = "opacity 0.5s ease, transform 0.5s ease";
+        notifyDiv.style.left = "50px";
         notifyDiv.style.opacity = "1";
-        notifyDiv.style.transform = "translateY(0)";
     }, 10);
     
     // Анимация прогресс-бара
-    progressBar.style.transition = "width 4.5s linear";
     setTimeout(function() {
         progressBar.style.width = "0%";
-    }, 10);
+    }, 50);
     
     // Обработчик закрытия
     closeBtn.addEventListener('click', function() {
+        notifyDiv.style.left = "-320px";
         notifyDiv.style.opacity = "0";
-        notifyDiv.style.transform = "translateY(-20px)";
+        
         setTimeout(function() {
             if (document.body.contains(notifyDiv)) {
                 document.body.removeChild(notifyDiv);
@@ -74,8 +81,9 @@ function gameNotify(title, text, color = "2a4ed6") {
     
     // Автоматическое закрытие
     setTimeout(function() {
+        notifyDiv.style.left = "-320px";
         notifyDiv.style.opacity = "0";
-        notifyDiv.style.transform = "translateY(-20px)";
+        
         setTimeout(function() {
             if (document.body.contains(notifyDiv)) {
                 document.body.removeChild(notifyDiv);
@@ -84,5 +92,5 @@ function gameNotify(title, text, color = "2a4ed6") {
     }, 4500);
 }
 
-// Добавьте этот обработчик события с поддержкой цвета
+// Обработчик события
 cef.on("show-game-notify", (title, text, color = "2a4ed6") => { gameNotify(title, text, color); });
