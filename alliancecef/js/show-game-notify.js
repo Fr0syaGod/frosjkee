@@ -1,6 +1,8 @@
-function gameNotify(title, text, color = "2a4ed6", textColor = null, rightText = null) {
+function gameNotify(title, text, color = "2a4ed6", textColor = null, rightText = null, rightTextColor = null) {
     // Если textColor не задан, используем основной цвет
     textColor = textColor || color;
+    // Если rightTextColor не задан, используем основной цвет
+    rightTextColor = rightTextColor || color;
     
     // Сначала удалим все существующие уведомления
     var existingNotifications = document.querySelectorAll('.game-notification');
@@ -60,7 +62,7 @@ function gameNotify(title, text, color = "2a4ed6", textColor = null, rightText =
     // Добавляем дополнительный текст справа, если он есть
     var rightTextHtml = '';
     if (rightText) {
-        rightTextHtml = `<div style="margin-left: auto; margin-right: 5px; font-size: 13px; font-family: 'Proxima Nova Bold'; color: #${color};">${rightText}</div>`;
+        rightTextHtml = `<div style="margin-left: auto; margin-right: 5px; font-size: 13px; font-family: 'Proxima Nova Bold'; color: #${rightTextColor};">${rightText}</div>`;
     }
     
     // HTML содержимое уведомления
@@ -117,7 +119,26 @@ function gameNotify(title, text, color = "2a4ed6", textColor = null, rightText =
     setTimeout(closeNotification, 3000);
 }
 
+// Вспомогательная функция для преобразования HEX в RGB
+function hexToRgb(hex) {
+    // Убираем # если есть
+    hex = hex.replace(/^#/, '');
+    
+    // Преобразуем 3-значный HEX в 6-значный
+    if (hex.length === 3) {
+        hex = hex[0] + hex[0] + hex[1] + hex[1] + hex[2] + hex[2];
+    }
+    
+    // Преобразуем HEX в RGB
+    var bigint = parseInt(hex, 16);
+    var r = (bigint >> 16) & 255;
+    var g = (bigint >> 8) & 255;
+    var b = bigint & 255;
+    
+    return r + "," + g + "," + b;
+}
+
 // Обработчик события
-cef.on("show-game-notify", (title, text, color = "2a4ed6", textColor = null, rightText = null) => { 
-    gameNotify(title, text, color, textColor, rightText); 
+cef.on("show-game-notify", (title, text, color = "2a4ed6", textColor = null, rightText = null, rightTextColor = null) => { 
+    gameNotify(title, text, color, textColor, rightText, rightTextColor); 
 });
