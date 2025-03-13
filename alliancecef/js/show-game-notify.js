@@ -58,8 +58,8 @@ function gameNotify(title, text, color = "2a4ed6") {
         </div>
         <div style="padding: 15px;">
             <div style="display: flex; align-items: center; margin-bottom: 5px;">
-                <div style="margin-right: 15px; color: #${color};">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#${color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <div style="width: 40px; height: 40px; border-radius: 50%; background-color: rgba(42, 78, 214, 0.1); display: flex; align-items: center; justify-content: center; margin-right: 15px; flex-shrink: 0;">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#${color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
                         <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
                     </svg>
