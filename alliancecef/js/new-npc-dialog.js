@@ -129,18 +129,8 @@ cef.on("initialize-color-buttons", () => {
         button.id = colorData.id;
         button.style.backgroundColor = colorData.color;
         
-        button.onclick = function () {
-            // Сбросить все рамки
-            document.querySelectorAll('.color-box').forEach(box => {
-                box.style.border = '2px solid transparent';
-            });
-            
-            // Подсветить выбранный цвет
-            this.style.border = '2px solid white';
-            
-            // Отправить событие выбора цвета
-            cef.emit("custom-dialog-action", this.id);
-        };
+        // УДАЛЁН прямой обработчик, чтобы избежать двойного срабатывания
+        // Теперь используется только делегированный обработчик выше ($(document).on('click', '.color-box', function() {...})
         
         colorGrid.appendChild(button);
     });
