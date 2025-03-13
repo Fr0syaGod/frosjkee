@@ -448,7 +448,7 @@ body {
     font-weight: bold;
 }
 
-/* Стили для игрового уведомления как на скриншоте */
+/* Стили для игрового уведомления */
 .game-notify {
     background: #fff;
     border-radius: 4px;
@@ -464,6 +464,7 @@ body {
     padding: 10px 15px;
     font-family: 'Proxima Nova Bold', sans-serif;
     font-size: 14px;
+    width: 100%;
     position: relative;
     display: flex;
     justify-content: space-between;
@@ -510,26 +511,5 @@ body {
     height: 3px;
     width: 100%;
     background-color: #2a4ed6;
-}
-
-@keyframes game-notify-fade-in {
-    0% {
-        opacity: 0;
-        transform: translateY(-20px);
-    }
-    100% {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-@keyframes game-notify-fade-out {
-    0% {
-        opacity: 1;
-        transform: translateY(0);
-    }
-    100% {
-        opacity: 0;
-        transform: translateY(-20px);
-    }
+    margin-top: 10px;
 }

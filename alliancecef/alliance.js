@@ -94,174 +94,6 @@ function notify_right_text_no_img(text, color, right_text) {
     }); 
 }
 
-function notifyCompact(title, text, color) {
-    var frame = document.getElementById("notify-bock-frame");   
-    let test = document.querySelectorAll('.notify-bock'); 
-            
-    if(test.length >= 3) {
-        document.getElementsByClassName("notify-bock")[0].remove();
-    }
-            
-    var div = document.createElement("div");
-    div.className = "notify-bock compact-notify";
-    div.style = `background: #fff; border-radius: 6px; box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15); width: 290px; overflow: hidden; position: relative;`;
-    frame.append(div);
-    
-    // Создаем заголовок уведомления
-    var header = document.createElement("div");
-    header.style = `display: flex; align-items: center; justify-content: space-between; padding: 12px; background: linear-gradient(135deg, #${color} 0%, #4682B4 100%); color: #fff;`;
-    div.append(header);
-    
-    // Добавляем заголовок
-    var titleElem = document.createElement("div");
-    titleElem.style = `font-size: 14px; font-weight: 600; font-family: 'Proxima Nova Ex', sans-serif; letter-spacing: -0.3px;`;
-    titleElem.innerHTML = title;
-    header.append(titleElem);
-    
-    // Добавляем кнопку закрытия
-    var closeBtn = document.createElement("div");
-    closeBtn.style = `width: 20px; height: 20px; background-color: rgba(255, 255, 255, 0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 12px;`;
-    closeBtn.innerHTML = "✕";
-    header.append(closeBtn);
-    
-    // Создаем тело уведомления
-    var body = document.createElement("div");
-    body.style = `padding: 12px;`;
-    div.append(body);
-    
-    // Создаем контент
-    var content = document.createElement("div");
-    content.style = `display: flex; align-items: center;`;
-    body.append(content);
-    
-    // Добавляем иконку
-    var icon = document.createElement("div");
-    icon.style = `width: 36px; height: 36px; border-radius: 50%; background-color: #ecf0f1; display: flex; align-items: center; justify-content: center; margin-right: 12px; flex-shrink: 0;`;
-    icon.innerHTML = `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#${color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
-        <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
-    </svg>`;
-    content.append(icon);
-    
-    // Добавляем сообщение
-    var message = document.createElement("div");
-    message.style = `font-size: 13px; color: #303030; line-height: 1.3; font-family: 'Proxima Nova Sm', sans-serif; letter-spacing: -0.3px;`;
-    message.innerHTML = text;
-    content.append(message);
-    
-    // Добавляем полосу прогресса
-    var progress = document.createElement("div");
-    progress.style = `height: 3px; width: 100%; background-color: #e9ecef; position: relative;`;
-    div.append(progress);
-    
-    var progressBar = document.createElement("div");
-    progressBar.style = `height: 100%; width: 0; background: linear-gradient(90deg, #${color} 0%, #4682B4 100%);`;
-    progress.append(progressBar);
-    
-    // Анимация появления
-    var animation = div.animate([{ opacity: '0', transform: 'translateX(-80px)' }, { opacity: '1', transform: 'translateX(0)' }], 500);
-    
-    // Анимация полосы прогресса
-    progressBar.animate([{ width: '0%' }, { width: '100%' }], { duration: 4500, fill: 'forwards' });
-    
-    // Обработчик кнопки закрытия
-    closeBtn.addEventListener('click', function() {
-        var closeAnim = div.animate([{ opacity: '1' }, { opacity: '0', transform: 'translateY(20px)' }], 500);
-        closeAnim.addEventListener('finish', function() {
-            div.style.display = 'none';
-            div.remove();
-        });
-    });
-    
-    // Автоматическое закрытие через 5 секунд
-    animation.addEventListener('finish', function() {
-        setTimeout(function () {
-        var finish_animation = div.animate([{ opacity: '1' }, { opacity: '0', transform: 'translateY(20px)' }], 500);
-            finish_animation.addEventListener('finish', function() {
-                div.style.display = 'none';
-                div.remove();
-            });
-        }, 4500);   
-    }); 
-}
-
-function gameNotify(title, text) {
-    var frame = document.getElementById("notify-bock-frame");   
-    let test = document.querySelectorAll('.notify-bock'); 
-            
-    if(test.length >= 3) {
-        document.getElementsByClassName("notify-bock")[0].remove();
-    }
-            
-    var div = document.createElement("div");
-    div.className = "notify-bock";
-    div.style = "background: #fff; border-radius: 4px; box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); width: 300px; overflow: hidden;";
-    frame.append(div);
-    
-    // Создаем заголовок
-    var header = document.createElement("div");
-    header.style = "background-color: #2a4ed6; color: #fff; padding: 10px 15px; display: flex; justify-content: space-between; align-items: center; font-family: 'Proxima Nova Bold', sans-serif; font-size: 14px;";
-    div.append(header);
-    
-    // Добавляем заголовок
-    var titleElem = document.createElement("div");
-    titleElem.innerHTML = title;
-    header.append(titleElem);
-    
-    // Добавляем кнопку закрытия
-    var closeBtn = document.createElement("div");
-    closeBtn.style = "cursor: pointer; font-size: 14px; opacity: 0.8;";
-    closeBtn.innerHTML = "✕";
-    header.append(closeBtn);
-    
-    // Создаем тело уведомления
-    var body = document.createElement("div");
-    body.style = "padding: 12px 15px; display: flex; align-items: flex-start;";
-    div.append(body);
-    
-    // Добавляем иконку колокольчика
-    var icon = document.createElement("div");
-    icon.style = "width: 24px; height: 24px; color: #2a4ed6; margin-right: 12px;";
-    icon.innerHTML = `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
-        <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
-    </svg>`;
-    body.append(icon);
-    
-    // Добавляем сообщение
-    var message = document.createElement("div");
-    message.style = "font-size: 13px; color: #303030; line-height: 1.4; font-family: 'Proxima Nova Sm', sans-serif;";
-    message.innerHTML = text;
-    body.append(message);
-    
-    // Добавляем полосу прогресса
-    var progress = document.createElement("div");
-    progress.style = "height: 3px; width: 100%; background-color: #2a4ed6;";
-    div.append(progress);
-    
-    // Анимация появления
-    var animation = div.animate([{ opacity: '0', transform: 'translateY(-20px)' }, { opacity: '1', transform: 'translateY(0)' }], 300);
-    
-    // Анимация полосы прогресса
-    progress.animate([{ width: '100%' }, { width: '0%' }], { duration: 4500, fill: 'forwards' });
-    
-    // Обработчик кнопки закрытия
-    closeBtn.addEventListener('click', function() {
-        var closeAnim = div.animate([{ opacity: '1' }, { opacity: '0', transform: 'translateY(-20px)' }], 300);
-        closeAnim.addEventListener('finish', function() {
-            div.remove();
-        });
-    });
-    
-    // Автоматическое закрытие через 5 секунд
-    setTimeout(function () {
-        var finish_animation = div.animate([{ opacity: '1' }, { opacity: '0', transform: 'translateY(-20px)' }], 300);
-        finish_animation.addEventListener('finish', function() {
-            div.remove();
-        });
-    }, 4500);
-}
-
 function notify(type, text, color) {
     var frame = document.getElementById("notify-bock-frame");   
     let test = document.querySelectorAll('.notify-bock'); 
@@ -353,8 +185,6 @@ function notify(type, text, color) {
     cef.on("show-notify", (type, text, color) => { notify(type, text, color); });
     cef.on("show-notify-right-text", (type, text, color, right_text) => { notify_right_text(type, text, color, right_text); });
     cef.on("show-notify-no-img", (text, color, right_text) => { notify_right_text_no_img(text, color, right_text); });
-    cef.on("show-compact-notify", (title, text, color) => { notifyCompact(title, text, color); });
-    cef.on("show-game-notify", (title, text) => { gameNotify(title, text); });
     cef.on("show-ammo-notify", (text, color) => {
         var notify = document.getElementById("notify-right-bock");
         var notify_img = document.getElementById("notify-right-img");
@@ -555,4 +385,4 @@ function notify(type, text, color) {
     });
     cef.on("hide-fps", () => {
         fpsOut.style = "display: none";
-    });
+    });    
