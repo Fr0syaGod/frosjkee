@@ -5,7 +5,7 @@ function gameNotify(title, text) {
         // Если контейнер не найден, создаем его
         container = document.createElement("div");
         container.id = "game-notify-container";
-        container.style = "position: fixed; left: 20px; top: 20%; z-index: 1000; width: 350px;";
+        container.style = "position: fixed; left: 50px; top: 40%; z-index: 1000; width: 320px;";
         document.body.appendChild(container);
     }
     
@@ -16,10 +16,10 @@ function gameNotify(title, text) {
     
     // Создаем уведомление
     var div = document.createElement("div");
-    div.style = "background: #fff; border-radius: 4px; box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); width: 100%; overflow: hidden; position: relative; margin-bottom: 10px; opacity: 0; transform: translateY(-20px); transition: opacity 0.3s ease, transform 0.3s ease;";
+    div.style = "background: #fff; border-radius: 4px; box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); width: 100%; overflow: hidden; position: relative; margin-bottom: 10px; opacity: 0; transform: translateY(-20px);";
     container.appendChild(div);
     
-    // Создаем заголовок
+    // Создаем заголовок (синяя полоса вверху)
     var header = document.createElement("div");
     header.style = "background-color: #2a4ed6; color: #fff; padding: 10px 15px; font-family: 'Proxima Nova Bold', sans-serif; font-size: 14px; width: 100%; position: relative; display: flex; justify-content: space-between; align-items: center;";
     div.appendChild(header);
@@ -51,39 +51,62 @@ function gameNotify(title, text) {
     
     // Добавляем сообщение
     var message = document.createElement("div");
-    message.style = "font-size: 13px; color: #303030; line-height: 1.4; font-family: 'Proxima Nova Sm', sans-serif;";
+    message.style = "font-size: 13px; color: #303030; line-height: 1.4; font-family: 'Proxima Nova Sm', sans-serif; width: 100%;";
     message.innerHTML = text;
     body.appendChild(message);
     
     // Добавляем разделительную линию внизу
     var separator = document.createElement("div");
-    separator.style = "height: 1px; width: 100%; background-color: #2a4ed6;";
+    separator.style = "height: 3px; width: 100%; background-color: #2a4ed6; position: relative;";
     div.appendChild(separator);
+    
+    // Добавляем прогресс бар
+    var progressBar = document.createElement("div");
+    progressBar.style = "height: 100%; width: 100%; background-color: #2a4ed6; position: absolute; top: 0; right: 0;";
+    separator.appendChild(progressBar);
+    
+    // Анимируем прогресс бар
+    progressBar.animate(
+        [
+            { width: '100%' },
+            { width: '0%' }
+        ],
+        {
+            duration: 4500,
+            fill: 'forwards',
+            easing: 'linear'
+        }
+    );
     
     // Показываем уведомление с анимацией
     setTimeout(function() {
+        div.style.transition = "opacity 0.5s ease, transform 0.5s ease";
         div.style.opacity = "1";
         div.style.transform = "translateY(0)";
     }, 10);
     
     // Обработчик кнопки закрытия
     closeBtn.addEventListener('click', function() {
-        div.style.opacity = "0";
-        div.style.transform = "translateY(-20px)";
-        setTimeout(function() {
-            container.removeChild(div);
-        }, 300);
-    });
-    
-    // Автоматическое закрытие через 5 секунд
-    setTimeout(function () {
+        div.style.transition = "opacity 0.5s ease, transform 0.5s ease";
         div.style.opacity = "0";
         div.style.transform = "translateY(-20px)";
         setTimeout(function() {
             if (div.parentNode === container) {
                 container.removeChild(div);
             }
-        }, 300);
+        }, 500);
+    });
+    
+    // Автоматическое закрытие через 5 секунд
+    setTimeout(function () {
+        div.style.transition = "opacity 0.5s ease, transform 0.5s ease";
+        div.style.opacity = "0";
+        div.style.transform = "translateY(-20px)";
+        setTimeout(function() {
+            if (div.parentNode === container) {
+                container.removeChild(div);
+            }
+        }, 500);
     }, 4500);
 }
 
