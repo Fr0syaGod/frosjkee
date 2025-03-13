@@ -1,4 +1,7 @@
-function gameNotify(title, text, color = "2a4ed6") {
+function gameNotify(title, text, color = "2a4ed6", textColor = null) {
+    // Если textColor не задан, используем основной цвет
+    textColor = textColor || color;
+    
     // Сначала удалим все существующие уведомления
     var existingNotifications = document.querySelectorAll('.game-notification');
     existingNotifications.forEach(function(notification) {
@@ -26,29 +29,33 @@ function gameNotify(title, text, color = "2a4ed6") {
     `;
     
     // Добавляем стиль анимации
-    var styleEl = document.createElement('style');
-    styleEl.innerHTML = `
-        @keyframes notifySlideIn {
-            0% {
-                transform: translateX(-100px);
-                opacity: 0;
+    var styleId = "notify-style-" + Date.now();
+    if (!document.getElementById(styleId)) {
+        var styleEl = document.createElement('style');
+        styleEl.id = styleId;
+        styleEl.innerHTML = `
+            @keyframes notifySlideIn {
+                0% {
+                    transform: translateX(-100px);
+                    opacity: 0;
+                }
+                100% {
+                    transform: translateX(0);
+                    opacity: 1;
+                }
             }
-            100% {
-                transform: translateX(0);
-                opacity: 1;
+            
+            @keyframes notifyProgress {
+                0% {
+                    width: 0;
+                }
+                100% {
+                    width: 100%;
+                }
             }
-        }
-        
-        @keyframes notifyProgress {
-            0% {
-                width: 0;
-            }
-            100% {
-                width: 100%;
-            }
-        }
-    `;
-    document.head.appendChild(styleEl);
+        `;
+        document.head.appendChild(styleEl);
+    }
     
     // HTML содержимое уведомления
     var htmlContent = `
@@ -58,19 +65,20 @@ function gameNotify(title, text, color = "2a4ed6") {
         </div>
         <div style="padding: 15px;">
             <div style="display: flex; align-items: center; margin-bottom: 5px;">
-                <div style="width: 40px; height: 40px; border-radius: 50%; background-color: rgba(42, 78, 214, 0.1); display: flex; align-items: center; justify-content: center; margin-right: 15px; flex-shrink: 0;">
+                <div style="width: 40px; height: 40px; border-radius: 50%; background-color: rgba(${hexToRgb(color)}, 0.1); display: flex; align-items: center; justify-content: center; margin-right: 15px; flex-shrink: 0;">
                     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#${color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
                         <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
                     </svg>
                 </div>
                 <div style="font-size: 13px; color: #303030; line-height: 1.4; font-family: 'Proxima Nova Sm', sans-serif;">
-                    ${text}
+                    ${text.replace(/<strong>/g, `<strong style="color: #${textColor};">`)
+                    .replace(/<b>/g, `<b style="color: #${textColor};">`)}
                 </div>
             </div>
         </div>
         <div style="height: 3px; width: 100%; background-color: #e9ecef;">
-            <div style="height: 100%; width: 0; background: #${color}; animation: notifyProgress 4.5s linear forwards;"></div>
+            <div style="height: 100%; width: 0; background: #${color}; animation: notifyProgress 3s linear forwards;"></div>
         </div>
     `;
     
@@ -82,32 +90,46 @@ function gameNotify(title, text, color = "2a4ed6") {
     // Получаем кнопку закрытия
     var closeBtn = notifyDiv.querySelector("div div:nth-child(2)");
     
-    // Обработчик закрытия
-    closeBtn.addEventListener('click', function() {
+    // Функция плавного закрытия
+    function closeNotification() {
         notifyDiv.style.opacity = '0';
         notifyDiv.style.transform = 'translateX(-100px)';
-        notifyDiv.style.transition = 'opacity 0.5s, transform 0.5s';
+        notifyDiv.style.transition = 'opacity 0.3s ease, transform 0.3s ease'; // Более быстрое и плавное закрытие
         
         setTimeout(function() {
             if (document.body.contains(notifyDiv)) {
                 document.body.removeChild(notifyDiv);
             }
-        }, 500);
-    });
+        }, 300); // Уменьшено время удаления элемента
+    }
     
-    // Автоматическое закрытие
-    setTimeout(function() {
-        notifyDiv.style.opacity = '0';
-        notifyDiv.style.transform = 'translateX(-100px)';
-        notifyDiv.style.transition = 'opacity 0.5s, transform 0.5s';
-        
-        setTimeout(function() {
-            if (document.body.contains(notifyDiv)) {
-                document.body.removeChild(notifyDiv);
-            }
-        }, 500);
-    }, 4500);
+    // Обработчик закрытия
+    closeBtn.addEventListener('click', closeNotification);
+    
+    // Автоматическое закрытие через 3 секунды (уменьшено с 4.5)
+    setTimeout(closeNotification, 3000);
+}
+
+// Вспомогательная функция для преобразования HEX в RGB
+function hexToRgb(hex) {
+    // Убираем # если есть
+    hex = hex.replace(/^#/, '');
+    
+    // Преобразуем 3-значный HEX в 6-значный
+    if (hex.length === 3) {
+        hex = hex[0] + hex[0] + hex[1] + hex[1] + hex[2] + hex[2];
+    }
+    
+    // Преобразуем HEX в RGB
+    var bigint = parseInt(hex, 16);
+    var r = (bigint >> 16) & 255;
+    var g = (bigint >> 8) & 255;
+    var b = bigint & 255;
+    
+    return r + "," + g + "," + b;
 }
 
 // Обработчик события
-cef.on("show-game-notify", (title, text, color = "2a4ed6") => { gameNotify(title, text, color); });
+cef.on("show-game-notify", (title, text, color = "2a4ed6", textColor = null) => { 
+    gameNotify(title, text, color, textColor); 
+});
