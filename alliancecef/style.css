@@ -370,7 +370,7 @@ progress::-webkit-progress-value {
     font-size: 1vw; /* Smaller text */
 }
 
-#capture-time {
+#я {
     font-family: 'Font 900';
 }
 
@@ -400,7 +400,7 @@ progress::-webkit-progress-value {
 /* Capture Kill */
 #capture-kill {
     background-color: rgba(219, 67, 67, 0.8);
-    padding: 10px 25px
+    padding: 10px 25px;
     box-shadow: 0px 0px 8px rgba(0,0,0,0.4);    
     font-family: 'Font 700';
     border-radius: 8px;
