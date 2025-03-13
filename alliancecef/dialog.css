@@ -448,7 +448,7 @@ body {
     font-weight: bold;
 }
 
-/* Стили для игрового уведомления */
+/* Стили для игрового уведомления как на скриншоте */
 .game-notify {
     background: #fff;
     border-radius: 4px;
@@ -511,5 +511,7 @@ body {
     height: 3px;
     width: 100%;
     background-color: #2a4ed6;
-    margin-top: 10px;
+    position: absolute;
+    bottom: 0;
+    left: 0;
 }
