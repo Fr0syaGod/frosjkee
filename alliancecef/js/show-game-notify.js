@@ -1,4 +1,4 @@
-function gameNotify(title, text, color = "2a4ed6", textColor = null) {
+function gameNotify(title, text, color = "2a4ed6", textColor = null, rightText = null) {
     // Если textColor не задан, используем основной цвет
     textColor = textColor || color;
     
@@ -57,6 +57,12 @@ function gameNotify(title, text, color = "2a4ed6", textColor = null) {
         document.head.appendChild(styleEl);
     }
     
+    // Добавляем дополнительный текст справа, если он есть
+    var rightTextHtml = '';
+    if (rightText) {
+        rightTextHtml = `<div style="margin-left: auto; margin-right: 5px; font-size: 13px; font-family: 'Proxima Nova Bold'; color: #${color};">${rightText}</div>`;
+    }
+    
     // HTML содержимое уведомления
     var htmlContent = `
         <div style="display: flex; align-items: center; justify-content: space-between; padding: 12px 15px; background: #${color}; color: #fff;">
@@ -71,10 +77,11 @@ function gameNotify(title, text, color = "2a4ed6", textColor = null) {
                         <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
                     </svg>
                 </div>
-                <div style="font-size: 13px; color: #303030; line-height: 1.4; font-family: 'Proxima Nova Sm', sans-serif;">
+                <div style="font-size: 13px; color: #303030; line-height: 1.4; font-family: 'Proxima Nova Sm', sans-serif; flex-grow: 1;">
                     ${text.replace(/<strong>/g, `<strong style="color: #${textColor};">`)
                     .replace(/<b>/g, `<b style="color: #${textColor};">`)}
                 </div>
+                ${rightTextHtml}
             </div>
         </div>
         <div style="height: 3px; width: 100%; background-color: #e9ecef;">
@@ -94,42 +101,23 @@ function gameNotify(title, text, color = "2a4ed6", textColor = null) {
     function closeNotification() {
         notifyDiv.style.opacity = '0';
         notifyDiv.style.transform = 'translateX(-100px)';
-        notifyDiv.style.transition = 'opacity 0.3s ease, transform 0.3s ease'; // Более быстрое и плавное закрытие
+        notifyDiv.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
         
         setTimeout(function() {
             if (document.body.contains(notifyDiv)) {
                 document.body.removeChild(notifyDiv);
             }
-        }, 300); // Уменьшено время удаления элемента
+        }, 300);
     }
     
     // Обработчик закрытия
     closeBtn.addEventListener('click', closeNotification);
     
-    // Автоматическое закрытие через 3 секунды (уменьшено с 4.5)
+    // Автоматическое закрытие через 3 секунды
     setTimeout(closeNotification, 3000);
 }
 
-// Вспомогательная функция для преобразования HEX в RGB
-function hexToRgb(hex) {
-    // Убираем # если есть
-    hex = hex.replace(/^#/, '');
-    
-    // Преобразуем 3-значный HEX в 6-значный
-    if (hex.length === 3) {
-        hex = hex[0] + hex[0] + hex[1] + hex[1] + hex[2] + hex[2];
-    }
-    
-    // Преобразуем HEX в RGB
-    var bigint = parseInt(hex, 16);
-    var r = (bigint >> 16) & 255;
-    var g = (bigint >> 8) & 255;
-    var b = bigint & 255;
-    
-    return r + "," + g + "," + b;
-}
-
 // Обработчик события
-cef.on("show-game-notify", (title, text, color = "2a4ed6", textColor = null) => { 
-    gameNotify(title, text, color, textColor); 
+cef.on("show-game-notify", (title, text, color = "2a4ed6", textColor = null, rightText = null) => { 
+    gameNotify(title, text, color, textColor, rightText); 
 });
