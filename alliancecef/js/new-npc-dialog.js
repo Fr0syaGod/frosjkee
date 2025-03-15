@@ -1,8 +1,13 @@
 let customDialogId = 1;
 
 cef.on("show-custom-dialog", (dialogId, title, text) => {
-    let buttons = document.querySelectorAll('.custom-dialog-item');
-    buttons.forEach(e => e.remove()); 
+    let buttons = document.querySelectorAll('.custom-dialog-item:not(.color-box)');
+    buttons.forEach(e => {
+        // Не удаляем кнопки-иконки и цветные кнопки
+        if (!e.closest('.vertical-buttons-container') && !e.classList.contains('color-box')) {
+            e.remove();
+        }
+    }); 
     
     customDialogId = dialogId; 
     $(".custom-dialog").css("display", "flex"); 
@@ -26,8 +31,13 @@ cef.on("insert-custom-button", (index, buttonText) => {
 });
 
 cef.on("show-custom-secondary-dialog", (dialogId, title, text) => {
-    let buttons = document.querySelectorAll('.custom-dialog-item');
-    buttons.forEach(e => e.remove()); 
+    let buttons = document.querySelectorAll('.custom-dialog-item:not(.color-box)');
+    buttons.forEach(e => {
+        // Не удаляем кнопки-иконки и цветные кнопки
+        if (!e.closest('.vertical-buttons-container') && !e.classList.contains('color-box')) {
+            e.remove();
+        }
+    }); 
     
     customDialogId = dialogId; 
     $(".custom-dialog").css("display", "flex"); 
@@ -73,7 +83,7 @@ document.addEventListener('keydown', function(event) {
     }
 });
 
-// НОВЫЕ ФУНКЦИИ ДЛЯ ВЫБОРА ЦВЕТА
+// ФУНКЦИИ ДЛЯ ВЫБОРА ЦВЕТА
 
 // Показать панель выбора цвета
 cef.on("show-color-selection", (dialogId, title = "ВЫБЕРИТЕ ЦВЕТ АВТОМОБИЛЯ") => {
@@ -129,9 +139,13 @@ cef.on("initialize-color-buttons", () => {
         button.id = colorData.id;
         button.style.backgroundColor = colorData.color;
         
-        // УДАЛЁН прямой обработчик, чтобы избежать двойного срабатывания
-        // Теперь используется только делегированный обработчик выше ($(document).on('click', '.color-box', function() {...})
-        
         colorGrid.appendChild(button);
     });
 });
+
+// НОВЫЕ ФУНКЦИИ ДЛЯ ВЕРТИКАЛЬНЫХ КНОПОК
+
+// Инициализация вертикальных кнопок
+cef.on("initialize-vertical-buttons", () => {
+    // Обработчик нажатий на вертикальные кнопки
+    const verticalButtons = document.
