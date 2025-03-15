@@ -386,3 +386,22 @@ function notify(type, text, color) {
     cef.on("hide-fps", () => {
         fpsOut.style = "display: none";
     });    
+
+    // Обработчик для управления видимостью интерфейса
+cef.on("game:hud:setComponentVisible", (component, isVisible) => {
+    if (component === "interface") {
+        if (isVisible) {
+            // Показываем элементы интерфейса
+            $(".hud-container").show();
+            $(".hud-server-datetime").show();
+            $("#server-info").show();
+            $("#help-panel").show();
+        } else {
+            // Скрываем элементы интерфейса
+            $(".hud-container").hide();
+            $(".hud-server-datetime").hide();
+            $("#server-info").hide();
+            $("#help-panel").hide();
+        }
+    }
+});
