@@ -1,12 +1,10 @@
 let customDialogId = 1;
 
 cef.on("show-custom-dialog", (dialogId, title, text) => {
-    let buttons = document.querySelectorAll('.custom-dialog-item:not(.color-box)');
+    let buttons = document.querySelectorAll('.custom-dialog-item:not(.color-box):not(.vertical-button-item)');
     buttons.forEach(e => {
-        // Не удаляем кнопки-иконки и цветные кнопки
-        if (!e.closest('.vertical-buttons-container') && !e.classList.contains('color-box')) {
-            e.remove();
-        }
+        // Удаляем только обычные кнопки, оставляем цветные и вертикальные
+        e.remove();
     }); 
     
     customDialogId = dialogId; 
@@ -14,6 +12,7 @@ cef.on("show-custom-dialog", (dialogId, title, text) => {
     $(".custom-dialog-title").text(title); 
     $(".custom-dialog-text").text(text); 
     $(".color-selection-container").hide(); // Скрываем панель выбора цвета по умолчанию
+    $(".vertical-buttons-container").hide(); // Скрываем вертикальные кнопки по умолчанию
     cef.set_focus(true); 
 });
 
@@ -31,12 +30,10 @@ cef.on("insert-custom-button", (index, buttonText) => {
 });
 
 cef.on("show-custom-secondary-dialog", (dialogId, title, text) => {
-    let buttons = document.querySelectorAll('.custom-dialog-item:not(.color-box)');
+    let buttons = document.querySelectorAll('.custom-dialog-item:not(.color-box):not(.vertical-button-item)');
     buttons.forEach(e => {
-        // Не удаляем кнопки-иконки и цветные кнопки
-        if (!e.closest('.vertical-buttons-container') && !e.classList.contains('color-box')) {
-            e.remove();
-        }
+        // Удаляем только обычные кнопки, оставляем цветные и вертикальные
+        e.remove();
     }); 
     
     customDialogId = dialogId; 
@@ -44,6 +41,7 @@ cef.on("show-custom-secondary-dialog", (dialogId, title, text) => {
     $(".custom-dialog-title").text(title); 
     $(".custom-dialog-text").text(text); 
     $(".color-selection-container").hide(); // Скрываем панель выбора цвета
+    $(".vertical-buttons-container").hide(); // Скрываем вертикальные кнопки
     cef.set_focus(true); 
 });
 
@@ -93,7 +91,7 @@ cef.on("show-color-selection", (dialogId, title = "ВЫБЕРИТЕ ЦВЕТ А�
 
 // Обработка нажатий на цветные кнопки
 $(document).on('click', '.color-box', function() {
-    const itemId = $(this).attr('id');
+    const itemId = parseInt($(this).attr('id'));
     const color = $(this).css('background-color');
     
     // Сбросить все рамки
@@ -145,82 +143,117 @@ cef.on("initialize-color-buttons", () => {
 
 // НОВЫЕ ФУНКЦИИ ДЛЯ ВЕРТИКАЛЬНЫХ КНОПОК
 
-// Инициализация вертикальных кнопок
-cef.on("initialize-vertical-buttons", () => {
-    console.log("Initializing vertical buttons");
-    
-    // Если контейнер уже существует, не создаем его заново
-    if (document.querySelector('.vertical-buttons-container')) {
-        console.log("Vertical buttons container already exists");
-        return;
+// Показать и инициализировать вертикальные кнопки
+cef.on("show-vertical-buttons", (dialogId, title = "ВЫБЕРИТЕ ТИП АВТОМОБИЛЯ") => {
+    // Инициализируем кнопки, если их еще нет
+    if (!document.querySelector('.vertical-buttons-container')) {
+        // Создаем контейнер
+        const container = document.createElement('div');
+        container.className = 'vertical-buttons-container';
+        container.style.display = 'flex';
+        document.querySelector('.custom-dialog').appendChild(container);
+        
+        // Определяем типы кнопок
+        const buttonTypes = [
+            { id: 14, type: 'sedan-icon', tooltip: 'Седан' },
+            { id: 15, type: 'suv-icon', tooltip: 'Внедорожник' },
+            { id: 16, type: 'sport-icon', tooltip: 'Спорткар' },
+            { id: 17, type: 'pickup-icon', tooltip: 'Пикап' },
+            { id: 18, type: 'truck-icon', tooltip: 'Грузовик' },
+            { id: 19, type: 'motorcycle-icon', tooltip: 'Мотоцикл' }
+        ];
+        
+        // Создаем кнопки
+        buttonTypes.forEach(btn => {
+            const button = document.createElement('div');
+            button.id = btn.id;
+            button.className = 'vertical-button-item';
+            button.setAttribute('data-id', btn.id); // Добавляем дополнительный атрибут для ID
+            button.title = btn.tooltip;
+            
+            const icon = document.createElement('div');
+            icon.className = `car-icon ${btn.type}`;
+            
+            button.appendChild(icon);
+            container.appendChild(button);
+        });
     }
     
-    // Создаем контейнер для вертикальных кнопок
-    const container = document.createElement('div');
-    container.className = 'vertical-buttons-container';
-    
-    // Определяем типы кнопок
-    const buttonTypes = [
-        { id: 14, type: 'sedan-icon', tooltip: 'Седан' },
-        { id: 15, type: 'suv-icon', tooltip: 'Внедорожник' },
-        { id: 16, type: 'sport-icon', tooltip: 'Спорткар' },
-        { id: 17, type: 'pickup-icon', tooltip: 'Пикап' },
-        { id: 18, type: 'truck-icon', tooltip: 'Грузовик' },
-        { id: 19, type: 'motorcycle-icon', tooltip: 'Мотоцикл' }
-    ];
-    
-    // Создаем кнопки
-    buttonTypes.forEach(btn => {
-        const button = document.createElement('div');
-        button.id = btn.id;
-        button.className = 'vertical-button-item';
-        button.title = btn.tooltip; // Добавляем всплывающую подсказку
-        
-        const icon = document.createElement('div');
-        icon.className = `car-icon ${btn.type}`;
-        
-        button.appendChild(icon);
-        
-        // Добавляем обработчик события для кнопок
-        button.onclick = function() {
-            // Удаляем активное состояние со всех кнопок
-            document.querySelectorAll('.vertical-button-item').forEach(b => {
-                b.classList.remove('active');
-            });
-            
-            // Добавляем активное состояние на нажатую кнопку
-            this.classList.add('active');
-            
-            // Отправляем событие нажатия с ID кнопки
-            cef.emit("custom-dialog-action", this.id);
-        };
-        
-        container.appendChild(button);
-    });
-    
-    // Добавляем контейнер с кнопками в диалог
-    document.querySelector('.custom-dialog').appendChild(container);
-    console.log("Vertical buttons container added to dialog");
+    // Показываем контейнер
+    $('.vertical-buttons-container').show();
 });
 
-// Показать/скрыть вертикальные кнопки
-cef.on("show-vertical-buttons", (show = true) => {
-    const container = document.querySelector('.vertical-buttons-container');
-    if (container) {
-        container.style.display = show ? 'flex' : 'none';
-    } else if (show) {
-        // Если контейнер не существует и нужно его показать, инициализируем
-        cef.emit("initialize-vertical-buttons");
-    }
+// Обработка нажатий на вертикальные кнопки через делегирование
+$(document).on('click', '.vertical-button-item', function() {
+    const itemId = parseInt($(this).attr('id'));
+    
+    // Сбросить активное состояние со всех кнопок
+    $('.vertical-button-item').removeClass('active');
+    // Добавить активное состояние текущей кнопке
+    $(this).addClass('active');
+    
+    // Явно логируем нажатие для отладки
+    console.log("Vertical button clicked, ID:", itemId);
+    
+    // Отправляем событие с числовым ID
+    cef.emit("custom-dialog-action", itemId);
 });
 
 // Выделить конкретную вертикальную кнопку
 cef.on("select-vertical-button", (buttonId) => {
     document.querySelectorAll('.vertical-button-item').forEach(button => {
-        if (button.id == buttonId) {
+        if (parseInt(button.id) === buttonId) {
             button.classList.add('active');
         } else {
             button.classList.remove('active');
         }
     });
 });
+
+// Прямое добавление статических кнопок в документ (если динамика не работает)
+cef.on("create-static-vertical-buttons", () => {
+    // Если кнопки уже существуют, удаляем их
+    const existingContainer = document.querySelector('.vertical-buttons-container');
+    if (existingContainer) {
+        existingContainer.remove();
+    }
+    
+    // Создаем HTML для кнопок
+    const buttonsHTML = `
+    <div class="vertical-buttons-container" style="display: flex;">
+        <div id="14" class="vertical-button-item" onclick="handleVerticalButtonClick(14)">
+            <div class="car-icon sedan-icon"></div>
+        </div>
+        <div id="15" class="vertical-button-item" onclick="handleVerticalButtonClick(15)">
+            <div class="car-icon suv-icon"></div>
+        </div>
+        <div id="16" class="vertical-button-item" onclick="handleVerticalButtonClick(16)">
+            <div class="car-icon sport-icon"></div>
+        </div>
+        <div id="17" class="vertical-button-item" onclick="handleVerticalButtonClick(17)">
+            <div class="car-icon pickup-icon"></div>
+        </div>
+        <div id="18" class="vertical-button-item" onclick="handleVerticalButtonClick(18)">
+            <div class="car-icon truck-icon"></div>
+        </div>
+        <div id="19" class="vertical-button-item" onclick="handleVerticalButtonClick(19)">
+            <div class="car-icon motorcycle-icon"></div>
+        </div>
+    </div>`;
+    
+    // Добавляем HTML в документ
+    document.querySelector('.custom-dialog').insertAdjacentHTML('beforeend', buttonsHTML);
+});
+
+// Функция-обработчик для статических кнопок
+function handleVerticalButtonClick(id) {
+    // Сбросить активное состояние со всех кнопок
+    $('.vertical-button-item').removeClass('active');
+    // Добавить активное состояние нажатой кнопке
+    $(`#${id}`).addClass('active');
+    
+    console.log("Static vertical button clicked, ID:", id);
+    
+    // Отправить событие
+    cef.emit("custom-dialog-action", id);
+}
