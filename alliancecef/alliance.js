@@ -395,13 +395,11 @@ cef.on("game:hud:setComponentVisible", (component, isVisible) => {
             $(".hud-container").show();
             $(".hud-server-datetime").show();
             $("#server-info").show();
-            $("#help-panel").show();
         } else {
             // Скрываем элементы интерфейса
             $(".hud-container").hide();
             $(".hud-server-datetime").hide();
             $("#server-info").hide();
-            $("#help-panel").hide();
         }
     }
 });
