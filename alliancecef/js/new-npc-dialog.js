@@ -68,6 +68,10 @@ cef.on("update-custom-text", (text) => {
     $(".custom-dialog-text").text(text); 
 });
 
+cef.on("update-custom-title", (title) => {
+    $(".custom-dialog-title").text(title); 
+});
+
 cef.on("hide-custom-dialog", () => {
     $(".custom-dialog").css("display", "none");
     cef.set_focus(false); 
