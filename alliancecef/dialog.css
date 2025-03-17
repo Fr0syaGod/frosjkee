@@ -291,7 +291,7 @@ body {
 }
 
 .custom-dialog-items {
-    margin-top: 3vw;
+    margin-top: 5vw;
     display: grid;
     gap: 0.5vw;
     grid-template-columns: auto auto auto;
@@ -302,11 +302,13 @@ body {
     font-weight: 500;
     color: #3e95ff;    /* Другой цвет для отличия */
     text-shadow: 1px 1px 1px rgba(0,0,0,0.5);
+    margin-bottom: 1vw; /* Небольшой отступ между заголовком и текстом */
 }
 
 .custom-dialog-text {
     color: #fff;
     text-shadow: 1px 1px 1px rgba(0,0,0,0.5);
+    margin-bottom: 3vw; /* Отступ между текстом и кнопками */
 }
 
 .custom-dialog-item {
@@ -393,7 +395,7 @@ body {
 .color-selection-container {
     position: absolute;
     left: 2%;         /* Сдвинуто в упор влево */
-    top: 40%;         /* Сдвинуто вниз */
+    top: 47%;         /* Сдвинуто вниз */
     transform: translate(0, -50%); /* Только вертикальное центрирование */
     width: 35%;
     max-width: 400px;
