@@ -287,38 +287,50 @@ body {
 
 .custom-dialog-block {
     position: absolute;
-    bottom: 2vw; /* Ближе к нижней части экрана */
+    bottom: 15vw; /* Опускаем основной контейнер ниже */
 }
 
-/* Опускаем кнопки еще ниже - большее значение */
-.custom-dialog-items {
-    margin-top: 20vw; /* Увеличено до 10vw чтобы опустить кнопки намного ниже */
-    display: grid;
-    gap: 0.5vw;
-    grid-template-columns: auto auto auto;
-}
-
-/* Опускаем текст ближе к кнопкам - располагаем в нижней части блока */
+/* Заголовок и текст - точное позиционирование без теней */
 .custom-dialog-title {
-    position: relative;
-    top: 10vw; /* Сдвигаем заголовок вниз */
+    position: absolute;
+    bottom: 19vw;
+    left: 0;
+    right: 0;
     font-size: 1.8vw;
     font-weight: 600;
     color: #3e95ff;
-    text-shadow: 1px 1px 1px rgba(0,0,0,0.5);
-    margin-top: 0;
-    margin-bottom: 0;
+    text-shadow: none; /* Убрали тень */
     line-height: 1;
 }
 
 .custom-dialog-text {
-    position: relative;
-    top: 10vw; /* Сдвигаем текст вниз вместе с заголовком */
+    position: absolute;
+    bottom: 17vw;
+    left: 0;
+    right: 0;
     font-size: 1.4vw;
     color: #fff;
-    text-shadow: 1px 1px 1px rgba(0,0,0,0.5);
-    margin-top: 0; /* Убираем отступ между текстами */
+    text-shadow: none; /* Убрали тень */
     line-height: 1;
+}
+
+/* Кнопки с точным позиционированием */
+.custom-dialog-items {
+    position: absolute;
+    bottom: 7vw;
+    left: 0;
+    right: 0;
+    display: grid;
+    gap: 0.5vw;
+    grid-template-columns: auto auto auto;
+    justify-content: center;
+}
+
+/* Гарантия применения стилей */
+.custom-dialog-title,
+.custom-dialog-text,
+.custom-dialog-items {
+    position: absolute !important;
 }
 
 .custom-dialog-item {
