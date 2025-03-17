@@ -298,18 +298,20 @@ body {
 }
 
 .custom-dialog-title {
-    font-size: 1.3vw;
-    font-weight: 500;
-    color: #3e95ff;    /* Другой цвет для отличия */
+    font-size: 1.8vw; /* Увеличен шрифт */
+    font-weight: 600; /* Сделаем чуть жирнее */
+    color: #3e95ff;
     text-shadow: 1px 1px 1px rgba(0,0,0,0.5);
-    margin-bottom: 1vw; /* Небольшой отступ между заголовком и текстом */
+    margin-top: 1.5vw; /* Опущено ниже */
 }
 
 .custom-dialog-text {
+    font-size: 1.4vw; /* Увеличен шрифт */
     color: #fff;
     text-shadow: 1px 1px 1px rgba(0,0,0,0.5);
-    margin-bottom: 3vw; /* Отступ между текстом и кнопками */
+    margin-top: 1.2vw; /* Опущено ниже */
 }
+
 
 .custom-dialog-item {
     font-family: 'Proxima Nova Bold';
