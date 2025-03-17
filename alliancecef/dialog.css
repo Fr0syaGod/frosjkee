@@ -292,7 +292,7 @@ body {
 
 /* Опускаем кнопки еще ниже - большее значение */
 .custom-dialog-items {
-    margin-top: 10vw; /* Увеличено до 10vw чтобы опустить кнопки намного ниже */
+    margin-top: 20vw; /* Увеличено до 10vw чтобы опустить кнопки намного ниже */
     display: grid;
     gap: 0.5vw;
     grid-template-columns: auto auto auto;
@@ -300,23 +300,26 @@ body {
 
 /* Опускаем текст ближе к кнопкам - располагаем в нижней части блока */
 .custom-dialog-title {
+    position: relative;
+    top: 10vw; /* Сдвигаем заголовок вниз */
     font-size: 1.8vw;
     font-weight: 600;
     color: #3e95ff;
     text-shadow: 1px 1px 1px rgba(0,0,0,0.5);
-    margin-top: 5vw; /* Добавляем отступ сверху для заголовка */
+    margin-top: 0;
     margin-bottom: 0;
     line-height: 1;
 }
 
 .custom-dialog-text {
+    position: relative;
+    top: 10vw; /* Сдвигаем текст вниз вместе с заголовком */
     font-size: 1.4vw;
     color: #fff;
     text-shadow: 1px 1px 1px rgba(0,0,0,0.5);
     margin-top: 0; /* Убираем отступ между текстами */
     line-height: 1;
 }
-
 
 .custom-dialog-item {
     font-family: 'Proxima Nova Bold';
