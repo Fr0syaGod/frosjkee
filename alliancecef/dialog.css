@@ -287,52 +287,52 @@ body {
 
 .custom-dialog-block {
     position: absolute;
-    bottom: 15vw; /* Опускаем основной контейнер ниже */
+    bottom: 1vw !important; /* Максимально низко */
+    width: 100%;
+    text-align: center;
 }
 
-/* Заголовок и текст - точное позиционирование без теней */
+/* Заголовок и текст - непосредственно над кнопками внизу */
 .custom-dialog-title {
-    position: absolute;
-    bottom: 19vw;
-    left: 0;
-    right: 0;
+    color: #fff;
     font-size: 1.8vw;
-    font-weight: 600;
-    color: #3e95ff;
-    text-shadow: none; /* Убрали тень */
+    margin-bottom: 0;
+    text-align: center;
     line-height: 1;
 }
 
 .custom-dialog-text {
-    position: absolute;
-    bottom: 17vw;
-    left: 0;
-    right: 0;
+    color: #3e95ff;
     font-size: 1.4vw;
-    color: #fff;
-    text-shadow: none; /* Убрали тень */
+    margin-bottom: 1vw; /* Минимальный отступ до кнопок */
+    text-align: center;
     line-height: 1;
 }
 
-/* Кнопки с точным позиционированием */
+/* Кнопки располагаются в самом низу */
 .custom-dialog-items {
-    position: absolute;
-    bottom: 7vw;
-    left: 0;
-    right: 0;
-    display: grid;
-    gap: 0.5vw;
-    grid-template-columns: auto auto auto;
+    display: flex;
     justify-content: center;
+    gap: 10px;
+    width: 100%;
+    margin-top: 5px; /* Минимальный отступ от текста */
 }
 
-/* Гарантия применения стилей */
+/* Стиль отдельной кнопки */
+.custom-dialog-item {
+    min-width: 150px;
+    background-color: #fff;
+    border-radius: 0; /* Прямоугольные кнопки */
+    padding: 10px 20px;
+}
+
+/* Принудительное применение стилей */
+.custom-dialog-block,
 .custom-dialog-title,
 .custom-dialog-text,
 .custom-dialog-items {
-    position: absolute !important;
+    position: relative !important;
 }
-
 .custom-dialog-item {
     font-family: 'Proxima Nova Bold';
     min-width: 27.96vh;
