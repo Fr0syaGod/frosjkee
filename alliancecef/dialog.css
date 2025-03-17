@@ -279,15 +279,15 @@ body {
     justify-content: center;
     align-content: center;
     flex-wrap: wrap;
-    top: 0;
+    top: 4;
     left: 0;
     font-family: 'Proxima Nova Bold';
-    background: radial-gradient(150% 50% at 50% 90%, rgba(0, 0, 0, 0.95) 0%, rgba(8, 13, 30, 0.0) 100%);
+    background: radial-gradient(100% 30% at 50% 90%, rgba(0, 0, 0, 0.8) 0%, rgba(8, 13, 30, 0.0) 100%);
 }
 
 .custom-dialog-block {
     position: absolute;
-    bottom: 4vw;
+    bottom: 2vw;
 }
 
 .custom-dialog-items {
@@ -298,15 +298,20 @@ body {
 }
 
 .custom-dialog-title {
-    font-size: 1.3vw;
+    font-weight: 700;
+    font-size: 2.2vw;
+    bottom: 6vw;
+    position: absolute;
     font-weight: 500;
     color: #3e95ff;    /* Другой цвет для отличия */
     text-shadow: 1px 1px 1px rgba(0,0,0,0.5);
-    margin-bottom: 1vw; /* Небольшой отступ между заголовком и текстом */
 }
 
 .custom-dialog-text {
     color: #fff;
+    font-size: 1.0vw;
+    position: absolute;
+    bottom: 2vw;
     text-shadow: 1px 1px 1px rgba(0,0,0,0.5);
     margin-bottom: 3vw; /* Отступ между текстом и кнопками */
 }
