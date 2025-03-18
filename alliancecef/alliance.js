@@ -332,6 +332,15 @@ function notify(type, text, color) {
          if(show_speed === 1) {
             document.getElementById("speed-text").innerHTML = `${Math.round(speed)}<div class="kmh">км/ч</div>`;
         }
+
+    
+        if(arm <= 0) {
+            document.getElementById("arm_progress").style.opacity = "0";
+            document.getElementById("arm_value").style.opacity = "0";
+        } else {
+            document.getElementById("arm_progress").style.opacity = "1";
+            document.getElementById("arm_value").style.opacity = "1";
+        }
     
         document.getElementById("arm_progress").value = `${arm}`;
         document.getElementById('arm_value').innerText = Math.round(arm);
