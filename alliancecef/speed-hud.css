@@ -14,49 +14,49 @@
 
 .car-hud {
     position: absolute;
-    right: 1vw;
-    bottom: 0;
-    width: 18vw;
+    right: 2vw; /* Увеличено с 1vw для отступа от края */
+    bottom: 1vw; /* Добавлен отступ снизу */
+    width: 22vw; /* Увеличено с 18vw */
     text-align: center;
-    transform: scale(.86);
+    transform: scale(1.0); /* Увеличено с 0.86 */
 }
 
 .car-hud .speed{
-    width: 15.5vw;
-    height: 15.5vw;
+    width: 18vw; /* Увеличено с 15.5vw */
+    height: 18vw; /* Увеличено с 15.5vw */
 }
 
 .car-hud .engine{
-    width: 3.5vw;
-    height: 17.7vw;
-    margin: 0 -2.3vw;
+    width: 4vw; /* Увеличено с 3.5vw */
+    height: 20vw; /* Увеличено с 17.7vw */
+    margin: 0 -2.5vw; /* Отрегулировано с -2.3vw */
     transform: rotate(0deg);
 }
 
 .car-hud .fuel{
-    width: 3.5vw;
-    height: 17.7vw;
-    margin: 0 -2.3vw;
+    width: 4vw; /* Увеличено с 3.5vw */
+    height: 20vw; /* Увеличено с 17.7vw */
+    margin: 0 -2.5vw; /* Отрегулировано с -2.3vw */
     transform: rotate(161deg);
 }
 
 .car-hud .speed-info {
-    margin: 0 0 -12.5vw 0;
+    margin: 0 0 -14vw 0; /* Увеличено с -12.5vw для компенсации увеличения размера */
     font-family: 'Font 700', ProximaNova, sans-serif;
     font-weight: 500;
     color: white;
 }
 
 .car-hud .speed-info .info {
-    line-height: 1.8vw;
+    line-height: 2.2vw; /* Увеличено с 1.8vw */
 }
 
 .car-hud .speed-info .info p:first-child{
-    font-size: 2.3vw;
+    font-size: 2.8vw; /* Увеличено с 2.3vw */
 }
 
 .car-hud .speed-info .info p:last-child{
-    font-size: .8vw;
+    font-size: 1vw; /* Увеличено с 0.8vw */
     opacity: .4;
 }
 
@@ -66,12 +66,12 @@
 }
 
 .car-hud .speed-info .info-car .bulb{
-    margin: 0 .5vw;
+    margin: 0 0.6vw; /* Увеличено с 0.5vw */
 }
 
 .car-hud .speed-info .info-car .bulb svg{
-    width: 1.3vw;
-    height: 1.6vw;
+    width: 1.6vw; /* Увеличено с 1.3vw */
+    height: 1.9vw; /* Увеличено с 1.6vw */
 }
 
 .car-hud .speed-info .info-car .bulb:first-child .active path {
@@ -87,17 +87,17 @@
 }
 
 .car-hud .engine-icon {
-    width: 1.6vw;
-    height: 1.6vw;
+    width: 2vw; /* Увеличено с 1.6vw */
+    height: 2vw; /* Увеличено с 1.6vw */
     position: absolute;
-    bottom: 1.3vw;
+    bottom: 1.5vw; /* Отрегулировано с 1.3vw */
 }
 
 .car-hud .fuel-icon {
-    width: 1.8vw;
-    height: 1.8vw;
+    width: 2.2vw; /* Увеличено с 1.8vw */
+    height: 2.2vw; /* Увеличено с 1.8vw */
     position: absolute;
-    bottom: 1vw;
+    bottom: 1.2vw; /* Отрегулировано с 1vw */
 }
 
 @keyframes open {100% {opacity: 1; } }
