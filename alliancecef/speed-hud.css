@@ -14,8 +14,8 @@
 
 .car-hud {
     position: absolute;
-    right: 2vw;
-    bottom: -2vw; /* Изменено с 1vw на -2vw, чтобы опустить ниже */
+    right: 1vw;
+    bottom: -1vw; /* Изменено с 1vw на -2vw, чтобы опустить ниже */
     width: 22vw;
     text-align: center;
     transform: scale(1.0);
