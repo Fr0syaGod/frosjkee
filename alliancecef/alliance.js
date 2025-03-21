@@ -11,6 +11,48 @@ function MoneyUpdate(money) {
 
 var show_speed = 0;
 
+function updateSpeedometer(speed, maxSpeed = 320) {
+    // Обновляем текст скорости
+    document.getElementById("speed-text").innerHTML = Math.round(speed);
+    
+    // Обновляем индикатор скорости
+    const speedPath = document.getElementById("speed-path");
+    if (speedPath) {
+        // Рассчитываем offset на основе текущей скорости
+        // dasharray = 838, полный круг
+        const maxOffset = 838;
+        const minOffset = 0;
+        const offset = maxOffset - (maxOffset * (speed / maxSpeed));
+        speedPath.style.strokeDashoffset = Math.max(minOffset, Math.min(maxOffset, offset));
+    }
+}
+
+function updateFuel(fuel, maxFuel = 100) {
+    // Обновляем индикатор топлива
+    const fuelPath = document.getElementById("fuel-path");
+    if (fuelPath) {
+        // Рассчитываем offset на основе текущего уровня топлива
+        // dasharray = 340, полный круг
+        const maxOffset = 340;
+        const minOffset = 0;
+        const offset = maxOffset - (maxOffset * (fuel / maxFuel));
+        fuelPath.style.strokeDashoffset = Math.max(minOffset, Math.min(maxOffset, offset));
+    }
+}
+
+function updateEngine(health, maxHealth = 100) {
+    // Обновляем индикатор двигателя
+    const enginePath = document.getElementById("engine-path");
+    if (enginePath) {
+        // Рассчитываем offset на основе текущего здоровья двигателя
+        // dasharray = 345, полный круг
+        const maxOffset = 345;
+        const minOffset = 0;
+        const offset = maxOffset - (maxOffset * (health / maxHealth));
+        enginePath.style.strokeDashoffset = Math.max(minOffset, Math.min(maxOffset, offset));
+    }
+}
+
 function notify_right_text(type, text, color, right_text) {
     var frame = document.getElementById("notify-bock-frame");   
     let test = document.querySelectorAll('.notify-bock'); 
@@ -204,10 +246,15 @@ function notify(type, text, color) {
         document.getElementById("speed-car").style = "display: block";
         show_speed = 1;
     });
+
     cef.on("hide-speed", () => {
         document.getElementById("speed-car").style = "display: none";
         show_speed = 0;
-    });     
+    });         
+
+    cef.on("update-speed-icon", (icon, value) => { 
+        update_icon(icon, value);
+    });
 
      // Показать help-panel
     cef.on("show-helppanel", () => {
@@ -225,8 +272,12 @@ function notify(type, text, color) {
 
     function update_icon(icon, value) {
         var cstyle = "";
-        if(value === 1) { cstyle="filter: grayscale(0);" }
-        else { cstyle="filter: grayscale(1000%);" }
+        if(value === 1) { 
+            cstyle="filter: grayscale(0);"; 
+        } else { 
+            cstyle="filter: grayscale(1000%);"; 
+        }
+        
         if(icon === 1) {
             document.getElementById("engine").style = cstyle;
         }
@@ -236,21 +287,17 @@ function notify(type, text, color) {
         if(icon === 3) {
             document.getElementById("light").style = cstyle;
         }
-        if(icon === 4) {
-            document.getElementById("key").style = cstyle;
-        }                                    
     }
     
     cef.on("update-speed-icon", (icon, value) => { update_icon(icon, value); });
     cef.on("update-speed-text", (textId, value) => {
         if(textId === 1) {
-            document.getElementById("chealth").innerHTML = `${value} %`;
+            // Здоровье автомобиля
+            updateEngine(parseFloat(value));
         }
         if(textId === 2) {
-            document.getElementById("fuel").innerHTML = `${value} л`;
-        }            
-        if(textId === 3) {
-            document.getElementById("icon-car").innerHTML = `${value} км`;
+            // Топливо
+            updateFuel(parseFloat(value));
         }            
     });
     
@@ -328,12 +375,10 @@ function notify(type, text, color) {
     cef.emit("game:hud:setComponentVisible", "interface", false);
     cef.emit("game:data:pollPlayerStats", true, 50);
     cef.on("game:data:playerStats", (hp, max_hp, arm, breath, wanted, weapon, ammo, max_ammo, money, speed) => {
-
-         if(show_speed === 1) {
-            document.getElementById("speed-text").innerHTML = `${Math.round(speed)}<div class="kmh">км/ч</div>`;
+        if(show_speed === 1) {
+            updateSpeedometer(speed);
         }
 
-    
         if(arm <= 0) {
             document.getElementById("arm_progress").style.opacity = "0";
             document.getElementById("arm_value").style.opacity = "0";
@@ -341,17 +386,17 @@ function notify(type, text, color) {
             document.getElementById("arm_progress").style.opacity = "1";
             document.getElementById("arm_value").style.opacity = "1";
         }
-    
+
         document.getElementById("arm_progress").value = `${arm}`;
         document.getElementById('arm_value').innerText = Math.round(arm);
         document.getElementById("hp_progress").value = `${hp}`;
         document.getElementById('hp_value').innerText = Math.round(hp); 
-    
+
         document.getElementById('fist').src = `img/guns/${weapon}.png`;
         if(ammo > 0) {
             document.getElementById("ammo_value_source").style = "display: none;";
             document.getElementById("ammo_value").style = "display: block;";
-    
+
             document.getElementById("ammo_value").innerText = `${ammo} / ${max_ammo}`;
         }
         else {
@@ -359,10 +404,9 @@ function notify(type, text, color) {
             document.getElementById("ammo_value").style = "display: none;";
         }
         MoneyUpdate(money);
-    
+
         if(wanted > 0) {
             document.getElementById("suspect-block").style = "display: block";
-            //update_wanted(wanted);
             for(var i = 0; i < 6; i ++) {
                 if(i < wanted) {
                     document.getElementById(`wanted_${i}`).style = "opacity: 1";
@@ -373,7 +417,7 @@ function notify(type, text, color) {
         else {
             document.getElementById("suspect-block").style = "display: none";
         }
-    });       
+    });
     cef.on("set-hud-run", (value) => {
         document.getElementById('run_progress').value = value;
         document.getElementById('run_value').innerText = value;
