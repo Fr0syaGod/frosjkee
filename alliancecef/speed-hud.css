@@ -75,15 +75,15 @@
 }
 
 .car-hud .speed-info .info-car .bulb:first-child .active path {
-    fill:rgb(30, 255, 0)
+    fill: rgb(0, 191, 255);  /* Голубой вместо зеленого */
 }
 
 .car-hud .speed-info .info-car .bulb:nth-child(2) .active path {
-    fill:rgb(255, 0, 0)
+    fill: rgb(0, 150, 255);  /* Синий вместо красного */
 }
 
 .car-hud .speed-info .info-car .bulb:last-child .active path {
-    fill:rgb(255, 153, 0)
+    fill: rgb(0, 225, 255);  /* Светло-голубой вместо оранжевого */
 }
 
 .car-hud .engine-icon {
