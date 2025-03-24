@@ -37,7 +37,7 @@
     width: 4vw; /* Увеличено с 3.5vw */
     height: 20vw; /* Увеличено с 17.7vw */
     margin: 0 -2.5vw; /* Отрегулировано с -2.3vw */
-    transform: rotate(0deg);
+    transform: rotate(161deg);
 }
 
 .car-hud .speed-info {

@@ -35,7 +35,10 @@ function updateFuel(fuel, maxFuel = 100) {
         // dasharray = 340, полный круг
         const maxOffset = 340;
         const minOffset = 0;
-        const offset = maxOffset - (maxOffset * (fuel / maxFuel));
+        
+        // Инвертируем расчет offset для индикатора топлива
+        const offset = (maxOffset * (fuel / maxFuel)); // Убрали вычитание из maxOffset
+        
         fuelPath.style.strokeDashoffset = Math.max(minOffset, Math.min(maxOffset, offset));
     }
 }
