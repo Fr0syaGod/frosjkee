@@ -528,13 +528,13 @@ body {
     background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCI+PHRpdGxlPmNhci1kb29yPC90aXRsZT48cGF0aCBkPSJNMTksMTRIMTZWMTZIMTlWMTRNMjIsMjFIM1YxMUwxMSwzSDIxQTEsMSAwIDAsMSAyMiw0VjIxTTExLjgzLDVMNS44MywxMUgyMFY1SDExLjgzWiIgLz48L3N2Zz4=');
 }
 
-certificate-dialog {
+.certificate-dialog {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.8);
+    background: rgba(0, 0, 0, 0.7);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -543,79 +543,118 @@ certificate-dialog {
 }
 
 .certificate-card {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
     border-radius: 20px;
-    padding: 30px;
-    width: 450px;
+    padding: 40px;
+    width: 480px;
     max-width: 90vw;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
     position: relative;
-    color: white;
+    color: #2c3e50;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    transform: translateY(0);
+    animation: certificateAppear 0.5s ease-out;
+}
+
+@keyframes certificateAppear {
+    from {
+        opacity: 0;
+        transform: translateY(-30px) scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
 }
 
 .certificate-header {
     text-align: center;
-    margin-bottom: 25px;
+    margin-bottom: 30px;
     position: relative;
 }
 
+.certificate-header::before {
+    content: '';
+    position: absolute;
+    top: -20px;
+    left: 0;
+    right: 0;
+    height: 6px;
+    background: linear-gradient(90deg, #8b00ff, #ff6b6b, #4ecdc4, #45b7d1);
+    border-radius: 20px 20px 0 0;
+}
+
 .certificate-logo {
-    width: 60px;
-    height: 60px;
-    background: rgba(255, 255, 255, 0.2);
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(135deg, #8b00ff, #ff6b6b);
     border-radius: 50%;
     margin: 0 auto 15px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 24px;
+    font-size: 36px;
+    box-shadow: 0 10px 20px rgba(139, 0, 255, 0.3);
 }
 
 .certificate-title {
-    font-size: 1.4vw;
-    font-weight: bold;
-    margin-bottom: 5px;
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 8px;
     text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #2c3e50;
 }
 
 .certificate-subtitle {
-    font-size: 0.9vw;
-    opacity: 0.8;
+    font-size: 14px;
+    color: #7f8c8d;
+    font-weight: 500;
 }
 
 .certificate-close {
     position: absolute;
-    top: -10px;
-    right: -10px;
-    background: rgba(255, 255, 255, 0.2);
+    top: 15px;
+    right: 20px;
+    background: none;
     border: none;
-    color: white;
-    font-size: 20px;
+    font-size: 24px;
+    color: #95a5a6;
+    cursor: pointer;
+    transition: all 0.3s ease;
     width: 30px;
     height: 30px;
     border-radius: 50%;
-    cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: all 0.3s ease;
 }
 
 .certificate-close:hover {
-    background: rgba(255, 0, 0, 0.5);
+    background: rgba(255, 0, 0, 0.1);
+    color: #e74c3c;
     transform: rotate(90deg);
 }
 
 .certificate-info {
-    margin-bottom: 20px;
+    margin-bottom: 25px;
 }
 
 .certificate-row {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 8px 0;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 12px 0;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+}
+
+.certificate-row:hover {
+    background: rgba(139, 0, 255, 0.02);
+    border-radius: 8px;
+    padding-left: 10px;
+    padding-right: 10px;
 }
 
 .certificate-row:last-child {
@@ -624,21 +663,26 @@ certificate-dialog {
 
 .certificate-label {
     font-weight: 600;
-    font-size: 0.85vw;
-    opacity: 0.9;
+    color: #34495e;
+    font-size: 14px;
+    flex: 1;
 }
 
 .certificate-value {
     font-weight: 500;
-    font-size: 0.85vw;
+    color: #2c3e50;
+    font-size: 14px;
+    text-align: right;
+    flex: 1;
 }
 
 .certificate-level {
-    background: rgba(255, 255, 255, 0.2);
+    background: linear-gradient(135deg, #8b00ff, #ff6b6b);
+    color: white;
     padding: 4px 8px;
     border-radius: 12px;
-    font-size: 0.8vw;
-    font-weight: bold;
+    font-size: 12px;
+    font-weight: 600;
 }
 
 .certificate-progress-container {
@@ -649,49 +693,57 @@ certificate-dialog {
 }
 
 .certificate-progress-text {
-    font-size: 0.8vw;
-    margin-bottom: 3px;
+    font-size: 12px;
+    margin-bottom: 5px;
+    font-weight: 500;
 }
 
 .certificate-progress-bar {
     width: 100%;
-    height: 6px;
-    background: rgba(255, 255, 255, 0.2);
-    border-radius: 3px;
+    height: 8px;
+    background: #ecf0f1;
+    border-radius: 4px;
     overflow: hidden;
 }
 
 .certificate-progress-fill {
     height: 100%;
-    background: linear-gradient(90deg, #00ff00, #32cd32);
-    border-radius: 3px;
+    background: linear-gradient(90deg, #8b00ff, #ff6b6b);
+    border-radius: 4px;
     transition: width 0.5s ease;
 }
 
 .certificate-status {
-    padding: 4px 8px;
-    border-radius: 12px;
-    font-size: 0.8vw;
-    font-weight: bold;
+    display: inline-block;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
 .status-working {
-    background: rgba(0, 255, 0, 0.3);
-    color: #00ff00;
+    background: linear-gradient(135deg, #00ff00, #32cd32);
+    color: white;
+    box-shadow: 0 4px 12px rgba(0, 255, 0, 0.3);
 }
 
 .status-not-working {
-    background: rgba(255, 0, 0, 0.3);
-    color: #ff6b6b;
+    background: linear-gradient(135deg, #ff0000, #ff4757);
+    color: white;
+    box-shadow: 0 4px 12px rgba(255, 0, 0, 0.3);
 }
 
 .certificate-footer {
     text-align: center;
-    padding-top: 15px;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 .certificate-footer-text {
-    font-size: 0.7vw;
-    opacity: 0.7;
+    font-size: 12px;
+    color: #95a5a6;
+    font-weight: 500;
 }
