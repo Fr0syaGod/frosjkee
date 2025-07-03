@@ -456,3 +456,112 @@ cef.on("game:hud:setComponentVisible", (component, isVisible) => {
         }
     }
 });
+
+
+
+cef.on("show_certificate", (name, transport, level, progress, limit, deliveries, cargo, status) => {
+    create_certificate(name, transport, level, progress, limit, deliveries, cargo, status);
+    cef.set_focus(true);
+});
+
+// Функция создания удостоверения (аналогично create_dialog)
+function create_certificate(name, transport, level, progress, limit, deliveries, cargo, status) {
+    // Удаляем существующее удостоверение если есть
+    var element = document.getElementById("certificate_container");
+    if(element) { element.remove(); }   
+
+    var body = document.getElementsByTagName("body")[0];
+    var certificate_container = document.createElement('div');
+    
+    certificate_container.id = "certificate_container";
+    certificate_container.className = "certificate-dialog";
+    body.append(certificate_container);
+
+    // Создаем HTML удостоверения
+    certificate_container.innerHTML = `
+        <div class="certificate-card">
+            <div class="certificate-header">
+                <div class="certificate-logo">🚚</div>
+                <div class="certificate-title">Удостоверение развозчика</div>
+                <div class="certificate-subtitle">Официальный документ работника</div>
+                <button class="certificate-close" onclick="close_certificate()">×</button>
+            </div>
+            
+            <div class="certificate-info">
+                <div class="certificate-row">
+                    <div class="certificate-label">Имя развозчика:</div>
+                    <div class="certificate-value">${name}</div>
+                </div>
+                
+                <div class="certificate-row">
+                    <div class="certificate-label">Рабочий транспорт:</div>
+                    <div class="certificate-value">${transport}</div>
+                </div>
+                
+                <div class="certificate-row">
+                    <div class="certificate-label">Уровень:</div>
+                    <div class="certificate-level">${level}</div>
+                </div>
+                
+                <div class="certificate-row">
+                    <div class="certificate-label">Прогресс уровня:</div>
+                    <div class="certificate-progress-container">
+                        <div class="certificate-progress-text">${progress}/${limit}</div>
+                        <div class="certificate-progress-bar">
+                            <div class="certificate-progress-fill" style="width: ${calculateProgress(progress, limit)}%"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="certificate-row">
+                    <div class="certificate-label">Всего поставок:</div>
+                    <div class="certificate-value">${deliveries}</div>
+                </div>
+                
+                <div class="certificate-row">
+                    <div class="certificate-label">Доставлено груза:</div>
+                    <div class="certificate-value">${cargo} кг</div>
+                </div>
+                
+                <div class="certificate-row">
+                    <div class="certificate-label">Статус:</div>
+                    <div class="certificate-status ${getStatusClass(status)}">${status}</div>
+                </div>
+            </div>
+            
+            <div class="certificate-footer">
+                <div class="certificate-footer-text">© 2025 Служба доставки грузов</div>
+            </div>
+        </div>
+    `;
+}
+
+// Функция закрытия удостоверения (аналогично callcack_dialog_response)
+function close_certificate() {
+    cef.set_focus(false);
+    cef.emit("callback_certificate_close");
+    
+    var element = document.getElementById("certificate_container");
+    if(element) { element.remove(); }
+}
+
+// Вспомогательные функции
+function calculateProgress(progress, limit) {
+    if(limit === "Максимальный!") return 100;
+    return Math.min(100, (parseInt(progress) / parseInt(limit)) * 100);
+}
+
+function getStatusClass(status) {
+    if(status.includes("На работе") || status.includes("работает")) {
+        return "status-working";
+    }
+    return "status-not-working";
+}
+
+// Обработка клавиши ESC (аналогично вашим диалогам)
+window.addEventListener("keyup", (event) => {
+    var certificate = document.getElementById("certificate_container");
+    if(certificate && event.keyCode === 27) {
+        close_certificate();
+    }
+});

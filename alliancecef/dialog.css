@@ -527,3 +527,171 @@ body {
 .motorcycle-icon {
     background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCI+PHRpdGxlPmNhci1kb29yPC90aXRsZT48cGF0aCBkPSJNMTksMTRIMTZWMTZIMTlWMTRNMjIsMjFIM1YxMUwxMSwzSDIxQTEsMSAwIDAsMSAyMiw0VjIxTTExLjgzLDVMNS44MywxMUgyMFY1SDExLjgzWiIgLz48L3N2Zz4=');
 }
+
+certificate-dialog {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    font-family: 'Proxima Nova Bold';
+}
+
+.certificate-card {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 20px;
+    padding: 30px;
+    width: 450px;
+    max-width: 90vw;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    position: relative;
+    color: white;
+}
+
+.certificate-header {
+    text-align: center;
+    margin-bottom: 25px;
+    position: relative;
+}
+
+.certificate-logo {
+    width: 60px;
+    height: 60px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    margin: 0 auto 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+}
+
+.certificate-title {
+    font-size: 1.4vw;
+    font-weight: bold;
+    margin-bottom: 5px;
+    text-transform: uppercase;
+}
+
+.certificate-subtitle {
+    font-size: 0.9vw;
+    opacity: 0.8;
+}
+
+.certificate-close {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    background: rgba(255, 255, 255, 0.2);
+    border: none;
+    color: white;
+    font-size: 20px;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.certificate-close:hover {
+    background: rgba(255, 0, 0, 0.5);
+    transform: rotate(90deg);
+}
+
+.certificate-info {
+    margin-bottom: 20px;
+}
+
+.certificate-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.certificate-row:last-child {
+    border-bottom: none;
+}
+
+.certificate-label {
+    font-weight: 600;
+    font-size: 0.85vw;
+    opacity: 0.9;
+}
+
+.certificate-value {
+    font-weight: 500;
+    font-size: 0.85vw;
+}
+
+.certificate-level {
+    background: rgba(255, 255, 255, 0.2);
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 0.8vw;
+    font-weight: bold;
+}
+
+.certificate-progress-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    width: 120px;
+}
+
+.certificate-progress-text {
+    font-size: 0.8vw;
+    margin-bottom: 3px;
+}
+
+.certificate-progress-bar {
+    width: 100%;
+    height: 6px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.certificate-progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #00ff00, #32cd32);
+    border-radius: 3px;
+    transition: width 0.5s ease;
+}
+
+.certificate-status {
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 0.8vw;
+    font-weight: bold;
+}
+
+.status-working {
+    background: rgba(0, 255, 0, 0.3);
+    color: #00ff00;
+}
+
+.status-not-working {
+    background: rgba(255, 0, 0, 0.3);
+    color: #ff6b6b;
+}
+
+.certificate-footer {
+    text-align: center;
+    padding-top: 15px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.certificate-footer-text {
+    font-size: 0.7vw;
+    opacity: 0.7;
+}
