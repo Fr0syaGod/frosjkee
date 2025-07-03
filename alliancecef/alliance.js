@@ -464,6 +464,7 @@ cef.on("show_certificate", (name, transport, level, progress, limit, deliveries,
     cef.set_focus(true);
 });
 
+// Функция создания удостоверения (аналогично create_dialog)
 function create_certificate(name, transport, level, progress, limit, deliveries, cargo, status) {
     // Удаляем существующее удостоверение если есть
     var element = document.getElementById("certificate_container");
@@ -476,12 +477,9 @@ function create_certificate(name, transport, level, progress, limit, deliveries,
     certificate_container.className = "certificate-dialog";
     body.append(certificate_container);
 
-    // Создаем HTML прозрачного удостоверения
+    // Создаем HTML удостоверения
     certificate_container.innerHTML = `
         <div class="certificate-card">
-            <div class="decorative-element"></div>
-            <div class="decorative-element2"></div>
-            
             <div class="certificate-header">
                 <div class="certificate-logo">🚚</div>
                 <div class="certificate-title">Удостоверение развозчика</div>
