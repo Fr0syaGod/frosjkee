@@ -546,8 +546,8 @@ body {
     background: rgba(255, 255, 255, 0.95);
     backdrop-filter: blur(10px);
     border-radius: 20px;
-    padding: 40px;
-    width: 480px;
+    padding: 30px;
+    width: 520px;
     max-width: 90vw;
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
     position: relative;
@@ -570,16 +570,17 @@ body {
 
 .certificate-header {
     text-align: center;
-    margin-bottom: 30px;
+    margin-bottom: 25px;
     position: relative;
+    padding-top: 10px;
 }
 
 .certificate-header::before {
     content: '';
     position: absolute;
-    top: -20px;
-    left: 0;
-    right: 0;
+    top: -30px;
+    left: -30px;
+    right: -30px;
     height: 6px;
     background: linear-gradient(90deg, #8b00ff, #ff6b6b, #4ecdc4, #45b7d1);
     border-radius: 20px 20px 0 0;
@@ -615,26 +616,31 @@ body {
 
 .certificate-close {
     position: absolute;
-    top: 15px;
-    right: 20px;
-    background: none;
-    border: none;
-    font-size: 24px;
-    color: #95a5a6;
+    top: -20px;
+    right: -20px;
+    background: rgba(255, 255, 255, 0.9);
+    border: 2px solid rgba(231, 76, 60, 0.2);
+    font-size: 20px;
+    color: #e74c3c;
     cursor: pointer;
     transition: all 0.3s ease;
-    width: 30px;
-    height: 30px;
+    width: 35px;
+    height: 35px;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
+    font-weight: bold;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    z-index: 1000;
 }
 
 .certificate-close:hover {
-    background: rgba(255, 0, 0, 0.1);
-    color: #e74c3c;
-    transform: rotate(90deg);
+    background: #e74c3c;
+    color: white;
+    transform: rotate(90deg) scale(1.1);
+    border-color: #e74c3c;
+    box-shadow: 0 6px 20px rgba(231, 76, 60, 0.4);
 }
 
 .certificate-info {
@@ -645,16 +651,18 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 12px 0;
+    padding: 14px 0;
     border-bottom: 1px solid rgba(0, 0, 0, 0.05);
     transition: all 0.3s ease;
+    border-radius: 8px;
+    margin: 0 -10px;
+    padding-left: 10px;
+    padding-right: 10px;
 }
 
 .certificate-row:hover {
     background: rgba(139, 0, 255, 0.02);
-    border-radius: 8px;
-    padding-left: 10px;
-    padding-right: 10px;
+    transform: translateX(5px);
 }
 
 .certificate-row:last-child {
@@ -664,14 +672,14 @@ body {
 .certificate-label {
     font-weight: 600;
     color: #34495e;
-    font-size: 14px;
+    font-size: 15px;
     flex: 1;
 }
 
 .certificate-value {
     font-weight: 500;
     color: #2c3e50;
-    font-size: 14px;
+    font-size: 15px;
     text-align: right;
     flex: 1;
 }
@@ -679,23 +687,27 @@ body {
 .certificate-level {
     background: linear-gradient(135deg, #8b00ff, #ff6b6b);
     color: white;
-    padding: 4px 8px;
-    border-radius: 12px;
-    font-size: 12px;
+    padding: 6px 12px;
+    border-radius: 15px;
+    font-size: 13px;
     font-weight: 600;
+    min-width: 30px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(139, 0, 255, 0.3);
 }
 
 .certificate-progress-container {
     display: flex;
     flex-direction: column;
     align-items: flex-end;
-    width: 120px;
+    width: 130px;
 }
 
 .certificate-progress-text {
-    font-size: 12px;
-    margin-bottom: 5px;
-    font-weight: 500;
+    font-size: 13px;
+    margin-bottom: 6px;
+    font-weight: 600;
+    color: #5a6c7d;
 }
 
 .certificate-progress-bar {
@@ -704,6 +716,7 @@ body {
     background: #ecf0f1;
     border-radius: 4px;
     overflow: hidden;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .certificate-progress-fill {
@@ -711,11 +724,12 @@ body {
     background: linear-gradient(90deg, #8b00ff, #ff6b6b);
     border-radius: 4px;
     transition: width 0.5s ease;
+    box-shadow: 0 2px 4px rgba(139, 0, 255, 0.3);
 }
 
 .certificate-status {
     display: inline-block;
-    padding: 6px 12px;
+    padding: 8px 16px;
     border-radius: 20px;
     font-size: 12px;
     font-weight: 600;
@@ -727,6 +741,7 @@ body {
     background: linear-gradient(135deg, #00ff00, #32cd32);
     color: white;
     box-shadow: 0 4px 12px rgba(0, 255, 0, 0.3);
+    animation: pulse 2s infinite;
 }
 
 .status-not-working {
@@ -735,9 +750,15 @@ body {
     box-shadow: 0 4px 12px rgba(255, 0, 0, 0.3);
 }
 
+@keyframes pulse {
+    0% { box-shadow: 0 4px 12px rgba(0, 255, 0, 0.3); }
+    50% { box-shadow: 0 6px 20px rgba(0, 255, 0, 0.6); }
+    100% { box-shadow: 0 4px 12px rgba(0, 255, 0, 0.3); }
+}
+
 .certificate-footer {
     text-align: center;
-    margin-top: 30px;
+    margin-top: 25px;
     padding-top: 20px;
     border-top: 1px solid rgba(0, 0, 0, 0.1);
 }

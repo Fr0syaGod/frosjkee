@@ -482,29 +482,29 @@ function create_certificate(name, transport, level, progress, limit, deliveries,
         <div class="certificate-card">
             <div class="certificate-header">
                 <div class="certificate-logo">🚚</div>
-                <div class="certificate-title">Удостоверение развозчика</div>
-                <div class="certificate-subtitle">Официальный документ работника</div>
+                <div class="certificate-title">Посвідчення розвозника</div>
+                <div class="certificate-subtitle">Офіційний документ працівника</div>
                 <button class="certificate-close" onclick="close_certificate()">×</button>
             </div>
             
             <div class="certificate-info">
                 <div class="certificate-row">
-                    <div class="certificate-label">Имя развозчика:</div>
+                    <div class="certificate-label">Ім'я розвозника:</div>
                     <div class="certificate-value">${name}</div>
                 </div>
                 
                 <div class="certificate-row">
-                    <div class="certificate-label">Рабочий транспорт:</div>
+                    <div class="certificate-label">Робочий транспорт:</div>
                     <div class="certificate-value">${transport}</div>
                 </div>
                 
                 <div class="certificate-row">
-                    <div class="certificate-label">Уровень:</div>
+                    <div class="certificate-label">Рівень:</div>
                     <div class="certificate-level">${level}</div>
                 </div>
                 
                 <div class="certificate-row">
-                    <div class="certificate-label">Прогресс уровня:</div>
+                    <div class="certificate-label">Прогрес рівня:</div>
                     <div class="certificate-progress-container">
                         <div class="certificate-progress-text">${progress}/${limit}</div>
                         <div class="certificate-progress-bar">
@@ -514,12 +514,12 @@ function create_certificate(name, transport, level, progress, limit, deliveries,
                 </div>
                 
                 <div class="certificate-row">
-                    <div class="certificate-label">Всего поставок:</div>
+                    <div class="certificate-label">Всього поставок:</div>
                     <div class="certificate-value">${deliveries}</div>
                 </div>
                 
                 <div class="certificate-row">
-                    <div class="certificate-label">Доставлено груза:</div>
+                    <div class="certificate-label">Доставлено вантажу:</div>
                     <div class="certificate-value">${cargo} кг</div>
                 </div>
                 
@@ -530,7 +530,7 @@ function create_certificate(name, transport, level, progress, limit, deliveries,
             </div>
             
             <div class="certificate-footer">
-                <div class="certificate-footer-text">© 2025 Служба доставки грузов</div>
+                <div class="certificate-footer-text">© 2025 Служба доставки вантажів</div>
             </div>
         </div>
     `;
