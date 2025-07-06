@@ -508,7 +508,6 @@ progress::-webkit-progress-value {
     position: relative;
     width: 653px;
     height: 399px;
-    background-image: url('img/passport.png');
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
@@ -658,7 +657,7 @@ progress::-webkit-progress-value {
 
 .passport-additional-info {
     position: absolute;
-    bottom: -100px;
+    bottom: -80px; /* Изменил с -100px на -80px чтобы панель была ближе */
     left: 0;
     right: 0;
     background: #ffffff;

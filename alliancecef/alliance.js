@@ -567,15 +567,18 @@ window.addEventListener("keyup", (event) => {
 });
 
 // Функции для паспорта
-function create_passport(name, years, law, wanted, house, job, regdate) {
+function create_passport(name, years, law, wanted, house, job, regdate, gender) {
     var element = document.querySelector(".passport-shadow");
     if(element) { element.remove(); }   
 
     var body = document.getElementsByTagName("body")[0];
     
+    // Выбираем картинку в зависимости от пола
+    var passportImage = gender == 0 ? 'img/passport_male.png' : 'img/passport_female.png';
+    
     var passportHTML = `
         <div class="passport-shadow" onclick="closePassport()">
-            <div class="passport-container" onclick="event.stopPropagation()">
+            <div class="passport-container" onclick="event.stopPropagation()" style="background-image: url('${passportImage}');">
                 <div class="player-skin" id="player-skin"></div>
                 <div class="blur-skin"></div>
                 
@@ -620,10 +623,10 @@ function create_passport(name, years, law, wanted, house, job, regdate) {
     `;
     
     body.insertAdjacentHTML('beforeend', passportHTML);
-    update_passport_data(name, years, law, wanted, house, job, regdate);
+    update_passport_data(name, years, law, wanted, house, job, regdate, gender);
 }
 
-function update_passport_data(name, years, law, wanted, house, job, regdate) {
+function update_passport_data(name, years, law, wanted, house, job, regdate, gender) {
     // Обработка ника с подчеркиванием
     var firstName, lastName;
     
@@ -639,6 +642,10 @@ function update_passport_data(name, years, law, wanted, house, job, regdate) {
     
     document.getElementById('passport-firstname').innerHTML = firstName;
     document.getElementById('passport-lastname').innerHTML = lastName;
+    
+    // Устанавливаем пол
+    var genderText = gender == 0 ? "Чоловіча" : "Жіноча";
+    document.getElementById('passport-gender').innerHTML = genderText;
     
     // Обновляем дату регистрации
     if (regdate) {
@@ -687,8 +694,8 @@ function closePassport() {
 }
 
 // CEF события для паспорта
-cef.on("show_passport", function(name, years, law, wanted, house, job, regdate) {
-    create_passport(name, years, law, wanted, house, job, regdate);
+cef.on("show_passport", function(name, years, law, wanted, house, job, regdate, gender) {
+    create_passport(name, years, law, wanted, house, job, regdate, gender);
     cef.set_focus(true);
 });
 
