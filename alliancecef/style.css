@@ -494,7 +494,9 @@ progress::-webkit-progress-value {
     left: 0;
     width: 100vw;
     height: 100vh;
-    background: rgba(170, 0, 0, 0.6);
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -659,11 +661,13 @@ progress::-webkit-progress-value {
     bottom: -100px;
     left: 0;
     right: 0;
-    background: rgba(255, 255, 255, 0.95);
+    background: #ffffff;
     border-radius: 10px;
     padding: 15px;
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.3);
+    border: 2px solid #e5e7eb;
+    box-shadow: 
+        0 8px 32px rgba(0, 0, 0, 0.3),
+        0 0 0 1px rgba(255, 255, 255, 0.9) inset;
     font-family: 'Font 700', sans-serif;
 }
 
@@ -725,4 +729,13 @@ progress::-webkit-progress-value {
 .passport-law-low {
     background: #ef4444;
     color: white;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
 }

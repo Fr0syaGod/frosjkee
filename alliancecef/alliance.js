@@ -567,7 +567,7 @@ window.addEventListener("keyup", (event) => {
 });
 
 // Функции для паспорта
-function create_passport(name, years, law, wanted, house, job) {
+function create_passport(name, years, law, wanted, house, job, regdate) {
     var element = document.querySelector(".passport-shadow");
     if(element) { element.remove(); }   
 
@@ -586,7 +586,7 @@ function create_passport(name, years, law, wanted, house, job) {
                 <div class="passport-field field-birthday" id="passport-birthday">01.01.1990</div>
                 <div class="passport-field field-level" id="passport-level">5 років</div>
                 <div class="passport-field field-military" id="passport-military">В наявності</div>
-                <div class="passport-field field-regdate" id="passport-regdate">01/01/2020</div>
+                <div class="passport-field field-regdate" id="passport-regdate">${regdate || '01/01/2020'}</div>
                 
                 <div class="social-background" id="social-bg"></div>
                 <div class="passport-field field-social-text" id="passport-social">100</div>
@@ -620,16 +620,30 @@ function create_passport(name, years, law, wanted, house, job) {
     `;
     
     body.insertAdjacentHTML('beforeend', passportHTML);
-    update_passport_data(name, years, law, wanted, house, job);
+    update_passport_data(name, years, law, wanted, house, job, regdate);
 }
 
-function update_passport_data(name, years, law, wanted, house, job) {
-    var nameParts = name.split(' ');
-    var firstName = nameParts[0] || '';
-    var lastName = nameParts[1] || '';
+function update_passport_data(name, years, law, wanted, house, job, regdate) {
+    // Обработка ника с подчеркиванием
+    var firstName, lastName;
+    
+    if (name.includes('_')) {
+        var nameParts = name.split('_');
+        firstName = nameParts[0] || '';
+        lastName = nameParts[1] || '';
+    } else {
+        var nameParts = name.split(' ');
+        firstName = nameParts[0] || '';
+        lastName = nameParts[1] || '';
+    }
     
     document.getElementById('passport-firstname').innerHTML = firstName;
     document.getElementById('passport-lastname').innerHTML = lastName;
+    
+    // Обновляем дату регистрации
+    if (regdate) {
+        document.getElementById('passport-regdate').innerHTML = regdate;
+    }
     
     var levelPlural = years == 1 ? "рік" : (years < 5 ? "роки" : "років");
     document.getElementById('passport-level').innerHTML = years + " " + levelPlural;
@@ -672,7 +686,16 @@ function closePassport() {
     if(element) { element.remove(); }
 }
 
-cef.on("show_passport", function(name, years, law, wanted, house, job) {
-    create_passport(name, years, law, wanted, house, job);
+// CEF события для паспорта
+cef.on("show_passport", function(name, years, law, wanted, house, job, regdate) {
+    create_passport(name, years, law, wanted, house, job, regdate);
     cef.set_focus(true);
+});
+
+// Обработка клавиши ESC для паспорта
+window.addEventListener("keyup", function(event) {
+    var passport = document.querySelector(".passport-shadow");
+    if(passport && event.keyCode === 27) {
+        closePassport();
+    }
 });
