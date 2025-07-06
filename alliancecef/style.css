@@ -486,3 +486,150 @@ progress::-webkit-progress-value {
         font-size: 1.2vw;
     }
 }
+
+/* Стили для паспорта */
+.passport-container {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 640px;
+    height: 400px;
+    background-image: url('img/passport.png'); /* Путь к вашей картинке */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 15px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+    overflow: hidden;
+    animation: fadeIn 0.5s ease-out;
+    z-index: 9999;
+}
+
+.passport-close-button {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    background: rgba(220, 38, 38, 0.9);
+    color: white;
+    border: none;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 20px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    z-index: 1000;
+    backdrop-filter: blur(5px);
+}
+
+.passport-close-button:hover {
+    background: rgba(185, 28, 28, 1);
+    transform: scale(1.1);
+}
+
+.passport-field {
+    position: absolute;
+    font-family: 'Font 700', sans-serif;
+    font-weight: 600;
+    color: #1e40af;
+    text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
+}
+
+.field-name {
+    top: 140px;
+    left: 260px;
+    font-size: 16px;
+    font-weight: 700;
+    color: #1e3a8a;
+    max-width: 200px;
+}
+
+.passport-additional-info {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    right: 60px;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 10px;
+    padding: 15px;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.passport-info-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    font-size: 12px;
+}
+
+.passport-info-row:last-child {
+    margin-bottom: 0;
+}
+
+.passport-info-label {
+    font-weight: 500;
+    color: #374151;
+    font-family: 'Font 700', sans-serif;
+}
+
+.passport-info-value {
+    font-weight: 600;
+    color: #1e40af;
+    font-family: 'Font 700', sans-serif;
+}
+
+.passport-wanted-stars {
+    display: flex;
+    gap: 2px;
+}
+
+.passport-wanted-star {
+    width: 12px;
+    height: 12px;
+    background: #ef4444;
+    clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+}
+
+.passport-wanted-star.inactive {
+    background: #d1d5db;
+}
+
+.passport-law-badge {
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.passport-law-high {
+    background: #10b981;
+    color: white;
+}
+
+.passport-law-medium {
+    background: #f59e0b;
+    color: white;
+}
+
+.passport-law-low {
+    background: #ef4444;
+    color: white;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -70%) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+}
