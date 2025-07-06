@@ -573,11 +573,11 @@ function create_passport(name, years, law, wanted, house, job, regdate, gender) 
 
     var body = document.getElementsByTagName("body")[0];
     
-    // Выбираем картинку в зависимости от пола
-    var passportImage = gender == 0 ? 'img/passport_male.png' : 'img/passport_female.png';
+    // ИСПРАВЛЕНО: Инвертируем логику пола
+    var passportImage = gender == 1 ? 'img/passport_male.png' : 'img/passport_female.png';
     
     var passportHTML = `
-        <div class="passport-shadow" onclick="closePassport()">
+        <div class="passport-shadow">
             <div class="passport-container" onclick="event.stopPropagation()" style="background-image: url('${passportImage}');">
                 <div class="player-skin" id="player-skin"></div>
                 <div class="blur-skin"></div>
@@ -623,6 +623,15 @@ function create_passport(name, years, law, wanted, house, job, regdate, gender) 
     `;
     
     body.insertAdjacentHTML('beforeend', passportHTML);
+    
+    // ИСПРАВЛЕНО: Добавляем обработчик клика для закрытия
+    var shadowElement = document.querySelector('.passport-shadow');
+    shadowElement.addEventListener('click', function(e) {
+        if (e.target === shadowElement) {
+            closePassport();
+        }
+    });
+    
     update_passport_data(name, years, law, wanted, house, job, regdate, gender);
 }
 
@@ -643,8 +652,8 @@ function update_passport_data(name, years, law, wanted, house, job, regdate, gen
     document.getElementById('passport-firstname').innerHTML = firstName;
     document.getElementById('passport-lastname').innerHTML = lastName;
     
-    // Устанавливаем пол
-    var genderText = gender == 0 ? "Чоловіча" : "Жіноча";
+    // ИСПРАВЛЕНО: Инвертируем логику пола
+    var genderText = gender == 1 ? "Чоловіча" : "Жіноча";
     document.getElementById('passport-gender').innerHTML = genderText;
     
     // Обновляем дату регистрации
