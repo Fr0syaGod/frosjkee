@@ -568,64 +568,71 @@ window.addEventListener("keyup", (event) => {
 
 // Функции для паспорта
 function create_passport(name, years, law, wanted, house, job) {
-    var element = document.getElementById("passport_container");
+    var element = document.querySelector(".passport-shadow");
     if(element) { element.remove(); }   
 
     var body = document.getElementsByTagName("body")[0];
-    var passport_container = document.createElement('div');
     
-    passport_container.id = "passport_container";
-    passport_container.className = "passport-container";
-    body.append(passport_container);
-
-    var close_button = document.createElement('button');
-    close_button.className = "passport-close-button";
-    close_button.innerHTML = "×";
-    close_button.onclick = close_passport;
-    passport_container.append(close_button);
-
-    var name_field = document.createElement('div');
-    name_field.className = "passport-field field-name";
-    name_field.id = "passport-name";
-    name_field.innerHTML = name;
-    passport_container.append(name_field);
-
-    var additional_info = document.createElement('div');
-    additional_info.className = "passport-additional-info";
-    additional_info.innerHTML = `
-        <div class="passport-info-row">
-            <span class="passport-info-label">Років в області:</span>
-            <span class="passport-info-value" id="passport-info-years">${years} років</span>
-        </div>
-        <div class="passport-info-row">
-            <span class="passport-info-label">Законопослушність:</span>
-            <span class="passport-info-value">
-                <span class="passport-law-badge" id="passport-info-law">Середній</span>
-            </span>
-        </div>
-        <div class="passport-info-row">
-            <span class="passport-info-label">Рівень розшуку:</span>
-            <span class="passport-info-value">
-                <div class="passport-wanted-stars" id="passport-info-wanted"></div>
-            </span>
-        </div>
-        <div class="passport-info-row">
-            <span class="passport-info-label">Номер будинку:</span>
-            <span class="passport-info-value" id="passport-info-house">${house == -1 ? '---' : house}</span>
-        </div>
-        <div class="passport-info-row">
-            <span class="passport-info-label">Місце роботи:</span>
-            <span class="passport-info-value" id="passport-info-job">${job || 'Не працює'}</span>
+    var passportHTML = `
+        <div class="passport-shadow" onclick="closePassport()">
+            <div class="passport-container" onclick="event.stopPropagation()">
+                <div class="player-skin" id="player-skin"></div>
+                <div class="blur-skin"></div>
+                
+                <div class="passport-field field-lastname" id="passport-lastname">Петренко</div>
+                <div class="passport-field field-firstname" id="passport-firstname">Іван</div>
+                <div class="passport-field field-gender" id="passport-gender">Чоловіча</div>
+                <div class="passport-field field-city" id="passport-city">Київ</div>
+                <div class="passport-field field-birthday" id="passport-birthday">01.01.1990</div>
+                <div class="passport-field field-level" id="passport-level">5 років</div>
+                <div class="passport-field field-military" id="passport-military">В наявності</div>
+                <div class="passport-field field-regdate" id="passport-regdate">01/01/2020</div>
+                
+                <div class="social-background" id="social-bg"></div>
+                <div class="passport-field field-social-text" id="passport-social">100</div>
+                
+                <button class="passport-close" onclick="closePassport()">Закрыть</button>
+                
+                <div class="passport-additional-info">
+                    <div class="passport-info-row">
+                        <span class="passport-info-label">Законопослушність:</span>
+                        <span class="passport-info-value">
+                            <span class="passport-law-badge passport-law-high" id="passport-info-law">Високий</span>
+                        </span>
+                    </div>
+                    <div class="passport-info-row">
+                        <span class="passport-info-label">Рівень розшуку:</span>
+                        <span class="passport-info-value">
+                            <div class="passport-wanted-stars" id="passport-info-wanted"></div>
+                        </span>
+                    </div>
+                    <div class="passport-info-row">
+                        <span class="passport-info-label">Номер будинку:</span>
+                        <span class="passport-info-value" id="passport-info-house">---</span>
+                    </div>
+                    <div class="passport-info-row">
+                        <span class="passport-info-label">Місце роботи:</span>
+                        <span class="passport-info-value" id="passport-info-job">Не працює</span>
+                    </div>
+                </div>
+            </div>
         </div>
     `;
-    passport_container.append(additional_info);
     
+    body.insertAdjacentHTML('beforeend', passportHTML);
     update_passport_data(name, years, law, wanted, house, job);
 }
 
 function update_passport_data(name, years, law, wanted, house, job) {
-    document.getElementById('passport-name').innerHTML = name;
-    document.getElementById('passport-info-years').innerHTML = years + ' років';
+    var nameParts = name.split(' ');
+    var firstName = nameParts[0] || '';
+    var lastName = nameParts[1] || '';
+    
+    document.getElementById('passport-firstname').innerHTML = firstName;
+    document.getElementById('passport-lastname').innerHTML = lastName;
+    
+    var levelPlural = years == 1 ? "рік" : (years < 5 ? "роки" : "років");
+    document.getElementById('passport-level').innerHTML = years + " " + levelPlural;
     
     var lawElement = document.getElementById('passport-info-law');
     lawElement.className = 'passport-law-badge';
@@ -644,7 +651,7 @@ function update_passport_data(name, years, law, wanted, house, job) {
     var wantedContainer = document.getElementById('passport-info-wanted');
     wantedContainer.innerHTML = '';
     
-    for (let i = 0; i < 5; i++) {
+    for (var i = 0; i < 5; i++) {
         var star = document.createElement('span');
         star.className = 'passport-wanted-star';
         if (i >= wanted) {
@@ -657,15 +664,15 @@ function update_passport_data(name, years, law, wanted, house, job) {
     document.getElementById('passport-info-job').innerHTML = job || 'Не працює';
 }
 
-function close_passport() {
-    cef.set_focus(false);
+function closePassport() {
     cef.emit("callback_passport_close");
+    cef.set_focus(false);
     
-    var element = document.getElementById("passport_container");
+    var element = document.querySelector('.passport-shadow');
     if(element) { element.remove(); }
 }
 
-cef.on("show_passport", (name, years, law, wanted, house, job) => {
+cef.on("show_passport", function(name, years, law, wanted, house, job) {
     create_passport(name, years, law, wanted, house, job);
     cef.set_focus(true);
 });
