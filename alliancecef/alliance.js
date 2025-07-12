@@ -464,7 +464,6 @@ cef.on("show_certificate", (name, transport, level, progress, limit, deliveries,
     cef.set_focus(true);
 });
 
-// Функция создания удостоверения (аналогично create_dialog)
 function create_certificate(name, transport, level, progress, limit, deliveries, cargo, status) {
     // Удаляем существующее удостоверение если есть
     var element = document.getElementById("certificate_container");
@@ -552,7 +551,14 @@ function calculateProgress(progress, limit) {
 }
 
 function getStatusClass(status) {
-    if(status.includes("На работе") || status.includes("работает")) {
+    // Проверяем точное соответствие статусов
+    if(status === "На работе" || status === "НА РАБОТЕ") {
+        return "status-working";
+    } else if(status === "Не работает" || status === "НЕ РАБОТАЕТ") {
+        return "status-not-working";
+    }
+    // Дополнительная проверка для украинского языка
+    if(status.includes("працює") || status.includes("роботі")) {
         return "status-working";
     }
     return "status-not-working";
