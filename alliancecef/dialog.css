@@ -577,6 +577,7 @@ body {
     padding-top: 10px;
 }
 
+/*
 .certificate-header::before {
     content: '';
     position: absolute;
@@ -594,6 +595,7 @@ body {
     border-radius: 20px 20px 0 0;
     box-shadow: 0 2px 10px rgba(102, 126, 234, 0.3);
 }
+*/
 
 .certificate-logo {
     width: 80px;
