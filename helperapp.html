@@ -404,25 +404,82 @@
             margin-right: 8px;
             vertical-align: middle;
         }
+
+        /* Video Section */
+        .video-section {
+            margin-top: 50px;
+            padding: 40px 0;
+            border-top: 2px solid var(--border-color);
+        }
+
+        .video-container {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+            aspect-ratio: 16 / 9;
+            background: var(--light-bg);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+        }
+
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .video-placeholder {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            color: var(--secondary-color);
+            text-align: center;
+            padding: 40px;
+        }
+
+        .video-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            opacity: 0.5;
+        }
+
+        .video-placeholder p {
+            margin: 5px 0;
+            font-size: 1.1rem;
+        }
+
+        /* Smooth scroll */
+        html {
+            scroll-behavior: smooth;
+        }
     </style>
 </head>
 <body>
     <div class="container">
-       
+        <!-- Header -->
         <div class="header">
             <h1>📦 Инструкция по установке</h1>
             <p>Пошаговое руководство для быстрой и правильной установки браузерного расширения - Helper by jkee</p>
         </div>
 
-     
+        <!-- Content -->
         <div class="content">
-           
+            <!-- Info Box -->
             <div class="info-box">
                 <h3>⏱️ Время установки: 2-3 минуты</h3>
                 <p>Следуйте простым шагам ниже, чтобы установить расширение и начать работу. Весь процесс займет не более 3 минут!</p>
+                <div style="margin-top: 15px;">
+                    <a href="#video-tutorial" class="btn">🎥 Посмотреть видео-обучение</a>
+                </div>
             </div>
 
- 
+            <!-- Progress Indicator -->
             <div class="progress-indicator">
                 <div class="progress-step active">
                     <span class="progress-circle">1</span>
@@ -442,9 +499,9 @@
                 </div>
             </div>
 
-          
+            <!-- Steps -->
             <div class="steps">
-             
+                <!-- Step 1 -->
                 <div class="step">
                     <h3>Скачайте файл расширения</h3>
                     <p>Нажмите на кнопку ниже, чтобы скачать последнюю версию расширения для вашего браузера.</p>
@@ -454,7 +511,7 @@
                     </div>
                 </div>
 
-               
+                <!-- Step 2 -->
                 <div class="step">
                     <h3>Откройте настройки расширений в браузере</h3>
                     <p>Откройте ваш браузер и перейдите на страницу управления расширениями:</p>
@@ -476,7 +533,7 @@
                     </div>
                 </div>
 
-              
+                <!-- Step 3 -->
                 <div class="step">
                     <h3>Установите расширение</h3>
                     <p>На странице расширений выполните следующие действия:</p>
@@ -547,6 +604,36 @@
                 </ul>
                 <p style="margin-top: 15px;"><strong>Не помогло?</strong> Напишите нам в Telegram: <a href="https://t.me/c_c_c_cs" target="_blank" style="color: #007bff; font-weight: bold;">@c_c_c_cs</a></p>
             </div>
+
+            <!-- Video Tutorial Section -->
+            <div id="video-tutorial" class="video-section">
+                <h2 style="text-align: center; color: var(--dark-text); margin-bottom: 20px;">🎥 Видео-обучение</h2>
+                <p style="text-align: center; color: var(--secondary-color); margin-bottom: 30px;">
+                    Посмотрите подробную видеоинструкцию по установке и настройке расширения
+                </p>
+                
+                <div class="video-container">
+                    <!-- Здесь будет ваше видео -->
+                    <div class="video-placeholder">
+                        <div class="video-icon">🎬</div>
+                        <p>Видео скоро появится</p>
+                        <p style="font-size: 0.9rem; color: var(--secondary-color); margin-top: 10px;">
+                            Здесь вы сможете разместить ссылку на YouTube, Vimeo или встроить видео
+                        </p>
+                    </div>
+                    
+                   
+                    <iframe 
+                        width="100%" 
+                        height="100%" 
+                        src="https://www.youtube.com/embed/z7SkNWQINds 
+                        title="Видео-инструкция по установке" 
+                        frameborder="0" 
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                        allowfullscreen>
+                    </iframe>
+                </div>
+            </div>
         </div>
 
         <!-- Footer -->
@@ -560,7 +647,6 @@
     </div>
 
     <script>
-  
         window.addEventListener('scroll', function() {
             const steps = document.querySelectorAll('.step');
             const progressSteps = document.querySelectorAll('.progress-step');
@@ -571,7 +657,6 @@
                 
                 if (isVisible && progressSteps[index]) {
                     progressSteps[index].classList.add('active');
-
                     for (let i = 0; i < index; i++) {
                         progressSteps[i].classList.add('completed');
                         progressSteps[i].classList.remove('active');
