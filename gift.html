@@ -492,6 +492,72 @@
     pointer-events: all;
 }
 
+/* Фильтры эксклюзивности */
+.exclusive-filter-wrapper {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 32px;
+    padding: 0 20px;
+}
+
+.exclusive-filter-btn {
+    padding: 14px 28px;
+    border: 2px solid var(--glass-border);
+    border-radius: var(--radius-md);
+    background: var(--bg-card);
+    color: var(--text-secondary);
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.exclusive-filter-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: -1;
+}
+
+.exclusive-filter-btn:hover {
+    border-color: var(--primary);
+    color: var(--text-primary);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px var(--primary-glow);
+}
+
+.exclusive-filter-btn.active {
+    border-color: var(--primary);
+    color: var(--text-hero);
+    box-shadow: 0 8px 24px var(--primary-glow);
+}
+
+.exclusive-filter-btn.active::before {
+    opacity: 1;
+}
+
+@media (max-width: 768px) {
+    .exclusive-filter-wrapper {
+        gap: 8px;
+    }
+    
+    .exclusive-filter-btn {
+        padding: 12px 20px;
+        font-size: 13px;
+    }
+}
+
         @media (max-width: 480px) {
             .mode-switcher { width: 100%; max-width: 320px; }
             .mode-btn { flex: 1; padding: 14px 0; justify-content: center; }
@@ -503,6 +569,18 @@
             .regional-prices { gap: 4px; }
             .price-tag { padding: 8px 4px; }
             .price-tag .amount { font-size: 12px; }
+            
+            .exclusive-filter-wrapper {
+                padding: 0 10px;
+                gap: 6px;
+            }
+            
+            .exclusive-filter-btn {
+                padding: 10px 14px;
+                font-size: 11px;
+                flex: 1;
+                min-width: 70px;
+            }
         }
 
         @media (prefers-reduced-motion: reduce) { 
@@ -548,6 +626,13 @@
             </section>
 
             <section class="gifts-section" id="realGifts">
+                <div class="exclusive-filter-wrapper">
+                    <button class="exclusive-filter-btn active" onclick="filterByExclusive('all', this)">🌟 ALL</button>
+                    <button class="exclusive-filter-btn" onclick="filterByExclusive('eu', this)">🌏 EU ONLY</button>
+                    <button class="exclusive-filter-btn" onclick="filterByExclusive('asia', this)">🌏 ASIA ONLY</button>
+                    <button class="exclusive-filter-btn" onclick="filterByExclusive('latam', this)">🌎 LATAM ONLY</button>
+                    <button class="exclusive-filter-btn" onclick="filterByExclusive('none', this)">🌍 NO REGION LOCK</button>
+                </div>
                 <nav class="category-nav" id="realCategoryNav"></nav>
                 <div id="realCategorySections"></div>
             </section>
@@ -1011,10 +1096,20 @@
                 const gifts = giftData[category];
                 return `<div class="category-section ${index === 0 ? 'active' : ''}" id="real-category-${category.replace(/[^a-zA-Z0-9]/g, '-')}"><div class="category-header"><h2>${category}</h2></div><div class="gifts-grid">${gifts.map(gift => {
                     let badge = '';
-                    if (gift.euExclusive) badge = '<div class="exclusive-badge badge-eu">🌏 EU ONLY</div>';
-                    else if (gift.asiaExclusive) badge = '<div class="exclusive-badge badge-asia">🌏 ASIA ONLY</div>';
-                    else if (gift.latamExclusive) badge = '<div class="exclusive-badge badge-latam">🌎 LATAM ONLY</div>';
-                    return `<div class="gift-card">${badge}<div class="gift-image-container"><img src="${gift.image}" alt="${gift.name}" class="gift-image" loading="lazy"></div><div class="gift-name">${gift.name}</div><div class="regional-prices"><div class="price-tag"><span class="region">EU</span><span class="amount ${gift.eu ? '' : 'empty'}">${gift.eu ? gift.eu + '💎' : '—'}</span></div><div class="price-tag"><span class="region">ASIA</span><span class="amount ${gift.asia ? '' : 'empty'}">${gift.asia ? gift.asia + '💎' : '—'}</span></div><div class="price-tag"><span class="region">LATAM</span><span class="amount ${gift.latam ? '' : 'empty'}">${gift.latam ? gift.latam + '💎' : '—'}</span></div></div></div>`;
+                    let exclusiveType = 'none';
+                    if (gift.euExclusive) {
+                        badge = '<div class="exclusive-badge badge-eu">🌏 EU ONLY</div>';
+                        exclusiveType = 'eu';
+                    }
+                    else if (gift.asiaExclusive) {
+                        badge = '<div class="exclusive-badge badge-asia">🌏 ASIA ONLY</div>';
+                        exclusiveType = 'asia';
+                    }
+                    else if (gift.latamExclusive) {
+                        badge = '<div class="exclusive-badge badge-latam">🌎 LATAM ONLY</div>';
+                        exclusiveType = 'latam';
+                    }
+                    return `<div class="gift-card" data-exclusive="${exclusiveType}">${badge}<div class="gift-image-container"><img src="${gift.image}" alt="${gift.name}" class="gift-image" loading="lazy"></div><div class="gift-name">${gift.name}</div><div class="regional-prices"><div class="price-tag"><span class="region">EU</span><span class="amount ${gift.eu ? '' : 'empty'}">${gift.eu ? gift.eu + '💎' : '—'}</span></div><div class="price-tag"><span class="region">ASIA</span><span class="amount ${gift.asia ? '' : 'empty'}">${gift.asia ? gift.asia + '💎' : '—'}</span></div><div class="price-tag"><span class="region">LATAM</span><span class="amount ${gift.latam ? '' : 'empty'}">${gift.latam ? gift.latam + '💎' : '—'}</span></div></div></div>`;
                 }).join('')}</div></div>`;
             }).join('');
         }
@@ -1024,6 +1119,78 @@
             button.classList.add('active');
             document.querySelectorAll('#realCategorySections .category-section').forEach(section => section.classList.remove('active'));
             document.getElementById(`real-category-${category.replace(/[^a-zA-Z0-9]/g, '-')}`).classList.add('active');
+            
+            // Сбрасываем фильтр эксклюзивности на ALL
+            document.querySelectorAll('.exclusive-filter-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelector('.exclusive-filter-btn[onclick*="all"]').classList.add('active');
+            
+            // Показываем все карточки в выбранной категории
+            document.querySelectorAll('#realCategorySections .gift-card').forEach(card => {
+                card.style.display = '';
+            });
+        }
+
+        function filterByExclusive(exclusiveType, button) {
+            // Обновляем активную кнопку фильтра
+            document.querySelectorAll('.exclusive-filter-btn').forEach(btn => btn.classList.remove('active'));
+            button.classList.add('active');
+            
+            const categoryNav = document.getElementById('realCategoryNav');
+            
+            if (exclusiveType === 'all') {
+                // Режим ALL - показываем навигацию категорий
+                categoryNav.style.display = '';
+                
+                // ПОЛНОСТЬЮ сбрасываем все стили у секций
+                document.querySelectorAll('#realCategorySections .category-section').forEach(section => {
+                    section.style.display = '';
+                    section.classList.remove('active');
+                });
+                
+                // ПОЛНОСТЬЮ сбрасываем все стили у карточек
+                document.querySelectorAll('#realCategorySections .gift-card').forEach(card => {
+                    card.style.display = '';
+                });
+                
+                // Активируем первую категорию или восстанавливаем активную
+                const activeCategory = document.querySelector('#realCategoryNav .category-btn.active');
+                if (activeCategory) {
+                    const categoryName = activeCategory.textContent;
+                    document.getElementById(`real-category-${categoryName.replace(/[^a-zA-Z0-9]/g, '-')}`).classList.add('active');
+                } else {
+                    // Активируем первую категорию
+                    document.querySelectorAll('#realCategorySections .category-section')[0].classList.add('active');
+                    document.querySelectorAll('#realCategoryNav .category-btn')[0].classList.add('active');
+                }
+            } else {
+                // Режим фильтрации по региону - скрываем навигацию категорий
+                categoryNav.style.display = 'none';
+                
+                // Показываем ВСЕ секции категорий
+                document.querySelectorAll('#realCategorySections .category-section').forEach(section => {
+                    section.classList.add('active');
+                    section.style.display = '';
+                });
+                
+                // Фильтруем карточки подарков
+                document.querySelectorAll('#realCategorySections .gift-card').forEach(card => {
+                    const cardExclusive = card.getAttribute('data-exclusive');
+                    
+                    if (cardExclusive === exclusiveType) {
+                        card.style.display = '';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+                
+                // Скрываем пустые категории
+                document.querySelectorAll('#realCategorySections .category-section').forEach(section => {
+                    const visibleCards = Array.from(section.querySelectorAll('.gift-card')).filter(card => card.style.display !== 'none');
+                    if (visibleCards.length === 0) {
+                        section.style.display = 'none';
+                    }
+                });
+            }
         }
 
         // Initialize
