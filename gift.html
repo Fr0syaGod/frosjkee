@@ -78,15 +78,22 @@
         .header-badge::before { content: ''; width: 8px; height: 8px; background: var(--success); border-radius: 50%; }
 
         .header-title {
-            font-size: clamp(2.5rem, 8vw, 5rem);
-            font-weight: 900;
-            letter-spacing: -0.03em;
-            margin-bottom: 16px;
-            background: linear-gradient(135deg, var(--text-hero) 0%, var(--primary) 50%, var(--secondary) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
+			font-size: clamp(2.5rem, 8vw, 5rem);
+			font-weight: 900;
+			letter-spacing: -0.03em;
+			margin-bottom: 16px;
+			background: linear-gradient(135deg, var(--primary), var(--secondary), var(--primary), var(--secondary));
+			background-size: 300% 300%;
+			-webkit-background-clip: text;
+			-webkit-text-fill-color: transparent;
+			background-clip: text;
+			animation: gradientShift 4s ease infinite;
+		}
+
+		@keyframes gradientShift {
+			0%, 100% { background-position: 0% 50%; }
+			50% { background-position: 100% 50%; }
+	   }
 
         .header-subtitle {
             font-size: clamp(1rem, 2vw, 1.25rem);
