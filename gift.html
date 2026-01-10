@@ -82,18 +82,25 @@
 			font-weight: 900;
 			letter-spacing: -0.03em;
 			margin-bottom: 16px;
-			background: linear-gradient(135deg, var(--primary), var(--secondary), var(--primary), var(--secondary));
-			background-size: 300% 300%;
-			-webkit-background-clip: text;
-			-webkit-text-fill-color: transparent;
-			background-clip: text;
-			animation: gradientShift 4s ease infinite;
+			color: var(--text-hero);
 		}
 
-		@keyframes gradientShift {
-			0%, 100% { background-position: 0% 50%; }
-			50% { background-position: 100% 50%; }
-	   }
+		.hub-accent {
+			background: #000000;
+			padding: 4px 16px;
+			border-radius: 8px;
+			animation: rgbText 3s linear infinite;
+		}
+
+		@keyframes rgbText {
+			0% { color: #ff0000; }
+			16% { color: #ff9000; }
+			33% { color: #ffff00; }
+			50% { color: #00ff00; }
+			66% { color: #0099ff; }
+			83% { color: #9900ff; }
+			100% { color: #ff0000; }
+		}
 
         .header-subtitle {
             font-size: clamp(1rem, 2vw, 1.25rem);
@@ -602,7 +609,7 @@
         <div class="container">
             <header class="header">
                 <div class="header-badge"><span>Обновлено сегодня</span></div>
-                <h1 class="header-title">GiftHub</h1>
+                <h1 class="header-title">Gift<span class="hub-accent">Hub</span></h1>
                 <p class="header-subtitle">Каталог всех подарков агентства</p>
                 <div class="mode-switcher" id="modeSwitcher">
                     <button class="mode-btn active" id="virtualBtn"><span class="mode-btn-icon">🎮</span><span>Виртуальные</span></button>
