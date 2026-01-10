@@ -348,7 +348,8 @@
     position: fixed;
     top: 50%;
     right: 20px;
-    transform: translateY(-50%) translateX(100px);
+    margin-top: -160px; /* половина высоты (320px / 2) */
+    transform: translateX(100px); /* убираем translateY, используем margin-top */
     width: 320px;
     height: 320px;
     background: transparent;
@@ -368,12 +369,12 @@
 
 .notification.show {
     opacity: 1;
-    transform: translateY(-50%) translateX(0);
+    transform: translateX(0); /* изменено */
 }
 
 .notification.hide {
     opacity: 0;
-    transform: translateY(-50%) translateX(100px);
+    transform: translateX(100px); /* изменено */
 }
 
 .notification-image {
