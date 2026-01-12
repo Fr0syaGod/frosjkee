@@ -236,7 +236,7 @@
             100% { opacity: 1; }
         }
 
-        /* Calculator Tab Button */
+       
         .calc-tab-btn {
             display: inline-flex;
             align-items: center;
@@ -263,7 +263,7 @@
             color: var(--text-hero);
         }
 
-        /* Calculator Modal */
+       
         .calc-overlay {
             position: fixed;
             top: 0;
@@ -432,7 +432,7 @@
             font-size: 20px;
         }
 
-        /* Calculator Result */
+       
         .calc-result {
             background: linear-gradient(135deg, rgba(124, 58, 237, 0.1), rgba(6, 182, 212, 0.1));
             border: 1px solid rgba(124, 58, 237, 0.3);
@@ -599,7 +599,7 @@
             background-clip: text;
         }
 
-        /* Optimized grid with content-visibility */
+        
         .gifts-grid { 
             display: grid; 
             grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); 
@@ -608,7 +608,7 @@
             contain-intrinsic-size: 500px;
         }
 
-        /* Optimized cards - reduced effects */
+       
         .gift-card {
             position: relative;
             background: var(--bg-card);
@@ -788,7 +788,6 @@
     transform: scale(1.1);
 }
 
-/* Свечение вокруг уведомления */
 .notification::after {
     content: '';
     position: absolute;
@@ -817,7 +816,6 @@
     50% { opacity: 0.8; }
 }
 
-/* Адаптив для уведомления */
 @media (max-width: 768px) {
     .notification {
         width: 280px;
@@ -845,7 +843,6 @@
     }
 }
 
-/* Затемнение фона при появлении уведомления */
 .notification-backdrop {
     position: fixed;
     top: 0;
@@ -865,7 +862,6 @@
     pointer-events: all;
 }
 
-/* Фильтры эксклюзивности */
 .exclusive-filter-wrapper {
     display: flex;
     gap: 12px;
@@ -975,15 +971,15 @@
                     <button class="mode-btn" id="realBtn"><span class="mode-btn-icon">📦</span><span>Реальные</span></button>
                 </div>
                 
-                <!-- Commission Info Block -->
+        
                 <div class="commission-info" id="commissionInfo">
                     <span class="commission-icon">💰</span>
-                    <span class="commission-text">Твоя комиссия:</span>
+                    <span class="commission-text">Твой процент:</span>
                     <span class="commission-percent" id="commissionPercent">40%</span>
                     <span class="commission-type" id="commissionType">виртуальные</span>
                 </div>
 
-                <!-- Calculator Tab Button -->
+              
                 <br>
                 <button class="calc-tab-btn" id="openCalcBtn">
                     <span>🧮</span>
@@ -1338,7 +1334,7 @@
             });
         }
 
-        // Commission update function
+       
         function updateCommission(isReal) {
             const commissionInfo = document.getElementById('commissionInfo');
             const commissionPercent = document.getElementById('commissionPercent');
@@ -1532,59 +1528,59 @@
             document.querySelectorAll('#realCategorySections .category-section').forEach(section => section.classList.remove('active'));
             document.getElementById(`real-category-${category.replace(/[^a-zA-Z0-9]/g, '-')}`).classList.add('active');
             
-            // Сбрасываем фильтр эксклюзивности на ALL
+            
             document.querySelectorAll('.exclusive-filter-btn').forEach(btn => btn.classList.remove('active'));
             document.querySelector('.exclusive-filter-btn[onclick*="all"]').classList.add('active');
             
-            // Показываем все карточки в выбранной категории
+            
             document.querySelectorAll('#realCategorySections .gift-card').forEach(card => {
                 card.style.display = '';
             });
         }
 
         function filterByExclusive(exclusiveType, button) {
-            // Обновляем активную кнопку фильтра
+            
             document.querySelectorAll('.exclusive-filter-btn').forEach(btn => btn.classList.remove('active'));
             button.classList.add('active');
             
             const categoryNav = document.getElementById('realCategoryNav');
             
             if (exclusiveType === 'all') {
-                // Режим ALL - показываем навигацию категорий
+               
                 categoryNav.style.display = '';
                 
-                // ПОЛНОСТЬЮ сбрасываем все стили у секций
+                
                 document.querySelectorAll('#realCategorySections .category-section').forEach(section => {
                     section.style.display = '';
                     section.classList.remove('active');
                 });
                 
-                // ПОЛНОСТЬЮ сбрасываем все стили у карточек
+               
                 document.querySelectorAll('#realCategorySections .gift-card').forEach(card => {
                     card.style.display = '';
                 });
                 
-                // Активируем первую категорию или восстанавливаем активную
+                
                 const activeCategory = document.querySelector('#realCategoryNav .category-btn.active');
                 if (activeCategory) {
                     const categoryName = activeCategory.textContent;
                     document.getElementById(`real-category-${categoryName.replace(/[^a-zA-Z0-9]/g, '-')}`).classList.add('active');
                 } else {
-                    // Активируем первую категорию
+                    
                     document.querySelectorAll('#realCategorySections .category-section')[0].classList.add('active');
                     document.querySelectorAll('#realCategoryNav .category-btn')[0].classList.add('active');
                 }
             } else {
-                // Режим фильтрации по региону - скрываем навигацию категорий
+                
                 categoryNav.style.display = 'none';
                 
-                // Показываем ВСЕ секции категорий
+                
                 document.querySelectorAll('#realCategorySections .category-section').forEach(section => {
                     section.classList.add('active');
                     section.style.display = '';
                 });
                 
-                // Фильтруем карточки подарков
+                
                 document.querySelectorAll('#realCategorySections .gift-card').forEach(card => {
                     const cardExclusive = card.getAttribute('data-exclusive');
                     
@@ -1595,7 +1591,7 @@
                     }
                 });
                 
-                // Скрываем пустые категории
+               
                 document.querySelectorAll('#realCategorySections .category-section').forEach(section => {
                     const visibleCards = Array.from(section.querySelectorAll('.gift-card')).filter(card => card.style.display !== 'none');
                     if (visibleCards.length === 0) {
@@ -1614,7 +1610,7 @@
 
     </script>
 
-    <!-- Calculator Modal (outside all containers for proper fixed positioning) -->
+    
     <div class="calc-overlay" id="calcOverlay"></div>
     <div class="calc-modal" id="calcModal">
         <button class="calc-close" id="calcClose">×</button>
@@ -1658,7 +1654,7 @@
     </div>
 
     <script>
-        // Calculator functionality
+      
         const calcOverlay = document.getElementById('calcOverlay');
         const calcModal = document.getElementById('calcModal');
         const openCalcBtn = document.getElementById('openCalcBtn');
