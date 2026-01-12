@@ -42,7 +42,7 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        /* Optimized static background - no animation */
+        /* Optimized static background */
         .bg-aurora {
             position: fixed;
             inset: 0;
@@ -52,7 +52,6 @@
                 radial-gradient(ellipse 60% 40% at 80% 50%, rgba(6, 182, 212, 0.08), transparent),
                 radial-gradient(ellipse 50% 30% at 20% 80%, rgba(244, 114, 182, 0.06), transparent),
                 var(--bg-main);
-            will-change: auto;
         }
 
         .container { max-width: 1600px; margin: 0 auto; padding: 0 clamp(16px, 4vw, 48px); }
@@ -155,6 +154,7 @@
             padding: 6px;
             gap: 4px;
             border: 1px solid var(--glass-border);
+            margin-bottom: 24px;
         }
         .mode-switcher::before {
             content: '';
@@ -192,13 +192,47 @@
         .mode-btn:not(.active):hover { color: var(--text-primary); }
         .mode-btn-icon { font-size: 18px; }
 
-        /* Operator Commission Info */
+        /* Header Actions - Новый блок для кнопки и комиссии */
+        .header-actions {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+            margin-top: 24px;
+        }
+
+        .calc-tab-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 14px 28px;
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-full);
+            color: var(--text-secondary);
+            font-family: inherit;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .calc-tab-btn:hover {
+            border-color: var(--primary);
+            color: var(--text-primary);
+            transform: translateY(-2px);
+        }
+        .calc-tab-btn.active {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-color: transparent;
+            color: var(--text-hero);
+        }
+
+        /* Commission Info - обновленный стиль */
         .commission-info {
             display: inline-flex;
             align-items: center;
             justify-content: center;
             gap: 12px;
-            margin-top: 24px;
             padding: 14px 28px;
             background: linear-gradient(135deg, rgba(124, 58, 237, 0.15), rgba(6, 182, 212, 0.15));
             border: 1px solid rgba(124, 58, 237, 0.3);
@@ -230,40 +264,8 @@
             color: var(--text-muted);
         }
         .commission-info.switching { opacity: 0.5; }
-        @keyframes commission-switch {
-            0% { opacity: 1; }
-            50% { opacity: 0.5; }
-            100% { opacity: 1; }
-        }
 
-       
-        .calc-tab-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            margin-top: 20px;
-            padding: 12px 24px;
-            background: var(--glass);
-            border: 1px solid var(--glass-border);
-            border-radius: var(--radius-full);
-            color: var(--text-secondary);
-            font-family: inherit;
-            font-size: 14px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        .calc-tab-btn:hover {
-            border-color: var(--primary);
-            color: var(--text-primary);
-        }
-        .calc-tab-btn.active {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            border-color: transparent;
-            color: var(--text-hero);
-        }
-
-       
+        /* Calculator Modal */
         .calc-overlay {
             position: fixed;
             top: 0;
@@ -432,7 +434,7 @@
             font-size: 20px;
         }
 
-       
+        /* Calculator Result */
         .calc-result {
             background: linear-gradient(135deg, rgba(124, 58, 237, 0.1), rgba(6, 182, 212, 0.1));
             border: 1px solid rgba(124, 58, 237, 0.3);
@@ -599,16 +601,14 @@
             background-clip: text;
         }
 
-        
+        /* Gifts Grid - оптимизирован */
         .gifts-grid { 
             display: grid; 
             grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); 
             gap: 24px;
-            content-visibility: auto;
-            contain-intrinsic-size: 500px;
         }
 
-       
+        /* Gift Card - оптимизирован */
         .gift-card {
             position: relative;
             background: var(--bg-card);
@@ -617,13 +617,11 @@
             border: 1px solid var(--glass-border);
             display: flex;
             flex-direction: column;
-            transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
-            contain: layout style paint;
+            transition: transform 0.2s ease, border-color 0.2s ease;
         }
         .gift-card:hover { 
-            transform: translateY(-6px); 
+            transform: translateY(-4px); 
             border-color: rgba(124, 58, 237, 0.4); 
-            box-shadow: 0 16px 32px -12px rgba(0, 0, 0, 0.4);
         }
 
         .exclusive-badge { 
@@ -657,9 +655,7 @@
             height: 100%; 
             object-fit: contain; 
             padding: 16px; 
-            transition: transform 0.3s ease;
         }
-        .gift-card:hover .gift-image { transform: scale(1.05); }
         .gift-placeholder { font-size: 48px; }
 
         .gift-name { 
@@ -687,7 +683,6 @@
             font-weight: 700;
             font-size: 15px;
             color: var(--text-hero);
-            box-shadow: 0 4px 16px var(--primary-glow);
         }
 
         .regional-prices { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: auto; }
@@ -705,23 +700,13 @@
         ::-webkit-scrollbar { width: 10px; }
         ::-webkit-scrollbar-track { background: var(--bg-deep); }
         ::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 10px; }
-
-        @media (max-width: 768px) {
-            .mode-btn { padding: 14px 24px; font-size: 14px; }
-            .gifts-grid { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 16px; }
-            .gift-card { padding: 16px; }
-            .gift-image-container { height: 140px; }
-            .category-nav { padding: 12px 16px; gap: 8px; }
-            .category-btn { padding: 10px 18px; font-size: 13px; }
-            .commission-info { flex-direction: column; gap: 8px; padding: 12px 20px; }
-        }
 		
 .notification {
     position: fixed;
     top: 50%;
     right: 20px;
-    margin-top: -160px; /* половина высоты (320px / 2) */
-    transform: translateX(100px); /* убираем translateY, используем margin-top */
+    margin-top: -160px;
+    transform: translateX(100px);
     width: 320px;
     height: 320px;
     background: transparent;
@@ -754,11 +739,6 @@
     height: 100%;
     object-fit: cover;
     border-radius: var(--radius-lg);
-    transition: transform 0.3s ease;
-}
-
-.notification:hover .notification-image {
-    transform: scale(1.03);
 }
 
 .notification-close {
@@ -785,35 +765,6 @@
 .notification-close:hover {
     background: rgba(124, 58, 237, 0.9);
     border-color: var(--primary);
-    transform: scale(1.1);
-}
-
-.notification::after {
-    content: '';
-    position: absolute;
-    top: -2px;
-    left: -2px;
-    right: -2px;
-    bottom: -2px;
-    background: linear-gradient(45deg, 
-        transparent, 
-        var(--primary) 20%, 
-        var(--secondary) 80%, 
-        transparent);
-    border-radius: var(--radius-lg);
-    z-index: -1;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-}
-
-.notification.show::after {
-    opacity: 0.5;
-    animation: pulse 2s infinite;
-}
-
-@keyframes pulse {
-    0%, 100% { opacity: 0.5; }
-    50% { opacity: 0.8; }
 }
 
 @media (max-width: 768px) {
@@ -843,25 +794,6 @@
     }
 }
 
-.notification-backdrop {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.3);
-    z-index: 999;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.3s ease;
-    backdrop-filter: blur(2px);
-}
-
-.notification-backdrop.active {
-    opacity: 1;
-    pointer-events: all;
-}
-
 .exclusive-filter-wrapper {
     display: flex;
     gap: 12px;
@@ -886,47 +818,35 @@
     overflow: hidden;
 }
 
-.exclusive-filter-btn::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(135deg, var(--primary), var(--secondary));
-    opacity: 0;
-    transition: opacity 0.3s ease;
-    z-index: -1;
-}
-
 .exclusive-filter-btn:hover {
     border-color: var(--primary);
     color: var(--text-primary);
     transform: translateY(-2px);
-    box-shadow: 0 8px 24px var(--primary-glow);
 }
 
 .exclusive-filter-btn.active {
     border-color: var(--primary);
     color: var(--text-hero);
-    box-shadow: 0 8px 24px var(--primary-glow);
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
 }
 
-.exclusive-filter-btn.active::before {
-    opacity: 1;
-}
-
-@media (max-width: 768px) {
-    .exclusive-filter-wrapper {
-        gap: 8px;
-    }
-    
-    .exclusive-filter-btn {
-        padding: 12px 20px;
-        font-size: 13px;
-    }
-}
-
+        @media (max-width: 768px) {
+            .mode-btn { padding: 14px 24px; font-size: 14px; }
+            .gifts-grid { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 16px; }
+            .gift-card { padding: 16px; }
+            .gift-image-container { height: 140px; }
+            .category-nav { padding: 12px 16px; gap: 8px; }
+            .category-btn { padding: 10px 18px; font-size: 13px; }
+            .header-actions {
+                gap: 12px;
+            }
+            .calc-tab-btn,
+            .commission-info {
+                padding: 12px 24px;
+                font-size: 14px;
+            }
+        }
+		
         @media (max-width: 480px) {
             .mode-switcher { width: 100%; max-width: 320px; }
             .mode-btn { flex: 1; padding: 14px 0; justify-content: center; }
@@ -950,6 +870,17 @@
                 flex: 1;
                 min-width: 70px;
             }
+
+            .header-actions {
+                gap: 10px;
+                width: 100%;
+            }
+            
+            .calc-tab-btn,
+            .commission-info {
+                width: 100%;
+                justify-content: center;
+            }
         }
 
         @media (prefers-reduced-motion: reduce) { 
@@ -971,28 +902,26 @@
                     <button class="mode-btn" id="realBtn"><span class="mode-btn-icon">📦</span><span>Реальные</span></button>
                 </div>
                 
-        
-                <div class="commission-info" id="commissionInfo">
-                    <span class="commission-icon">💰</span>
-                    <span class="commission-text">Твой процент:</span>
-                    <span class="commission-percent" id="commissionPercent">40%</span>
-                    <span class="commission-type" id="commissionType">виртуальные</span>
+                <!-- Перемещенные элементы в новый блок -->
+                <div class="header-actions">
+                    <div class="commission-info" id="commissionInfo">
+                        <span class="commission-icon">💰</span>
+                        <span class="commission-text">Твой процент:</span>
+                        <span class="commission-percent" id="commissionPercent">40%</span>
+                        <span class="commission-type" id="commissionType">виртуальные</span>
+                    </div>
+                    
+                    <button class="calc-tab-btn" id="openCalcBtn">
+                        <span>🧮</span>
+                        <span>Калькулятор заработка</span>
+                    </button>
                 </div>
-
-              
-                <br>
-                <button class="calc-tab-btn" id="openCalcBtn">
-                    <span>🧮</span>
-                    <span>Калькулятор заработка</span>
-                </button>
             </header>
 
-
-			<div class="notification-backdrop" id="notificationBackdrop"></div>
-			<div class="notification" id="realGiftNotification">
-				<button class="notification-close" id="closeNotification">×</button>
-				<img src="https://i.ibb.co/pvDyN35M/gorofl.png" alt="Реальные подарки" class="notification-image">
-			</div>
+            <div class="notification" id="realGiftNotification">
+                <button class="notification-close" id="closeNotification">×</button>
+                <img src="https://i.ibb.co/pvDyN35M/gorofl.png" alt="Реальные подарки" class="notification-image">
+            </div>
 
             <section class="gifts-section active" id="virtualGifts">
                 <div class="search-wrapper">
@@ -1027,7 +956,51 @@
         </div>
     </div>
 
+    <!-- Calculator Modal -->
+    <div class="calc-overlay" id="calcOverlay"></div>
+    <div class="calc-modal" id="calcModal">
+        <button class="calc-close" id="calcClose">×</button>
+        
+        <div class="calc-header">
+            <div class="calc-title">💵 Калькулятор заработка</div>
+            <div class="calc-subtitle">Узнай сколько ты заработаешь с подарка | здесь лишь примерный чистый ваш заработок</div>
+        </div>
+
+        <div class="calc-type-switcher">
+            <button class="calc-type-btn active" id="calcVirtualBtn">
+                <span>🎮 Виртуальные</span>
+                <span class="percent-badge">40%</span>
+            </button>
+            <button class="calc-type-btn" id="calcRealBtn">
+                <span>📦 Реальные</span>
+                <span class="percent-badge">30%</span>
+            </button>
+        </div>
+
+        <div class="calc-input-group">
+            <label class="calc-input-label">Стоимость подарка</label>
+            <div class="calc-input-wrapper">
+                <input type="number" class="calc-input" id="calcInput" placeholder="0" min="0">
+                <span class="calc-input-suffix">💎</span>
+            </div>
+        </div>
+
+        <div class="calc-result">
+            <div class="calc-result-label">Ты получишь</div>
+            <div class="calc-result-value" id="calcResultValue">$0.00</div>
+            <div class="calc-result-currency">долларов США</div>
+        </div>
+
+        <div class="calc-formula">
+            <div class="calc-formula-title">Формула расчёта</div>
+            <div class="calc-formula-text" id="calcFormulaText">
+                <span>0</span> × 0.06 × <span>40%</span> = $0.00
+            </div>
+        </div>
+    </div>
+
     <script>
+        // Оптимизированный JavaScript
         const baseUrl = 'https://i.gstatvb.com/';
         
         const virtualGiftData = {
@@ -1152,174 +1125,174 @@
             ]
         };
 
-		const giftData = {
-			"👗 Мода": [
-				{ name: "Premium brand dress", image: "https://i.gstatvb.com/shpzkl2t1jg34olet.939e67b0.jpg", eu: 2699, asia: 0, latam: 0, euExclusive: true },
-				{ name: "Premium brand knitted sweater", image: "https://i.gstatvb.com/shpzkl1evtjj9rino.c892de63.jpg", eu: 2699, asia: 0, latam: 0, euExclusive: true },
-				{ name: "Leather jacket/tranch (faux or genuine)", image: "https://i.gstatvb.com/shpzkl5lbcfljaatb.65da5902.jpg", eu: 4799, asia: 0, latam: 0, euExclusive: true },
-				{ name: "Silk pijama (with pants)", image: "https://i.gstatvb.com/shpzklldrndn1q1ci.16b2c74f.jpg", eu: 4399, asia: 0, latam: 0, euExclusive: true },
-				{ name: "Silk pijama (with shorts)", image: "https://i.gstatvb.com/shpzkl2ssp854bs8b.85deacd0.jpg", eu: 2199, asia: 0, latam: 0, euExclusive: true },
-				{ name: "Silk dress and robe", image: "https://i.gstatvb.com/shpzklhorla7qbkig.438f7ec0.jpg", eu: 5199, asia: 0, latam: 0, euExclusive: true },
-				{ name: "Merino wool coverlet", image: "https://i.gstatvb.com/shpzkl5fkrl4p2brq.df99cfee.jpg", eu: 1699, asia: 0, latam: 0, euExclusive: true }
-			],
-			"🌸 Цветы": [
-				{ name: "A bouquet of 13 roses", image: "https://i.gstatvb.com/shpzkl3g1i79415iv.48633804.jpg", eu: 0, asia: 1399, latam: 0, asiaExclusive: true },
-				{ name: "A bouquet of 33 roses", image: "https://i.gstatvb.com/shpzkl7thijkfjbap.96b6d677.jpg", eu: 0, asia: 2099, latam: 0, asiaExclusive: true },
-				{ name: "A bouquet of 39 roses", image: "https://i.gstatvb.com/shpzkl7thijkfjbap.96b6d677.jpg", eu: 2399, asia: 0, latam: 0, euExclusive: true },
-				{ name: "A bouquet of 51 roses", image: "https://i.gstatvb.com/shpzkl7rnrcvus0rb.f7e2865d.jpg", eu: 3199, asia: 0, latam: 0, euExclusive: true },
-				{ name: "A bouquet of 52 roses", image: "https://i.gstatvb.com/shpzkl7rnrcvus0rb.f7e2865d.jpg", eu: 0, asia: 3199, latam: 0, asiaExclusive: true },
-				{ name: "A bouquet of 101 roses", image: "https://i.gstatvb.com/shpzklijjcotmk3k8.2f2b45c0.jpg", eu: 6199, asia: 0, latam: 0, euExclusive: true },
-				{ name: "Roses in a box", image: "https://i.gstatvb.com/shpzkl2be4l0c65cr.d97635a1.jpg", eu: 2499, asia: 0, latam: 2399 },
-				{ name: "A bouquet of different flowers small", image: "https://i.gstatvb.com/shpzkl71v7vdeatsl.c0f55245.jpg", eu: 0, asia: 999, latam: 0, asiaExclusive: true },
-				{ name: "A bouquet of different flowers medium", image: "https://i.gstatvb.com/shpzkl5027nc07aus.58b421c8.jpg", eu: 0, asia: 1599, latam: 4099, asiaExclusive: true, latamExclusive: true },
-				{ name: "A bouquet of different flowers large", image: "https://i.gstatvb.com/shpzkl3efikpjg4l3.63a09f09.jpg", eu: 3699, asia: 2099, latam: 4499 },
-				{ name: "A bouquet of different flowers huge", image: "https://i.gstatvb.com/shpzkl36uetfvmtic.ba6a0eef.jpg", eu: 4899, asia: 0, latam: 0, euExclusive: true },
-				{ name: "A bouquet of 12 roses", image: "https://i.gstatvb.com/shpzkl4neic80h21p.20e4eec7.jpg", eu: 0, asia: 0, latam: 899, latamExclusive: true },
-				{ name: "A bouquet of 24 roses", image: "https://i.gstatvb.com/shpzkl78lmsk5vsvc.4d4ed225.jpg", eu: 0, asia: 0, latam: 1699, latamExclusive: true },
-				{ name: "A bouquet of 36 roses", image: "https://i.gstatvb.com/shpzkl7thijkfjbap.96b6d677.jpg", eu: 0, asia: 0, latam: 2599, latamExclusive: true },
-				{ name: "A bouquet of 50 roses", image: "https://i.gstatvb.com/shpzkl7rnrcvus0rb.f7e2865d.jpg", eu: 0, asia: 0, latam: 3599, latamExclusive: true },
-				{ name: "A bouquet of 80 roses", image: "https://i.gstatvb.com/shpzkl74t362p07dk.393b53f2.jpg", eu: 0, asia: 0, latam: 5699, latamExclusive: true },
-				{ name: "A bouquet of 100 roses", image: "https://i.gstatvb.com/shpzkl3qdbuqbiqt2.8f2dcbf6.jpg", eu: 0, asia: 0, latam: 7099, latamExclusive: true }
-			],
-			"💎 Ювелирные изделия": [
-				{ name: "Silver earrings", image: "https://i.gstatvb.com/shpzkl5oo1qd8lkmh.8fa4f7da.jpg", eu: 3099, asia: 3099, latam: 3099 },
-				{ name: "Silver bracelet", image: "https://i.gstatvb.com/shpzkl4qo48ht7taf.2266f8b8.jpg", eu: 3099, asia: 3099, latam: 3099 },
-				{ name: "Silver ring", image: "https://i.gstatvb.com/shpzkl4v413b55r97.3161946e.jpg", eu: 3099, asia: 3099, latam: 3099 },
-				{ name: "Silver necklace", image: "https://i.gstatvb.com/shpzkl1rpqp42a255.f1d06381.jpg", eu: 3099, asia: 3099, latam: 3099 },
-				{ name: "Gold earrings", image: "https://i.gstatvb.com/shpzkl54cs3je6ik7.9f20d33a.jpg", eu: 6199, asia: 6199, latam: 6199 },
-				{ name: "Gold bracelet", image: "https://i.gstatvb.com/shpzkl71ulcojaia3.7d74c02e.jpg", eu: 7099, asia: 6199, latam: 6199 },
-				{ name: "Gold ring", image: "https://i.gstatvb.com/shpzkl3703i76ee1c.78501467.jpg", eu: 6199, asia: 6199, latam: 6199 },
-				{ name: "Gold necklace", image: "https://i.gstatvb.com/shpzkl7bkngde956h.5aec1061.jpg", eu: 6199, asia: 6199, latam: 6199 },
-				{ name: "Jewelry box", image: "https://i.gstatvb.com/shpzkl6rkkvo4ulvt.68bf92ef.jpg", eu: 2099, asia: 2099, latam: 2099 },
-				{ name: "Golden Ring with 1 Diamond", image: "https://i.gstatvb.com/shpzkl7isp8n0eka8.8bbf944e.jpg", eu: 20599, asia: 20599, latam: 20599 },
-				{ name: "Golden Ring with Diamond & Sapphire", image: "https://i.gstatvb.com/shpzkl46r69u82jqm.de4f5ecc.jpg", eu: 22599, asia: 22599, latam: 22599 },
-				{ name: "Golden Earrings with Diamond", image: "https://i.gstatvb.com/shpzkl6tmb61tr6ou.5e1c3af1.jpg", eu: 26699, asia: 26699, latam: 26699 },
-				{ name: "Golden Necklace with Diamond", image: "https://i.gstatvb.com/shpzkl7ieirs38v2d.63099904.jpg", eu: 41099, asia: 41099, latam: 41099 }
-			],
-			"💄 Парфюмерия и косметика": [
-				{ name: "Kilian Black Phantom, EDP, 50 ml", image: "https://i.gstatvb.com/shpzkl7fgns51q9hm.a3605fa6.jpg", eu: 3199, asia: 2699, latam: 5099 },
-				{ name: "DIOR Poison Girl, EDP, 100 ml", image: "https://i.gstatvb.com/shpzkllg0tdcoa45q.87f270fa.jpg", eu: 1799, asia: 1399, latam: 1999 },
-				{ name: "Chance by Chanel, 100 ml", image: "https://i.gstatvb.com/shpzkl1d6lq713ung.178f8771.jpg", eu: 1299, asia: 1799, latam: 2199 },
-				{ name: "Tom Ford Tobacco Vanille, EDP, 100 ml", image: "https://i.gstatvb.com/shpzkl5u60kbeclmu.42c7da86.jpg", eu: 2599, asia: 4099, latam: 4799 },
-				{ name: "Sunglasses Gucci", image: "https://i.gstatvb.com/shpzkl5gkupefosqr.9ee3324c.jpg", eu: 3699, asia: 4799, latam: 3899 },
-				{ name: "Sunglasses Prada", image: "https://i.gstatvb.com/shpzkl6ja9s9tfhkg.1dc5c327.jpg", eu: 3499, asia: 5099, latam: 3699 },
-				{ name: "Decorative cosmetics Deluxe", image: "https://i.gstatvb.com/shpzkl3jil3cm5nv4.2100eddb.jpg", eu: 6199, asia: 6199, latam: 6199 },
-				{ name: "Decorative cosmetics Premium", image: "https://i.gstatvb.com/shpzkl78630g76ubu.47213537.jpg", eu: 3099, asia: 3099, latam: 3099 },
-				{ name: "Decorative cosmetics Economy", image: "https://i.gstatvb.com/shpzkl55vm4dbbncf.5f3a838a.jpg", eu: 2199, asia: 2199, latam: 2199 },
-				{ name: "Body and care cosmetics Travel Set", image: "https://i.gstatvb.com/shpzkl61f1b6o55d9.f78896d0.jpg", eu: 6199, asia: 6199, latam: 6199 },
-				{ name: "Body and care cosmetics Premium", image: "https://i.gstatvb.com/shpzkl5o6l4r863ci.26505d5f.jpg", eu: 3599, asia: 3599, latam: 3799 },
-				{ name: "Body and care cosmetics Economy", image: "https://i.gstatvb.com/shpzkl62v165l4770.ac710f5b.jpg", eu: 2199, asia: 2199, latam: 2299 },
-				{ name: "Hair cosmetics Deluxe", image: "https://i.gstatvb.com/shpzkl5l4h5pjg2p4.71308f2f.jpg", eu: 4999, asia: 4999, latam: 4999 },
-				{ name: "Hair cosmetics Premium", image: "https://i.gstatvb.com/shpzkl3foh874l8f0.fb222808.jpg", eu: 3099, asia: 3099, latam: 3099 },
-				{ name: "Hair cosmetics Economy", image: "https://i.gstatvb.com/shpzkl637pm411o4g.557fd533.jpg", eu: 2199, asia: 2199, latam: 2199 },
-				{ name: "Bright Crystal Eau De Toilette, 90 ml", image: "https://i.gstatvb.com/shpzkl345gjp4mmuj.df0377c8.jpg", eu: 2899, asia: 2399, latam: 2399 },
-				{ name: "Tom Ford Lost Cherry, 100 ml", image: "https://i.gstatvb.com/shpzkl5nr9q8ci1f6.27403cb1.jpg", eu: 4299, asia: 3799, latam: 3599 },
-				{ name: "DIOR J'adore Eau de Parfum, 100 ml", image: "https://i.gstatvb.com/shpzkl5ln1ir0pcqc.05ae632c.jpg", eu: 1599, asia: 2099, latam: 1999 },
-				{ name: "Montale Velvet Fantasy, 100ml", image: "https://i.gstatvb.com/shpzkl50d149097he.694e26e1.jpg", eu: 3799, asia: 2899, latam: 2999 },
-				{ name: "Kilian I Don't Need A Prince, 50ml", image: "https://i.gstatvb.com/shpzkl76tdi5ckcrv.894cda50.jpg", eu: 2799, asia: 2599, latam: 2899 },
-				{ name: "Louis Vuitton Spell on You, 100ml", image: "https://i.gstatvb.com/shpzklfdslsi882uc.5d7f8d7a.jpg", eu: 4399, asia: 2899, latam: 3199 },
-				{ name: "Dior Sauvage, 100 ml", image: "https://i.gstatvb.com/shpzkl1vh1htpiul4.418120c6.jpg", eu: 2299, asia: 3299, latam: 4999 },
-				{ name: "Bleu de Chanel, 100 ml", image: "https://i.gstatvb.com/shpzkl7p9p458bvpp.7e78b27e.jpg", eu: 3199, asia: 3099, latam: 4399 },
-				{ name: "Yves Saint Laurent - Y Intense, 60 ml", image: "https://i.gstatvb.com/shpzkl5a2n6dn5ola.9dc8b78d.jpg", eu: 2599, asia: 2899, latam: 3899 },
-				{ name: "Tom Ford Lost Cherry, 50 ml", image: "https://i.gstatvb.com/shpzkl2ph6rdr9sbl.fc14fb27.jpg", eu: 3099, asia: 2799, latam: 3099 }
-			],
-			"🍬 Сладкие наборы": [
-				{ name: "Raffaello box + flowers", image: "https://i.gstatvb.com/shpzkl5elmbt3u4mk.ffe52e31.jpg", eu: 1899, asia: 1699, latam: 1799 },
-				{ name: "Raffaello box + wine", image: "https://i.gstatvb.com/shpzkliq3nen3mca5.991ffeaa.jpg", eu: 1499, asia: 1499, latam: 1599 },
-				{ name: "Ferrero 24 pieces box + flowers", image: "https://i.gstatvb.com/shpzkl4niln9e1eqn.9c3837ec.jpg", eu: 1999, asia: 1899, latam: 2799 },
-				{ name: "Ferrero 24 pieces box + wine", image: "https://i.gstatvb.com/shpzkl778shv7dqhn.7bf33292.jpg", eu: 1799, asia: 1699, latam: 2499 },
-				{ name: "Box of local chocolate + flowers", image: "https://i.gstatvb.com/shpzkl5vh574o1i5l.bc8e36f3.jpg", eu: 2499, asia: 2499, latam: 2799 },
-				{ name: "Box of local chocolate + wine", image: "https://i.gstatvb.com/shpzkl1r2jn6ifno0.9b4f9d09.jpg", eu: 2699, asia: 2899, latam: 2499 }
-			],
-			"Сумки": [
-				{ name: "Obag Mini", image: "https://i.gstatvb.com/shpzkl5qiriqhv364.4f6b77e9.jpg", eu: 1099, asia: 0, latam: 0, euExclusive: true },
-				{ name: "Obag Classic", image: "https://i.gstatvb.com/shpzkl3h4va80ar93.0e8b81fb.jpg", eu: 1199, asia: 0, latam: 0, euExclusive: true },
-				{ name: "Furla Diamante", image: "https://i.gstatvb.com/shpzkl6m51iuiag70.5792750b.jpg", eu: 1899, asia: 3999, latam: 2499 },
-				{ name: "Furla 1927", image: "https://i.gstatvb.com/shpzklg6kdsejqevf.76a296dd.jpg", eu: 3299, asia: 4699, latam: 3099 },
-				{ name: "Marc Jacobs The Tote Bag Medium", image: "https://i.gstatvb.com/shpzkl5nabutkp1tj.882f68cc.jpg", eu: 2899, asia: 2399, latam: 2699 },
-				{ name: "Marc Jacobs The Snapshot", image: "https://i.gstatvb.com/shpzkl1jl35adgo8s.700acf05.jpg", eu: 3699, asia: 3999, latam: 3999 },
-				{ name: "Studio Shoulder Bag", image: "https://i.gstatvb.com/shpzkl4fah8j7ejo6.7ae0aef2.jpg", eu: 0, asia: 3899, latam: 4799 },
-				{ name: "Tabby Shoulder Bag 26", image: "https://i.gstatvb.com/shpzkl1vu65fvmhgt.3cb7d093.jpg", eu: 0, asia: 3899, latam: 6099 },
-				{ name: "Jacquemus Handbag", image: "https://i.gstatvb.com/shpzkl1lb7m2klhm3.1f595cfb.jpg", eu: 8699, asia: 8699, latam: 8699 }
-			],
-			"📱 Устройства": [
-				{ name: "Instax Mini 12", image: "https://i.gstatvb.com/shpzkl1o87bs53338.87da841f.jpg", eu: 2099, asia: 2099, latam: 2099 },
-				{ name: "Polaroid Now+", image: "https://i.gstatvb.com/shpzkl7b6hbqat1mp.4d18ad69.jpg", eu: 3699, asia: 2599, latam: 2299 },
-				{ name: "GoPro Hero 12", image: "https://i.gstatvb.com/shpzkl3ve4n690gai.e0a1d2d3.jpg", eu: 3999, asia: 4399, latam: 5399 },
-				{ name: "Google Pixel 7a 8/128GB", image: "https://i.gstatvb.com/shpzkl7mq63f6pr00.36be7903.jpg", eu: 3899, asia: 0, latam: 0, euExclusive: true },
-				{ name: "Sony PlayStation 5", image: "https://i.gstatvb.com/shpzkl34venbke7n1.73ab32f0.jpg", eu: 5299, asia: 3999, latam: 5799 },
-				{ name: "Nintendo Switch", image: "https://i.gstatvb.com/shpzkl2adais1rupv.d8a2822d.jpg", eu: 2899, asia: 3099, latam: 3199 },
-				{ name: "XBOX Series X (1TB)", image: "https://i.gstatvb.com/shpzkl7sqcbv49c96.b33f3ba8.jpg", eu: 4799, asia: 4799, latam: 5199 },
-				{ name: "Apple MagSafe Battery Pack", image: "https://i.gstatvb.com/shpzkl68iqa6f3klh.09fdb3f5.jpg", eu: 0, asia: 2299, latam: 0, asiaExclusive: true },
-				{ name: "Synthesizer Yamaha PSS E30", image: "https://i.gstatvb.com/shpzkli326jadcr44.92e2ff5d.jpg", eu: 0, asia: 1499, latam: 0, asiaExclusive: true },
-				{ name: "Apple AirPods Max", image: "https://i.gstatvb.com/shpzkl2ihkun6cqt2.8de7d585.jpg", eu: 6599, asia: 5399, latam: 6699 },
-				{ name: "Apple AirPods 4 (ANC)", image: "https://i.gstatvb.com/shpzkl7lf84sf8lnu.0cee8c06.jpg", eu: 2499, asia: 1899, latam: 2199 },
-				{ name: "Apple iPhone 17 Pro Max 1TB", image: "https://i.gstatvb.com/shpzkl3ttijhorlvf.35d1ff10.jpg", eu: 21199, asia: 18999, latam: 24199 },
-				{ name: "Apple iPhone 17 256GB", image: "https://i.gstatvb.com/shpzkl7tvundvsuna.d5e05e20.jpg", eu: 11399, asia: 8199, latam: 12099 },
-				{ name: "Apple iPhone 17 Pro 256GB", image: "https://i.gstatvb.com/shpzkl7phjfgndl5t.08e840d1.jpg", eu: 15199, asia: 12199, latam: 16599 },
-				{ name: "Apple Watch Ultra 3", image: "https://i.gstatvb.com/shpzkl5heo7g5emsa.0645c22d.jpg", eu: 10299, asia: 8899, latam: 11399 },
-				{ name: "Apple MacBook Pro (M5) 14\" 16/512GB", image: "https://i.gstatvb.com/shpzkl4l49g3qqc3l.73935855.jpg", eu: 22299, asia: 17699, latam: 24099 },
-				{ name: "Apple MacBook Air M4 13.6\" 16/256GB", image: "https://i.gstatvb.com/shpzkl1pi49k8pj5t.169df5ea.jpg", eu: 12499, asia: 10899, latam: 12899 },
-				{ name: "AirPods Pro 3", image: "https://i.gstatvb.com/shpzkl39f400lschm.e87a4141.jpg", eu: 3299, asia: 2599, latam: 3299 },
-				{ name: "Samsung Galaxy S25 12/256GB", image: "https://i.gstatvb.com/shpzkl618g12s1lfd.f4afe832.jpg", eu: 13499, asia: 11599, latam: 16399 },
-				{ name: "Samsung Galaxy Watch 8", image: "https://i.gstatvb.com/shpzkl480dlttcfbh.c336aa9b.jpg", eu: 3499, asia: 2899, latam: 3199 },
-				{ name: "Apple iPhone 16 Pro 256 GB", image: "https://i.gstatvb.com/shpzkl7bpcmbdhsda.88c5b18a.jpg", eu: 0, asia: 0, latam: 13999, latamExclusive: true },
-				{ name: "Apple iPhone 16 128 GB", image: "https://i.gstatvb.com/shpzkl69cplbvh81l.1bd6af7c.jpg", eu: 0, asia: 0, latam: 10199, latamExclusive: true },
-				{ name: "Apple iPhone 16 Pro Max 512 GB", image: "https://i.gstatvb.com/shpzkl6och33n9rer.0a6e9a48.jpg", eu: 0, asia: 0, latam: 17799, latamExclusive: true },
-				{ name: "Apple MacBook Pro (M4) 2024 14\" 16/512GB", image: "https://i.gstatvb.com/shpzkl7s0vq70ajuf.e8d5b394.jpg", eu: 0, asia: 0, latam: 22699, latamExclusive: true },
-				{ name: "Apple MacBook Air M3 Chip 13\" 16/256GB", image: "https://i.gstatvb.com/shpzklif9jnolc4bd.df96bb64.jpg", eu: 0, asia: 0, latam: 13299, latamExclusive: true },
-				{ name: "AirPods Pro 2", image: "https://i.gstatvb.com/shpzkl4lpb4ki1625.e0b88a5b.jpg", eu: 0, asia: 0, latam: 2799, latamExclusive: true },
-				{ name: "Samsung Galaxy S24 8/256GB", image: "https://i.gstatvb.com/shpzkl73pkbfdnvvb.f85acb58.jpg", eu: 0, asia: 0, latam: 11899, latamExclusive: true },
-				{ name: "Apple Watch Ultra 2", image: "https://i.gstatvb.com/shpzkl5h7t354er3b.97b7bb11.jpg", eu: 0, asia: 0, latam: 11099, latamExclusive: true },
-				{ name: "Apple iPhone SE 128 GB", image: "https://i.gstatvb.com/shpzkl410dss4c60p.54a273c2.jpg", eu: 0, asia: 0, latam: 6099, latamExclusive: true },
-				{ name: "Samsung Galaxy Watch 7", image: "https://i.gstatvb.com/shpzkl1bptq5dvfg9.2b1fec04.jpg", eu: 0, asia: 0, latam: 2599, latamExclusive: true },
-				{ name: "Synthesizer Yamaha PSS E360", image: "https://i.gstatvb.com/shpzkli326jadcr44.92e2ff5d.jpg", eu: 0, asia: 0, latam: 2899, latamExclusive: true }
-			],
-			"🔌 Бытовая техника": [
-				{ name: "Automatic coffee maker", image: "https://i.gstatvb.com/shpzkl7iar6hjhj46.15f77614.jpg", eu: 2099, asia: 2099, latam: 2099 },
-				{ name: "Robot cleaner", image: "https://i.gstatvb.com/shpzkl6m2jif2qjs3.6e24bccf.jpg", eu: 3699, asia: 3699, latam: 3699 },
-				{ name: "Dyson Supersonic™ hair dryer", image: "https://i.gstatvb.com/shpzkltl7soj5hlag.22c058e6.jpg", eu: 3699, asia: 4099, latam: 6999 },
-				{ name: "Apple HomePod Mini", image: "https://i.gstatvb.com/shpzkl17t43h81u78.adf6f287.jpg", eu: 1299, asia: 899, latam: 1899 },
-				{ name: "Apple HomePod 2", image: "https://i.gstatvb.com/shpzkl6qed3ruo514.d3d33e30.jpg", eu: 3399, asia: 2799, latam: 5599 },
-				{ name: "Beam G2, Sub & One SL", image: "https://i.gstatvb.com/shpzkl2speg2mruke.4e74f27d.jpg", eu: 25899, asia: 0, latam: 0, euExclusive: true },
-				{ name: "Massager Theragun Elite", image: "https://i.gstatvb.com/shpzkl57jfqiqp6nd.8289fe09.jpg", eu: 4499, asia: 0, latam: 0, euExclusive: true },
-				{ name: "Dyson 360 Heurist Robot Vacuum", image: "https://i.gstatvb.com/shpzkl3lv4scgsatt.0e75fad5.jpg", eu: 5399, asia: 7899, latam: 0 },
-				{ name: "Electric scooter", image: "https://i.gstatvb.com/shpzkl4oupe375247.9d09090b.jpg", eu: 2699, asia: 2699, latam: 2699 },
-				{ name: "Squeezer", image: "https://i.gstatvb.com/shpzkl770e0v80kv7.6930e0c5.jpg", eu: 2099, asia: 2099, latam: 2099 },
-				{ name: "Interior lamp", image: "https://i.gstatvb.com/shpzkl2kvski5g805.8ea2f50d.jpg", eu: 699, asia: 699, latam: 899 },
-				{ name: "Dyson Purifier Hot and Cool Formaldehyde", image: "https://i.gstatvb.com/shpzkl7i2r04is5dc.10f5685c.jpg", eu: 7799, asia: 8199, latam: 10499 },
-				{ name: "Dyson Airwrap HS08 Complete", image: "https://i.gstatvb.com/shpzkl6euaathfb5o.38e1717e.jpg", eu: 6599, asia: 4999, latam: 7099 }
-			],
-			"🎁 Наборы": [
-				{ name: "A bouquet of 39 roses and Perfume", image: "https://i.gstatvb.com/shpzkljdsailrh1o6.02b6ce44.jpg", eu: 6099, asia: 0, latam: 0, euExclusive: true },
-				{ name: "A bouquet of 39 roses and Jewelry", image: "https://i.gstatvb.com/shpzkl7vl36jqfi08.99a97333.jpg", eu: 3999, asia: 0, latam: 0, euExclusive: true },
-				{ name: "Apple iPhone 17 Pro 256 GB and Apple AirPods 4 (ANC)", image: "https://i.gstatvb.com/shpzkl7c167eqmkjo.dd75ff04.jpg", eu: 15999, asia: 0, latam: 0, euExclusive: true },
-				{ name: "Apple Watch Ultra 3 and Apple AirPods 4 (ANC)", image: "https://i.gstatvb.com/shpzklla3ffv9mtku.22dc0c6b.jpg", eu: 11499, asia: 0, latam: 0, euExclusive: true },
-				{ name: "A bouquet of 100 roses and Silver ring", image: "https://i.gstatvb.com/shpzkl3san9ld2p3i.93a39ac6.jpg", eu: 0, asia: 0, latam: 8699, latamExclusive: true },
-				{ name: "A bouquet of 100 roses and Gold Ring", image: "https://i.gstatvb.com/shpzkl4v5s8rjn4pn.32c1166f.jpg", eu: 0, asia: 0, latam: 9299, latamExclusive: true },
-				{ name: "A bouquet of 100 roses and Gold Ring with 1 Diamond (1 Сr)", image: "https://i.gstatvb.com/shpzkl7ogpitjnlon.70ca12d3.jpg", eu: 0, asia: 0, latam: 24699, latamExclusive: true },
-				{ name: "A bouquet of 100 roses and Gold Ring with Diamond & Sapphire", image: "https://i.gstatvb.com/shpzklig9kjs90mlk.520cd9a8.jpg", eu: 0, asia: 0, latam: 25699, latamExclusive: true }
-			],
-			"🏠 Уют для дома": [
-				{ name: "UFO heater", image: "https://i.gstatvb.com/shpzkl49ojumvogkp.fb173e78.jpg", eu: 2199, asia: 0, latam: 0, euExclusive: true },
-				{ name: "Jackery Portable power station", image: "https://i.gstatvb.com/shpzkl2v7cp5ii0hf.5f0ca7f9.jpg", eu: 9099, asia: 0, latam: 0, euExclusive: true },
-				{ name: "Bluetti portable power station", image: "https://i.gstatvb.com/shpzkl2dp4n9hnuau.44ced641.jpg", eu: 3099, asia: 0, latam: 0, euExclusive: true },
-				{ name: "Ecoflow portable power station", image: "https://i.gstatvb.com/shpzkl5cqd142me3r.920eabd1.jpg", eu: 11099, asia: 0, latam: 0, euExclusive: true },
-				{ name: "Starlink portable internet system", image: "https://i.gstatvb.com/shpzkl7mko69flm0b.df1d7f1d.jpg", eu: 5399, asia: 0, latam: 0, euExclusive: true },
-				{ name: "Könner&Söhnen portable power generator", image: "https://i.gstatvb.com/shpzkl3cquq2mksu1.a4e601f1.jpg", eu: 3699, asia: 0, latam: 0, euExclusive: true },
-				{ name: "XO Power Bank 50000mAh", image: "https://i.gstatvb.com/shpzkl2ia97edsch8.cf0a5038.jpg", eu: 1199, asia: 0, latam: 0, euExclusive: true }
-			],
-			"📜 Сертификаты": [
-				{ name: "Spa/massage certificate (2 visits)", image: "https://i.gstatvb.com/shpzkl7hl577i693g.b80dca0a.jpg", eu: 2199, asia: 2199, latam: 2199 },
-				{ name: "Gym Membership (3 month)", image: "https://i.gstatvb.com/shpzklnckq1slr512.cc156783.jpg", eu: 6599, asia: 6599, latam: 6599 },
-				{ name: "Language course (10 classes)", image: "https://i.gstatvb.com/shpzkl7jjmcvbptg7.4344e1bd.jpg", eu: 3299, asia: 3299, latam: 3299 },
-				{ name: "Shopping certificates", image: "https://i.gstatvb.com/shpzkl354ls9o1j0f.b7d1c553.jpg", eu: 4399, asia: 4399, latam: 4399 },
-				{ name: "Unforgettable emotions certificate", image: "https://i.gstatvb.com/shpzklith6lkcln1e.f062b567.jpg", eu: 3299, asia: 3299, latam: 3299 },
-				{ name: "Driving courses (10 classes)", image: "https://i.gstatvb.com/shpzkl10jhi1sdv0j.6f785ebe.jpg", eu: 9899, asia: 9899, latam: 9899 },
-				{ name: "Hobby courses (3 visits)", image: "https://i.gstatvb.com/shpzkl4cro4h0sdep.451bc3c8.jpg", eu: 3299, asia: 3299, latam: 3299 },
-				{ name: "Certificate for Harmony and Comfort Products", image: "https://i.gstatvb.com/shpzkl716483ni56o.bd651764.jpg", eu: 2499, asia: 2499, latam: 0 }
-			]
-		};
+        const giftData = {
+            "👗 Мода": [
+                { name: "Premium brand dress", image: "https://i.gstatvb.com/shpzkl2t1jg34olet.939e67b0.jpg", eu: 2699, asia: 0, latam: 0, euExclusive: true },
+                { name: "Premium brand knitted sweater", image: "https://i.gstatvb.com/shpzkl1evtjj9rino.c892de63.jpg", eu: 2699, asia: 0, latam: 0, euExclusive: true },
+                { name: "Leather jacket/tranch (faux or genuine)", image: "https://i.gstatvb.com/shpzkl5lbcfljaatb.65da5902.jpg", eu: 4799, asia: 0, latam: 0, euExclusive: true },
+                { name: "Silk pijama (with pants)", image: "https://i.gstatvb.com/shpzklldrndn1q1ci.16b2c74f.jpg", eu: 4399, asia: 0, latam: 0, euExclusive: true },
+                { name: "Silk pijama (with shorts)", image: "https://i.gstatvb.com/shpzkl2ssp854bs8b.85deacd0.jpg", eu: 2199, asia: 0, latam: 0, euExclusive: true },
+                { name: "Silk dress and robe", image: "https://i.gstatvb.com/shpzklhorla7qbkig.438f7ec0.jpg", eu: 5199, asia: 0, latam: 0, euExclusive: true },
+                { name: "Merino wool coverlet", image: "https://i.gstatvb.com/shpzkl5fkrl4p2brq.df99cfee.jpg", eu: 1699, asia: 0, latam: 0, euExclusive: true }
+            ],
+            "🌸 Цветы": [
+                { name: "A bouquet of 13 roses", image: "https://i.gstatvb.com/shpzkl3g1i79415iv.48633804.jpg", eu: 0, asia: 1399, latam: 0, asiaExclusive: true },
+                { name: "A bouquet of 33 roses", image: "https://i.gstatvb.com/shpzkl7thijkfjbap.96b6d677.jpg", eu: 0, asia: 2099, latam: 0, asiaExclusive: true },
+                { name: "A bouquet of 39 roses", image: "https://i.gstatvb.com/shpzkl7thijkfjbap.96b6d677.jpg", eu: 2399, asia: 0, latam: 0, euExclusive: true },
+                { name: "A bouquet of 51 roses", image: "https://i.gstatvb.com/shpzkl7rnrcvus0rb.f7e2865d.jpg", eu: 3199, asia: 0, latam: 0, euExclusive: true },
+                { name: "A bouquet of 52 roses", image: "https://i.gstatvb.com/shpzkl7rnrcvus0rb.f7e2865d.jpg", eu: 0, asia: 3199, latam: 0, asiaExclusive: true },
+                { name: "A bouquet of 101 roses", image: "https://i.gstatvb.com/shpzklijjcotmk3k8.2f2b45c0.jpg", eu: 6199, asia: 0, latam: 0, euExclusive: true },
+                { name: "Roses in a box", image: "https://i.gstatvb.com/shpzkl2be4l0c65cr.d97635a1.jpg", eu: 2499, asia: 0, latam: 2399 },
+                { name: "A bouquet of different flowers small", image: "https://i.gstatvb.com/shpzkl71v7vdeatsl.c0f55245.jpg", eu: 0, asia: 999, latam: 0, asiaExclusive: true },
+                { name: "A bouquet of different flowers medium", image: "https://i.gstatvb.com/shpzkl5027nc07aus.58b421c8.jpg", eu: 0, asia: 1599, latam: 4099, asiaExclusive: true, latamExclusive: true },
+                { name: "A bouquet of different flowers large", image: "https://i.gstatvb.com/shpzkl3efikpjg4l3.63a09f09.jpg", eu: 3699, asia: 2099, latam: 4499 },
+                { name: "A bouquet of different flowers huge", image: "https://i.gstatvb.com/shpzkl36uetfvmtic.ba6a0eef.jpg", eu: 4899, asia: 0, latam: 0, euExclusive: true },
+                { name: "A bouquet of 12 roses", image: "https://i.gstatvb.com/shpzkl4neic80h21p.20e4eec7.jpg", eu: 0, asia: 0, latam: 899, latamExclusive: true },
+                { name: "A bouquet of 24 roses", image: "https://i.gstatvb.com/shpzkl78lmsk5vsvc.4d4ed225.jpg", eu: 0, asia: 0, latam: 1699, latamExclusive: true },
+                { name: "A bouquet of 36 roses", image: "https://i.gstatvb.com/shpzkl7thijkfjbap.96b6d677.jpg", eu: 0, asia: 0, latam: 2599, latamExclusive: true },
+                { name: "A bouquet of 50 roses", image: "https://i.gstatvb.com/shpzkl7rnrcvus0rb.f7e2865d.jpg", eu: 0, asia: 0, latam: 3599, latamExclusive: true },
+                { name: "A bouquet of 80 roses", image: "https://i.gstatvb.com/shpzkl74t362p07dk.393b53f2.jpg", eu: 0, asia: 0, latam: 5699, latamExclusive: true },
+                { name: "A bouquet of 100 roses", image: "https://i.gstatvb.com/shpzkl3qdbuqbiqt2.8f2dcbf6.jpg", eu: 0, asia: 0, latam: 7099, latamExclusive: true }
+            ],
+            "💎 Ювелирные изделия": [
+                { name: "Silver earrings", image: "https://i.gstatvb.com/shpzkl5oo1qd8lkmh.8fa4f7da.jpg", eu: 3099, asia: 3099, latam: 3099 },
+                { name: "Silver bracelet", image: "https://i.gstatvb.com/shpzkl4qo48ht7taf.2266f8b8.jpg", eu: 3099, asia: 3099, latam: 3099 },
+                { name: "Silver ring", image: "https://i.gstatvb.com/shpzkl4v413b55r97.3161946e.jpg", eu: 3099, asia: 3099, latam: 3099 },
+                { name: "Silver necklace", image: "https://i.gstatvb.com/shpzkl1rpqp42a255.f1d06381.jpg", eu: 3099, asia: 3099, latam: 3099 },
+                { name: "Gold earrings", image: "https://i.gstatvb.com/shpzkl54cs3je6ik7.9f20d33a.jpg", eu: 6199, asia: 6199, latam: 6199 },
+                { name: "Gold bracelet", image: "https://i.gstatvb.com/shpzkl71ulcojaia3.7d74c02e.jpg", eu: 7099, asia: 6199, latam: 6199 },
+                { name: "Gold ring", image: "https://i.gstatvb.com/shpzkl3703i76ee1c.78501467.jpg", eu: 6199, asia: 6199, latam: 6199 },
+                { name: "Gold necklace", image: "https://i.gstatvb.com/shpzkl7bkngde956h.5aec1061.jpg", eu: 6199, asia: 6199, latam: 6199 },
+                { name: "Jewelry box", image: "https://i.gstatvb.com/shpzkl6rkkvo4ulvt.68bf92ef.jpg", eu: 2099, asia: 2099, latam: 2099 },
+                { name: "Golden Ring with 1 Diamond", image: "https://i.gstatvb.com/shpzkl7isp8n0eka8.8bbf944e.jpg", eu: 20599, asia: 20599, latam: 20599 },
+                { name: "Golden Ring with Diamond & Sapphire", image: "https://i.gstatvb.com/shpzkl46r69u82jqm.de4f5ecc.jpg", eu: 22599, asia: 22599, latam: 22599 },
+                { name: "Golden Earrings with Diamond", image: "https://i.gstatvb.com/shpzkl6tmb61tr6ou.5e1c3af1.jpg", eu: 26699, asia: 26699, latam: 26699 },
+                { name: "Golden Necklace with Diamond", image: "https://i.gstatvb.com/shpzkl7ieirs38v2d.63099904.jpg", eu: 41099, asia: 41099, latam: 41099 }
+            ],
+            "💄 Парфюмерия и косметика": [
+                { name: "Kilian Black Phantom, EDP, 50 ml", image: "https://i.gstatvb.com/shpzkl7fgns51q9hm.a3605fa6.jpg", eu: 3199, asia: 2699, latam: 5099 },
+                { name: "DIOR Poison Girl, EDP, 100 ml", image: "https://i.gstatvb.com/shpzkllg0tdcoa45q.87f270fa.jpg", eu: 1799, asia: 1399, latam: 1999 },
+                { name: "Chance by Chanel, 100 ml", image: "https://i.gstatvb.com/shpzkl1d6lq713ung.178f8771.jpg", eu: 1299, asia: 1799, latam: 2199 },
+                { name: "Tom Ford Tobacco Vanille, EDP, 100 ml", image: "https://i.gstatvb.com/shpzkl5u60kbeclmu.42c7da86.jpg", eu: 2599, asia: 4099, latam: 4799 },
+                { name: "Sunglasses Gucci", image: "https://i.gstatvb.com/shpzkl5gkupefosqr.9ee3324c.jpg", eu: 3699, asia: 4799, latam: 3899 },
+                { name: "Sunglasses Prada", image: "https://i.gstatvb.com/shpzkl6ja9s9tfhkg.1dc5c327.jpg", eu: 3499, asia: 5099, latam: 3699 },
+                { name: "Decorative cosmetics Deluxe", image: "https://i.gstatvb.com/shpzkl3jil3cm5nv4.2100eddb.jpg", eu: 6199, asia: 6199, latam: 6199 },
+                { name: "Decorative cosmetics Premium", image: "https://i.gstatvb.com/shpzkl78630g76ubu.47213537.jpg", eu: 3099, asia: 3099, latam: 3099 },
+                { name: "Decorative cosmetics Economy", image: "https://i.gstatvb.com/shpzkl55vm4dbbncf.5f3a838a.jpg", eu: 2199, asia: 2199, latam: 2199 },
+                { name: "Body and care cosmetics Travel Set", image: "https://i.gstatvb.com/shpzkl61f1b6o55d9.f78896d0.jpg", eu: 6199, asia: 6199, latam: 6199 },
+                { name: "Body and care cosmetics Premium", image: "https://i.gstatvb.com/shpzkl5o6l4r863ci.26505d5f.jpg", eu: 3599, asia: 3599, latam: 3799 },
+                { name: "Body and care cosmetics Economy", image: "https://i.gstatvb.com/shpzkl62v165l4770.ac710f5b.jpg", eu: 2199, asia: 2199, latam: 2299 },
+                { name: "Hair cosmetics Deluxe", image: "https://i.gstatvb.com/shpzkl5l4h5pjg2p4.71308f2f.jpg", eu: 4999, asia: 4999, latam: 4999 },
+                { name: "Hair cosmetics Premium", image: "https://i.gstatvb.com/shpzkl3foh874l8f0.fb222808.jpg", eu: 3099, asia: 3099, latam: 3099 },
+                { name: "Hair cosmetics Economy", image: "https://i.gstatvb.com/shpzkl637pm411o4g.557fd533.jpg", eu: 2199, asia: 2199, latam: 2199 },
+                { name: "Bright Crystal Eau De Toilette, 90 ml", image: "https://i.gstatvb.com/shpzkl345gjp4mmuj.df0377c8.jpg", eu: 2899, asia: 2399, latam: 2399 },
+                { name: "Tom Ford Lost Cherry, 100 ml", image: "https://i.gstatvb.com/shpzkl5nr9q8ci1f6.27403cb1.jpg", eu: 4299, asia: 3799, latam: 3599 },
+                { name: "DIOR J'adore Eau de Parfum, 100 ml", image: "https://i.gstatvb.com/shpzkl5ln1ir0pcqc.05ae632c.jpg", eu: 1599, asia: 2099, latam: 1999 },
+                { name: "Montale Velvet Fantasy, 100ml", image: "https://i.gstatvb.com/shpzkl50d149097he.694e26e1.jpg", eu: 3799, asia: 2899, latam: 2999 },
+                { name: "Kilian I Don't Need A Prince, 50ml", image: "https://i.gstatvb.com/shpzkl76tdi5ckcrv.894cda50.jpg", eu: 2799, asia: 2599, latam: 2899 },
+                { name: "Louis Vuitton Spell on You, 100ml", image: "https://i.gstatvb.com/shpzklfdslsi882uc.5d7f8d7a.jpg", eu: 4399, asia: 2899, latam: 3199 },
+                { name: "Dior Sauvage, 100 ml", image: "https://i.gstatvb.com/shpzkl1vh1htpiul4.418120c6.jpg", eu: 2299, asia: 3299, latam: 4999 },
+                { name: "Bleu de Chanel, 100 ml", image: "https://i.gstatvb.com/shpzkl7p9p458bvpp.7e78b27e.jpg", eu: 3199, asia: 3099, latam: 4399 },
+                { name: "Yves Saint Laurent - Y Intense, 60 ml", image: "https://i.gstatvb.com/shpzkl5a2n6dn5ola.9dc8b78d.jpg", eu: 2599, asia: 2899, latam: 3899 },
+                { name: "Tom Ford Lost Cherry, 50 ml", image: "https://i.gstatvb.com/shpzkl2ph6rdr9sbl.fc14fb27.jpg", eu: 3099, asia: 2799, latam: 3099 }
+            ],
+            "🍬 Сладкие наборы": [
+                { name: "Raffaello box + flowers", image: "https://i.gstatvb.com/shpzkl5elmbt3u4mk.ffe52e31.jpg", eu: 1899, asia: 1699, latam: 1799 },
+                { name: "Raffaello box + wine", image: "https://i.gstatvb.com/shpzkliq3nen3mca5.991ffeaa.jpg", eu: 1499, asia: 1499, latam: 1599 },
+                { name: "Ferrero 24 pieces box + flowers", image: "https://i.gstatvb.com/shpzkl4niln9e1eqn.9c3837ec.jpg", eu: 1999, asia: 1899, latam: 2799 },
+                { name: "Ferrero 24 pieces box + wine", image: "https://i.gstatvb.com/shpzkl778shv7dqhn.7bf33292.jpg", eu: 1799, asia: 1699, latam: 2499 },
+                { name: "Box of local chocolate + flowers", image: "https://i.gstatvb.com/shpzkl5vh574o1i5l.bc8e36f3.jpg", eu: 2499, asia: 2499, latam: 2799 },
+                { name: "Box of local chocolate + wine", image: "https://i.gstatvb.com/shpzkl1r2jn6ifno0.9b4f9d09.jpg", eu: 2699, asia: 2899, latam: 2499 }
+            ],
+            "Сумки": [
+                { name: "Obag Mini", image: "https://i.gstatvb.com/shpzkl5qiriqhv364.4f6b77e9.jpg", eu: 1099, asia: 0, latam: 0, euExclusive: true },
+                { name: "Obag Classic", image: "https://i.gstatvb.com/shpzkl3h4va80ar93.0e8b81fb.jpg", eu: 1199, asia: 0, latam: 0, euExclusive: true },
+                { name: "Furla Diamante", image: "https://i.gstatvb.com/shpzkl6m51iuiag70.5792750b.jpg", eu: 1899, asia: 3999, latam: 2499 },
+                { name: "Furla 1927", image: "https://i.gstatvb.com/shpzklg6kdsejqevf.76a296dd.jpg", eu: 3299, asia: 4699, latam: 3099 },
+                { name: "Marc Jacobs The Tote Bag Medium", image: "https://i.gstatvb.com/shpzkl5nabutkp1tj.882f68cc.jpg", eu: 2899, asia: 2399, latam: 2699 },
+                { name: "Marc Jacobs The Snapshot", image: "https://i.gstatvb.com/shpzkl1jl35adgo8s.700acf05.jpg", eu: 3699, asia: 3999, latam: 3999 },
+                { name: "Studio Shoulder Bag", image: "https://i.gstatvb.com/shpzkl4fah8j7ejo6.7ae0aef2.jpg", eu: 0, asia: 3899, latam: 4799 },
+                { name: "Tabby Shoulder Bag 26", image: "https://i.gstatvb.com/shpzkl1vu65fvmhgt.3cb7d093.jpg", eu: 0, asia: 3899, latam: 6099 },
+                { name: "Jacquemus Handbag", image: "https://i.gstatvb.com/shpzkl1lb7m2klhm3.1f595cfb.jpg", eu: 8699, asia: 8699, latam: 8699 }
+            ],
+            "📱 Устройства": [
+                { name: "Instax Mini 12", image: "https://i.gstatvb.com/shpzkl1o87bs53338.87da841f.jpg", eu: 2099, asia: 2099, latam: 2099 },
+                { name: "Polaroid Now+", image: "https://i.gstatvb.com/shpzkl7b6hbqat1mp.4d18ad69.jpg", eu: 3699, asia: 2599, latam: 2299 },
+                { name: "GoPro Hero 12", image: "https://i.gstatvb.com/shpzkl3ve4n690gai.e0a1d2d3.jpg", eu: 3999, asia: 4399, latam: 5399 },
+                { name: "Google Pixel 7a 8/128GB", image: "https://i.gstatvb.com/shpzkl7mq63f6pr00.36be7903.jpg", eu: 3899, asia: 0, latam: 0, euExclusive: true },
+                { name: "Sony PlayStation 5", image: "https://i.gstatvb.com/shpzkl34venbke7n1.73ab32f0.jpg", eu: 5299, asia: 3999, latam: 5799 },
+                { name: "Nintendo Switch", image: "https://i.gstatvb.com/shpzkl2adais1rupv.d8a2822d.jpg", eu: 2899, asia: 3099, latam: 3199 },
+                { name: "XBOX Series X (1TB)", image: "https://i.gstatvb.com/shpzkl7sqcbv49c96.b33f3ba8.jpg", eu: 4799, asia: 4799, latam: 5199 },
+                { name: "Apple MagSafe Battery Pack", image: "https://i.gstatvb.com/shpzkl68iqa6f3klh.09fdb3f5.jpg", eu: 0, asia: 2299, latam: 0, asiaExclusive: true },
+                { name: "Synthesizer Yamaha PSS E30", image: "https://i.gstatvb.com/shpzkli326jadcr44.92e2ff5d.jpg", eu: 0, asia: 1499, latam: 0, asiaExclusive: true },
+                { name: "Apple AirPods Max", image: "https://i.gstatvb.com/shpzkl2ihkun6cqt2.8de7d585.jpg", eu: 6599, asia: 5399, latam: 6699 },
+                { name: "Apple AirPods 4 (ANC)", image: "https://i.gstatvb.com/shpzkl7lf84sf8lnu.0cee8c06.jpg", eu: 2499, asia: 1899, latam: 2199 },
+                { name: "Apple iPhone 17 Pro Max 1TB", image: "https://i.gstatvb.com/shpzkl3ttijhorlvf.35d1ff10.jpg", eu: 21199, asia: 18999, latam: 24199 },
+                { name: "Apple iPhone 17 256GB", image: "https://i.gstatvb.com/shpzkl7tvundvsuna.d5e05e20.jpg", eu: 11399, asia: 8199, latam: 12099 },
+                { name: "Apple iPhone 17 Pro 256GB", image: "https://i.gstatvb.com/shpzkl7phjfgndl5t.08e840d1.jpg", eu: 15199, asia: 12199, latam: 16599 },
+                { name: "Apple Watch Ultra 3", image: "https://i.gstatvb.com/shpzkl5heo7g5emsa.0645c22d.jpg", eu: 10299, asia: 8899, latam: 11399 },
+                { name: "Apple MacBook Pro (M5) 14\" 16/512GB", image: "https://i.gstatvb.com/shpzkl4l49g3qqc3l.73935855.jpg", eu: 22299, asia: 17699, latam: 24099 },
+                { name: "Apple MacBook Air M4 13.6\" 16/256GB", image: "https://i.gstatvb.com/shpzkl1pi49k8pj5t.169df5ea.jpg", eu: 12499, asia: 10899, latam: 12899 },
+                { name: "AirPods Pro 3", image: "https://i.gstatvb.com/shpzkl39f400lschm.e87a4141.jpg", eu: 3299, asia: 2599, latam: 3299 },
+                { name: "Samsung Galaxy S25 12/256GB", image: "https://i.gstatvb.com/shpzkl618g12s1lfd.f4afe832.jpg", eu: 13499, asia: 11599, latam: 16399 },
+                { name: "Samsung Galaxy Watch 8", image: "https://i.gstatvb.com/shpzkl480dlttcfbh.c336aa9b.jpg", eu: 3499, asia: 2899, latam: 3199 },
+                { name: "Apple iPhone 16 Pro 256 GB", image: "https://i.gstatvb.com/shpzkl7bpcmbdhsda.88c5b18a.jpg", eu: 0, asia: 0, latam: 13999, latamExclusive: true },
+                { name: "Apple iPhone 16 128 GB", image: "https://i.gstatvb.com/shpzkl69cplbvh81l.1bd6af7c.jpg", eu: 0, asia: 0, latam: 10199, latamExclusive: true },
+                { name: "Apple iPhone 16 Pro Max 512 GB", image: "https://i.gstatvb.com/shpzkl6och33n9rer.0a6e9a48.jpg", eu: 0, asia: 0, latam: 17799, latamExclusive: true },
+                { name: "Apple MacBook Pro (M4) 2024 14\" 16/512GB", image: "https://i.gstatvb.com/shpzkl7s0vq70ajuf.e8d5b394.jpg", eu: 0, asia: 0, latam: 22699, latamExclusive: true },
+                { name: "Apple MacBook Air M3 Chip 13\" 16/256GB", image: "https://i.gstatvb.com/shpzklif9jnolc4bd.df96bb64.jpg", eu: 0, asia: 0, latam: 13299, latamExclusive: true },
+                { name: "AirPods Pro 2", image: "https://i.gstatvb.com/shpzkl4lpb4ki1625.e0b88a5b.jpg", eu: 0, asia: 0, latam: 2799, latamExclusive: true },
+                { name: "Samsung Galaxy S24 8/256GB", image: "https://i.gstatvb.com/shpzkl73pkbfdnvvb.f85acb58.jpg", eu: 0, asia: 0, latam: 11899, latamExclusive: true },
+                { name: "Apple Watch Ultra 2", image: "https://i.gstatvb.com/shpzkl5h7t354er3b.97b7bb11.jpg", eu: 0, asia: 0, latam: 11099, latamExclusive: true },
+                { name: "Apple iPhone SE 128 GB", image: "https://i.gstatvb.com/shpzkl410dss4c60p.54a273c2.jpg", eu: 0, asia: 0, latam: 6099, latamExclusive: true },
+                { name: "Samsung Galaxy Watch 7", image: "https://i.gstatvb.com/shpzkl1bptq5dvfg9.2b1fec04.jpg", eu: 0, asia: 0, latam: 2599, latamExclusive: true },
+                { name: "Synthesizer Yamaha PSS E360", image: "https://i.gstatvb.com/shpzkli326jadcr44.92e2ff5d.jpg", eu: 0, asia: 0, latam: 2899, latamExclusive: true }
+            ],
+            "🔌 Бытовая техника": [
+                { name: "Automatic coffee maker", image: "https://i.gstatvb.com/shpzkl7iar6hjhj46.15f77614.jpg", eu: 2099, asia: 2099, latam: 2099 },
+                { name: "Robot cleaner", image: "https://i.gstatvb.com/shpzkl6m2jif2qjs3.6e24bccf.jpg", eu: 3699, asia: 3699, latam: 3699 },
+                { name: "Dyson Supersonic™ hair dryer", image: "https://i.gstatvb.com/shpzkltl7soj5hlag.22c058e6.jpg", eu: 3699, asia: 4099, latam: 6999 },
+                { name: "Apple HomePod Mini", image: "https://i.gstatvb.com/shpzkl17t43h81u78.adf6f287.jpg", eu: 1299, asia: 899, latam: 1899 },
+                { name: "Apple HomePod 2", image: "https://i.gstatvb.com/shpzkl6qed3ruo514.d3d33e30.jpg", eu: 3399, asia: 2799, latam: 5599 },
+                { name: "Beam G2, Sub & One SL", image: "https://i.gstatvb.com/shpzkl2speg2mruke.4e74f27d.jpg", eu: 25899, asia: 0, latam: 0, euExclusive: true },
+                { name: "Massager Theragun Elite", image: "https://i.gstatvb.com/shpzkl57jfqiqp6nd.8289fe09.jpg", eu: 4499, asia: 0, latam: 0, euExclusive: true },
+                { name: "Dyson 360 Heurist Robot Vacuum", image: "https://i.gstatvb.com/shpzkl3lv4scgsatt.0e75fad5.jpg", eu: 5399, asia: 7899, latam: 0 },
+                { name: "Electric scooter", image: "https://i.gstatvb.com/shpzkl4oupe375247.9d09090b.jpg", eu: 2699, asia: 2699, latam: 2699 },
+                { name: "Squeezer", image: "https://i.gstatvb.com/shpzkl770e0v80kv7.6930e0c5.jpg", eu: 2099, asia: 2099, latam: 2099 },
+                { name: "Interior lamp", image: "https://i.gstatvb.com/shpzkl2kvski5g805.8ea2f50d.jpg", eu: 699, asia: 699, latam: 899 },
+                { name: "Dyson Purifier Hot and Cool Formaldehyde", image: "https://i.gstatvb.com/shpzkl7i2r04is5dc.10f5685c.jpg", eu: 7799, asia: 8199, latam: 10499 },
+                { name: "Dyson Airwrap HS08 Complete", image: "https://i.gstatvb.com/shpzkl6euaathfb5o.38e1717e.jpg", eu: 6599, asia: 4999, latam: 7099 }
+            ],
+            "🎁 Наборы": [
+                { name: "A bouquet of 39 roses and Perfume", image: "https://i.gstatvb.com/shpzkljdsailrh1o6.02b6ce44.jpg", eu: 6099, asia: 0, latam: 0, euExclusive: true },
+                { name: "A bouquet of 39 roses and Jewelry", image: "https://i.gstatvb.com/shpzkl7vl36jqfi08.99a97333.jpg", eu: 3999, asia: 0, latam: 0, euExclusive: true },
+                { name: "Apple iPhone 17 Pro 256 GB and Apple AirPods 4 (ANC)", image: "https://i.gstatvb.com/shpzkl7c167eqmkjo.dd75ff04.jpg", eu: 15999, asia: 0, latam: 0, euExclusive: true },
+                { name: "Apple Watch Ultra 3 and Apple AirPods 4 (ANC)", image: "https://i.gstatvb.com/shpzklla3ffv9mtku.22dc0c6b.jpg", eu: 11499, asia: 0, latam: 0, euExclusive: true },
+                { name: "A bouquet of 100 roses and Silver ring", image: "https://i.gstatvb.com/shpzkl3san9ld2p3i.93a39ac6.jpg", eu: 0, asia: 0, latam: 8699, latamExclusive: true },
+                { name: "A bouquet of 100 roses and Gold Ring", image: "https://i.gstatvb.com/shpzkl4v5s8rjn4pn.32c1166f.jpg", eu: 0, asia: 0, latam: 9299, latamExclusive: true },
+                { name: "A bouquet of 100 roses and Gold Ring with 1 Diamond (1 Сr)", image: "https://i.gstatvb.com/shpzkl7ogpitjnlon.70ca12d3.jpg", eu: 0, asia: 0, latam: 24699, latamExclusive: true },
+                { name: "A bouquet of 100 roses and Gold Ring with Diamond & Sapphire", image: "https://i.gstatvb.com/shpzklig9kjs90mlk.520cd9a8.jpg", eu: 0, asia: 0, latam: 25699, latamExclusive: true }
+            ],
+            "🏠 Уют для дома": [
+                { name: "UFO heater", image: "https://i.gstatvb.com/shpzkl49ojumvogkp.fb173e78.jpg", eu: 2199, asia: 0, latam: 0, euExclusive: true },
+                { name: "Jackery Portable power station", image: "https://i.gstatvb.com/shpzkl2v7cp5ii0hf.5f0ca7f9.jpg", eu: 9099, asia: 0, latam: 0, euExclusive: true },
+                { name: "Bluetti portable power station", image: "https://i.gstatvb.com/shpzkl2dp4n9hnuau.44ced641.jpg", eu: 3099, asia: 0, latam: 0, euExclusive: true },
+                { name: "Ecoflow portable power station", image: "https://i.gstatvb.com/shpzkl5cqd142me3r.920eabd1.jpg", eu: 11099, asia: 0, latam: 0, euExclusive: true },
+                { name: "Starlink portable internet system", image: "https://i.gstatvb.com/shpzkl7mko69flm0b.df1d7f1d.jpg", eu: 5399, asia: 0, latam: 0, euExclusive: true },
+                { name: "Könner&Söhnen portable power generator", image: "https://i.gstatvb.com/shpzkl3cquq2mksu1.a4e601f1.jpg", eu: 3699, asia: 0, latam: 0, euExclusive: true },
+                { name: "XO Power Bank 50000mAh", image: "https://i.gstatvb.com/shpzkl2ia97edsch8.cf0a5038.jpg", eu: 1199, asia: 0, latam: 0, euExclusive: true }
+            ],
+            "📜 Сертификаты": [
+                { name: "Spa/massage certificate (2 visits)", image: "https://i.gstatvb.com/shpzkl7hl577i693g.b80dca0a.jpg", eu: 2199, asia: 2199, latam: 2199 },
+                { name: "Gym Membership (3 month)", image: "https://i.gstatvb.com/shpzklnckq1slr512.cc156783.jpg", eu: 6599, asia: 6599, latam: 6599 },
+                { name: "Language course (10 classes)", image: "https://i.gstatvb.com/shpzkl7jjmcvbptg7.4344e1bd.jpg", eu: 3299, asia: 3299, latam: 3299 },
+                { name: "Shopping certificates", image: "https://i.gstatvb.com/shpzkl354ls9o1j0f.b7d1c553.jpg", eu: 4399, asia: 4399, latam: 4399 },
+                { name: "Unforgettable emotions certificate", image: "https://i.gstatvb.com/shpzklith6lkcln1e.f062b567.jpg", eu: 3299, asia: 3299, latam: 3299 },
+                { name: "Driving courses (10 classes)", image: "https://i.gstatvb.com/shpzkl10jhi1sdv0j.6f785ebe.jpg", eu: 9899, asia: 9899, latam: 9899 },
+                { name: "Hobby courses (3 visits)", image: "https://i.gstatvb.com/shpzkl4cro4h0sdep.451bc3c8.jpg", eu: 3299, asia: 3299, latam: 3299 },
+                { name: "Certificate for Harmony and Comfort Products", image: "https://i.gstatvb.com/shpzkl716483ni56o.bd651764.jpg", eu: 2499, asia: 2499, latam: 0 }
+            ]
+        };
 
         const virtualCategories = Object.keys(virtualGiftData);
         const realCategories = Object.keys(giftData);
@@ -1334,27 +1307,17 @@
             });
         }
 
-       
         function updateCommission(isReal) {
-            const commissionInfo = document.getElementById('commissionInfo');
             const commissionPercent = document.getElementById('commissionPercent');
             const commissionType = document.getElementById('commissionType');
             
-            commissionInfo.classList.add('switching');
-            
-            setTimeout(() => {
-                if (isReal) {
-                    commissionPercent.textContent = '30%';
-                    commissionType.textContent = 'реальные';
-                } else {
-                    commissionPercent.textContent = '40%';
-                    commissionType.textContent = 'виртуальные';
-                }
-            }, 200);
-            
-            setTimeout(() => {
-                commissionInfo.classList.remove('switching');
-            }, 400);
+            if (isReal) {
+                commissionPercent.textContent = '30%';
+                commissionType.textContent = 'реальные';
+            } else {
+                commissionPercent.textContent = '40%';
+                commissionType.textContent = 'виртуальные';
+            }
         }
 
         document.getElementById('virtualBtn').addEventListener('click', () => {
@@ -1367,52 +1330,39 @@
         });
 
         document.getElementById('realBtn').addEventListener('click', () => {
-		document.getElementById('realBtn').classList.add('active');
-		document.getElementById('virtualBtn').classList.remove('active');
-		document.getElementById('modeSwitcher').classList.add('real-active');
-		document.getElementById('realGifts').classList.add('active');
-		document.getElementById('virtualGifts').classList.remove('active');
-		updateCommission(true);
-		showRealGiftNotification();
-	});
+            document.getElementById('realBtn').classList.add('active');
+            document.getElementById('virtualBtn').classList.remove('active');
+            document.getElementById('modeSwitcher').classList.add('real-active');
+            document.getElementById('realGifts').classList.add('active');
+            document.getElementById('virtualGifts').classList.remove('active');
+            updateCommission(true);
+            showRealGiftNotification();
+        });
 
-	function showRealGiftNotification() {
-		const notification = document.getElementById('realGiftNotification');
-		const closeBtn = document.getElementById('closeNotification');
-		
-		notification.classList.remove('show', 'hide');
-		
-		setTimeout(() => {
-			notification.classList.add('show');
-		}, 100);
-		
-		setTimeout(() => {
-			hideNotification();
-		}, 6000);
-		
-		closeBtn.addEventListener('click', hideNotification);
-		
-		notification.addEventListener('click', (e) => {
-			if (e.target === notification) {
-				hideNotification();
-			}
-		});
-		
-		function hideNotification() {
-			notification.classList.remove('show');
-			notification.classList.add('hide');
-			
-			setTimeout(() => {
-				notification.classList.remove('hide');
-			}, 600);
-		}
-	}
-
-	document.getElementById('closeNotification').addEventListener('click', () => {
-		const notification = document.getElementById('realGiftNotification');
-		notification.classList.remove('show');
-		notification.classList.add('hide');
-	});
+        function showRealGiftNotification() {
+            const notification = document.getElementById('realGiftNotification');
+            
+            notification.classList.remove('show', 'hide');
+            
+            setTimeout(() => {
+                notification.classList.add('show');
+            }, 100);
+            
+            setTimeout(() => {
+                hideNotification();
+            }, 6000);
+            
+            document.getElementById('closeNotification').addEventListener('click', hideNotification);
+            
+            function hideNotification() {
+                notification.classList.remove('show');
+                notification.classList.add('hide');
+                
+                setTimeout(() => {
+                    notification.classList.remove('hide');
+                }, 600);
+            }
+        }
 
         function generateVirtualCategoryNav() {
             const nav = document.getElementById('virtualCategoryNav');
@@ -1528,10 +1478,8 @@
             document.querySelectorAll('#realCategorySections .category-section').forEach(section => section.classList.remove('active'));
             document.getElementById(`real-category-${category.replace(/[^a-zA-Z0-9]/g, '-')}`).classList.add('active');
             
-            
             document.querySelectorAll('.exclusive-filter-btn').forEach(btn => btn.classList.remove('active'));
             document.querySelector('.exclusive-filter-btn[onclick*="all"]').classList.add('active');
-            
             
             document.querySelectorAll('#realCategorySections .gift-card').forEach(card => {
                 card.style.display = '';
@@ -1539,47 +1487,38 @@
         }
 
         function filterByExclusive(exclusiveType, button) {
-            
             document.querySelectorAll('.exclusive-filter-btn').forEach(btn => btn.classList.remove('active'));
             button.classList.add('active');
             
             const categoryNav = document.getElementById('realCategoryNav');
             
             if (exclusiveType === 'all') {
-               
                 categoryNav.style.display = '';
-                
                 
                 document.querySelectorAll('#realCategorySections .category-section').forEach(section => {
                     section.style.display = '';
                     section.classList.remove('active');
                 });
                 
-               
                 document.querySelectorAll('#realCategorySections .gift-card').forEach(card => {
                     card.style.display = '';
                 });
-                
                 
                 const activeCategory = document.querySelector('#realCategoryNav .category-btn.active');
                 if (activeCategory) {
                     const categoryName = activeCategory.textContent;
                     document.getElementById(`real-category-${categoryName.replace(/[^a-zA-Z0-9]/g, '-')}`).classList.add('active');
                 } else {
-                    
                     document.querySelectorAll('#realCategorySections .category-section')[0].classList.add('active');
                     document.querySelectorAll('#realCategoryNav .category-btn')[0].classList.add('active');
                 }
             } else {
-                
                 categoryNav.style.display = 'none';
-                
                 
                 document.querySelectorAll('#realCategorySections .category-section').forEach(section => {
                     section.classList.add('active');
                     section.style.display = '';
                 });
-                
                 
                 document.querySelectorAll('#realCategorySections .gift-card').forEach(card => {
                     const cardExclusive = card.getAttribute('data-exclusive');
@@ -1591,7 +1530,6 @@
                     }
                 });
                 
-               
                 document.querySelectorAll('#realCategorySections .category-section').forEach(section => {
                     const visibleCards = Array.from(section.querySelectorAll('.gift-card')).filter(card => card.style.display !== 'none');
                     if (visibleCards.length === 0) {
@@ -1608,53 +1546,7 @@
         generateRealCategoryNav();
         generateRealCategorySections();
 
-    </script>
-
-    
-    <div class="calc-overlay" id="calcOverlay"></div>
-    <div class="calc-modal" id="calcModal">
-        <button class="calc-close" id="calcClose">×</button>
-        
-        <div class="calc-header">
-            <div class="calc-title">💵 Калькулятор заработка</div>
-            <div class="calc-subtitle">Узнай сколько ты заработаешь с подарка | здесь лишь примерный чистый ваш заработок</div>
-        </div>
-
-        <div class="calc-type-switcher">
-            <button class="calc-type-btn active" id="calcVirtualBtn">
-                <span>🎮 Виртуальные</span>
-                <span class="percent-badge">40%</span>
-            </button>
-            <button class="calc-type-btn" id="calcRealBtn">
-                <span>📦 Реальные</span>
-                <span class="percent-badge">30%</span>
-            </button>
-        </div>
-
-        <div class="calc-input-group">
-            <label class="calc-input-label">Стоимость подарка</label>
-            <div class="calc-input-wrapper">
-                <input type="number" class="calc-input" id="calcInput" placeholder="0" min="0">
-                <span class="calc-input-suffix">💎</span>
-            </div>
-        </div>
-
-        <div class="calc-result">
-            <div class="calc-result-label">Ты получишь</div>
-            <div class="calc-result-value" id="calcResultValue">$0.00</div>
-            <div class="calc-result-currency">долларов США</div>
-        </div>
-
-        <div class="calc-formula">
-            <div class="calc-formula-title">Формула расчёта</div>
-            <div class="calc-formula-text" id="calcFormulaText">
-                <span>0</span> × 0.06 × <span>40%</span> = $0.00
-            </div>
-        </div>
-    </div>
-
-    <script>
-      
+        // Calculator functionality
         const calcOverlay = document.getElementById('calcOverlay');
         const calcModal = document.getElementById('calcModal');
         const openCalcBtn = document.getElementById('openCalcBtn');
