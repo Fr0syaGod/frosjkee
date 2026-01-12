@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🎁 GiftHub | by jkee</title>
+    <title>🎁 GIFT | by jkee</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
@@ -82,24 +82,18 @@
 			font-weight: 900;
 			letter-spacing: -0.03em;
 			margin-bottom: 16px;
-			color: var(--text-hero);
+			background: linear-gradient(90deg, #7c3aed, #06b6d4, #a855f7, #7c3aed);
+			background-size: 300% 100%;
+			-webkit-background-clip: text;
+			-webkit-text-fill-color: transparent;
+			background-clip: text;
+			animation: gradientShift 4s ease infinite;
 		}
 
-		.hub-accent {
-			background: #ff9000;
-			color: #000000;
-			padding: 4px 16px;
-			border-radius: 8px;
-		}
-
-		@keyframes rgbText {
-			0% { color: #ff0000; }
-			16% { color: #ff9000; }
-			33% { color: #ffff00; }
-			50% { color: #00ff00; }
-			66% { color: #0099ff; }
-			83% { color: #9900ff; }
-			100% { color: #ff0000; }
+		@keyframes gradientShift {
+			0% { background-position: 0% 50%; }
+			50% { background-position: 100% 50%; }
+			100% { background-position: 0% 50%; }
 		}
 
         .header-subtitle {
@@ -153,6 +147,322 @@
         .mode-btn.active { color: var(--text-hero); }
         .mode-btn:not(.active):hover { color: var(--text-primary); }
         .mode-btn-icon { font-size: 18px; }
+
+        .commission-info {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 24px;
+            padding: 14px 28px;
+            background: linear-gradient(135deg, rgba(124, 58, 237, 0.15), rgba(6, 182, 212, 0.15));
+            border: 1px solid rgba(124, 58, 237, 0.3);
+            border-radius: var(--radius-full);
+            transition: border-color 0.2s ease;
+        }
+        .commission-info:hover {
+            border-color: rgba(124, 58, 237, 0.5);
+        }
+        .commission-icon { font-size: 20px; }
+        .commission-text { font-size: 14px; font-weight: 500; color: var(--text-secondary); }
+        .commission-percent {
+            font-family: 'Space Mono', monospace;
+            font-size: 18px;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .commission-type {
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 4px 10px;
+            border-radius: var(--radius-sm);
+            background: var(--glass);
+            color: var(--text-muted);
+        }
+        .commission-info.switching { opacity: 0.5; }
+        @keyframes commission-switch {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+
+        .calc-tab-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 20px;
+            padding: 12px 24px;
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-full);
+            color: var(--text-secondary);
+            font-family: inherit;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .calc-tab-btn:hover {
+            border-color: var(--primary);
+            color: var(--text-primary);
+        }
+        .calc-tab-btn.active {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-color: transparent;
+            color: var(--text-hero);
+        }
+
+        /* Calculator Modal */
+        .calc-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 2000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.2s ease, visibility 0.2s ease;
+        }
+        .calc-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .calc-modal {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 90%;
+            max-width: 480px;
+            max-height: 90vh;
+            overflow-y: auto;
+            background: var(--bg-main);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-lg);
+            padding: 32px;
+            z-index: 2001;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.2s ease, visibility 0.2s ease;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+        .calc-modal.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .calc-close {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            width: 36px;
+            height: 36px;
+            border: 1px solid var(--glass-border);
+            background: var(--glass);
+            border-radius: 50%;
+            color: var(--text-secondary);
+            font-size: 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+        }
+        .calc-close:hover {
+            border-color: var(--primary);
+            color: var(--text-hero);
+        }
+
+        .calc-header {
+            text-align: center;
+            margin-bottom: 28px;
+        }
+        .calc-title {
+            font-size: 24px;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--text-hero), var(--primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 8px;
+        }
+        .calc-subtitle {
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+
+        /* Calculator Type Switcher */
+        .calc-type-switcher {
+            display: flex;
+            background: var(--bg-card);
+            border-radius: var(--radius-md);
+            padding: 4px;
+            margin-bottom: 24px;
+            border: 1px solid var(--glass-border);
+        }
+        .calc-type-btn {
+            flex: 1;
+            padding: 14px 20px;
+            border: none;
+            background: transparent;
+            border-radius: calc(var(--radius-md) - 4px);
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        .calc-type-btn:hover:not(.active) {
+            color: var(--text-primary);
+        }
+        .calc-type-btn.active {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: var(--text-hero);
+        }
+        .calc-type-btn .percent-badge {
+            font-family: 'Space Mono', monospace;
+            font-size: 11px;
+            padding: 2px 6px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 4px;
+        }
+
+        /* Calculator Input */
+        .calc-input-group {
+            margin-bottom: 24px;
+        }
+        .calc-input-label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .calc-input-wrapper {
+            position: relative;
+        }
+        .calc-input {
+            width: 100%;
+            padding: 18px 24px;
+            padding-right: 60px;
+            background: var(--bg-card);
+            border: 2px solid var(--glass-border);
+            border-radius: var(--radius-md);
+            color: var(--text-hero);
+            font-family: 'Space Mono', monospace;
+            font-size: 24px;
+            font-weight: 700;
+            outline: none;
+            transition: all 0.2s ease;
+        }
+        .calc-input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px var(--primary-glow);
+        }
+        .calc-input::placeholder {
+            color: var(--text-muted);
+            font-size: 18px;
+        }
+        .calc-input-suffix {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 20px;
+        }
+
+        .calc-result {
+            background: linear-gradient(135deg, rgba(124, 58, 237, 0.1), rgba(6, 182, 212, 0.1));
+            border: 1px solid rgba(124, 58, 237, 0.3);
+            border-radius: var(--radius-md);
+            padding: 24px;
+            text-align: center;
+        }
+        .calc-result-label {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+        }
+        .calc-result-value {
+            font-family: 'Space Mono', monospace;
+            font-size: 42px;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--success), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1;
+            margin-bottom: 8px;
+        }
+        .calc-result-currency {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        .calc-formula {
+            margin-top: 20px;
+            padding: 16px;
+            background: var(--glass);
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--glass-border);
+        }
+        .calc-formula-title {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+        .calc-formula-text {
+            font-family: 'Space Mono', monospace;
+            font-size: 13px;
+            color: var(--text-secondary);
+            word-break: break-all;
+        }
+        .calc-formula-text span {
+            color: var(--primary);
+        }
+
+        @media (max-width: 480px) {
+            .calc-modal {
+                padding: 24px 20px;
+                max-height: 90vh;
+                overflow-y: auto;
+            }
+            .calc-input {
+                font-size: 20px;
+                padding: 16px 20px;
+                padding-right: 50px;
+            }
+            .calc-result-value {
+                font-size: 32px;
+            }
+            .calc-type-btn {
+                padding: 12px 10px;
+                font-size: 13px;
+                flex-direction: column;
+                gap: 4px;
+            }
+        }
 
         .gifts-section { display: none; }
         .gifts-section.active { display: block; animation: fadeIn 0.3s ease; }
@@ -355,6 +665,7 @@
             .gift-image-container { height: 140px; }
             .category-nav { padding: 12px 16px; gap: 8px; }
             .category-btn { padding: 10px 18px; font-size: 13px; }
+            .commission-info { flex-direction: column; gap: 8px; padding: 12px 20px; }
         }
 		
 .notification {
@@ -429,7 +740,6 @@
     transform: scale(1.1);
 }
 
-/* Свечение вокруг уведомления */
 .notification::after {
     content: '';
     position: absolute;
@@ -458,7 +768,6 @@
     50% { opacity: 0.8; }
 }
 
-/* Адаптив для уведомления */
 @media (max-width: 768px) {
     .notification {
         width: 280px;
@@ -486,7 +795,6 @@
     }
 }
 
-/* Затемнение фона при появлении уведомления */
 .notification-backdrop {
     position: fixed;
     top: 0;
@@ -506,7 +814,6 @@
     pointer-events: all;
 }
 
-/* Фильтры эксклюзивности */
 .exclusive-filter-wrapper {
     display: flex;
     gap: 12px;
@@ -609,12 +916,25 @@
         <div class="container">
             <header class="header">
                 <div class="header-badge"><span>Обновлено сегодня</span></div>
-                <h1 class="header-title">Gift<span class="hub-accent">Hub</span></h1>
+                <h1 class="header-title">GIFT</h1>
                 <p class="header-subtitle">Каталог всех подарков агентства</p>
                 <div class="mode-switcher" id="modeSwitcher">
                     <button class="mode-btn active" id="virtualBtn"><span class="mode-btn-icon">🎮</span><span>Виртуальные</span></button>
                     <button class="mode-btn" id="realBtn"><span class="mode-btn-icon">📦</span><span>Реальные</span></button>
                 </div>
+                
+                <div class="commission-info" id="commissionInfo">
+                    <span class="commission-icon">💰</span>
+                    <span class="commission-text">Твой процент:</span>
+                    <span class="commission-percent" id="commissionPercent">40%</span>
+                    <span class="commission-type" id="commissionType">виртуальные</span>
+                </div>
+
+                <br>
+                <button class="calc-tab-btn" id="openCalcBtn">
+                    <span>🧮</span>
+                    <span>Калькулятор заработка</span>
+                </button>
             </header>
 
 
@@ -652,7 +972,7 @@
             </section>
 
             <footer class="footer">
-                <p>© 2026 <span class="footer-brand">GiftHub</span> | by jkee</p>
+                <p>© 2025 <span class="footer-brand">GIFT</span> | by jkee</p>
             </footer>
         </div>
     </div>
@@ -964,12 +1284,35 @@
             });
         }
 
+        function updateCommission(isReal) {
+            const commissionInfo = document.getElementById('commissionInfo');
+            const commissionPercent = document.getElementById('commissionPercent');
+            const commissionType = document.getElementById('commissionType');
+            
+            commissionInfo.classList.add('switching');
+            
+            setTimeout(() => {
+                if (isReal) {
+                    commissionPercent.textContent = '30%';
+                    commissionType.textContent = 'реальные';
+                } else {
+                    commissionPercent.textContent = '40%';
+                    commissionType.textContent = 'виртуальные';
+                }
+            }, 200);
+            
+            setTimeout(() => {
+                commissionInfo.classList.remove('switching');
+            }, 400);
+        }
+
         document.getElementById('virtualBtn').addEventListener('click', () => {
             document.getElementById('virtualBtn').classList.add('active');
             document.getElementById('realBtn').classList.remove('active');
             document.getElementById('modeSwitcher').classList.remove('real-active');
             document.getElementById('virtualGifts').classList.add('active');
             document.getElementById('realGifts').classList.remove('active');
+            updateCommission(false);
         });
 
         document.getElementById('realBtn').addEventListener('click', () => {
@@ -978,7 +1321,7 @@
 		document.getElementById('modeSwitcher').classList.add('real-active');
 		document.getElementById('realGifts').classList.add('active');
 		document.getElementById('virtualGifts').classList.remove('active');
-		
+		updateCommission(true);
 		showRealGiftNotification();
 	});
 
@@ -1134,59 +1477,49 @@
             document.querySelectorAll('#realCategorySections .category-section').forEach(section => section.classList.remove('active'));
             document.getElementById(`real-category-${category.replace(/[^a-zA-Z0-9]/g, '-')}`).classList.add('active');
             
-            // Сбрасываем фильтр эксклюзивности на ALL
             document.querySelectorAll('.exclusive-filter-btn').forEach(btn => btn.classList.remove('active'));
             document.querySelector('.exclusive-filter-btn[onclick*="all"]').classList.add('active');
             
-            // Показываем все карточки в выбранной категории
             document.querySelectorAll('#realCategorySections .gift-card').forEach(card => {
                 card.style.display = '';
             });
         }
 
         function filterByExclusive(exclusiveType, button) {
-            // Обновляем активную кнопку фильтра
             document.querySelectorAll('.exclusive-filter-btn').forEach(btn => btn.classList.remove('active'));
             button.classList.add('active');
             
             const categoryNav = document.getElementById('realCategoryNav');
             
             if (exclusiveType === 'all') {
-                // Режим ALL - показываем навигацию категорий
                 categoryNav.style.display = '';
                 
-                // ПОЛНОСТЬЮ сбрасываем все стили у секций
                 document.querySelectorAll('#realCategorySections .category-section').forEach(section => {
                     section.style.display = '';
                     section.classList.remove('active');
                 });
                 
-                // ПОЛНОСТЬЮ сбрасываем все стили у карточек
                 document.querySelectorAll('#realCategorySections .gift-card').forEach(card => {
                     card.style.display = '';
                 });
                 
-                // Активируем первую категорию или восстанавливаем активную
                 const activeCategory = document.querySelector('#realCategoryNav .category-btn.active');
                 if (activeCategory) {
                     const categoryName = activeCategory.textContent;
                     document.getElementById(`real-category-${categoryName.replace(/[^a-zA-Z0-9]/g, '-')}`).classList.add('active');
                 } else {
-                    // Активируем первую категорию
                     document.querySelectorAll('#realCategorySections .category-section')[0].classList.add('active');
                     document.querySelectorAll('#realCategoryNav .category-btn')[0].classList.add('active');
                 }
             } else {
-                // Режим фильтрации по региону - скрываем навигацию категорий
+    
                 categoryNav.style.display = 'none';
                 
-                // Показываем ВСЕ секции категорий
                 document.querySelectorAll('#realCategorySections .category-section').forEach(section => {
                     section.classList.add('active');
                     section.style.display = '';
                 });
                 
-                // Фильтруем карточки подарков
                 document.querySelectorAll('#realCategorySections .gift-card').forEach(card => {
                     const cardExclusive = card.getAttribute('data-exclusive');
                     
@@ -1197,7 +1530,6 @@
                     }
                 });
                 
-                // Скрываем пустые категории
                 document.querySelectorAll('#realCategorySections .category-section').forEach(section => {
                     const visibleCards = Array.from(section.querySelectorAll('.gift-card')).filter(card => card.style.display !== 'none');
                     if (visibleCards.length === 0) {
@@ -1213,6 +1545,112 @@
         generateVirtualCategorySections();
         generateRealCategoryNav();
         generateRealCategorySections();
+
+    </script>
+
+    <div class="calc-overlay" id="calcOverlay"></div>
+    <div class="calc-modal" id="calcModal">
+        <button class="calc-close" id="calcClose">×</button>
+        
+        <div class="calc-header">
+            <div class="calc-title">💵 Калькулятор заработка</div>
+            <div class="calc-subtitle">Узнай сколько ты заработаешь с подарка</div>
+        </div>
+
+        <div class="calc-type-switcher">
+            <button class="calc-type-btn active" id="calcVirtualBtn">
+                <span>🎮 Виртуальные</span>
+                <span class="percent-badge">40%</span>
+            </button>
+            <button class="calc-type-btn" id="calcRealBtn">
+                <span>📦 Реальные</span>
+                <span class="percent-badge">30%</span>
+            </button>
+        </div>
+
+        <div class="calc-input-group">
+            <label class="calc-input-label">Стоимость подарка</label>
+            <div class="calc-input-wrapper">
+                <input type="number" class="calc-input" id="calcInput" placeholder="0" min="0">
+                <span class="calc-input-suffix">💎</span>
+            </div>
+        </div>
+
+        <div class="calc-result">
+            <div class="calc-result-label">Ты получишь</div>
+            <div class="calc-result-value" id="calcResultValue">$0.00</div>
+            <div class="calc-result-currency">долларов США</div>
+        </div>
+
+        <div class="calc-formula">
+            <div class="calc-formula-title">Формула расчёта</div>
+            <div class="calc-formula-text" id="calcFormulaText">
+                <span>0</span> × 0.06 × <span>40%</span> = $0.00
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const calcOverlay = document.getElementById('calcOverlay');
+        const calcModal = document.getElementById('calcModal');
+        const openCalcBtn = document.getElementById('openCalcBtn');
+        const calcClose = document.getElementById('calcClose');
+        const calcVirtualBtn = document.getElementById('calcVirtualBtn');
+        const calcRealBtn = document.getElementById('calcRealBtn');
+        const calcInput = document.getElementById('calcInput');
+        const calcResultValue = document.getElementById('calcResultValue');
+        const calcFormulaText = document.getElementById('calcFormulaText');
+
+        let isVirtualCalc = true;
+
+        function openCalculator() {
+            calcOverlay.classList.add('active');
+            calcModal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+            calcInput.focus();
+        }
+
+        function closeCalculator() {
+            calcOverlay.classList.remove('active');
+            calcModal.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        function calculateEarnings() {
+            const credits = parseFloat(calcInput.value) || 0;
+            const creditRate = 0.06;
+            const commissionRate = isVirtualCalc ? 0.40 : 0.30;
+            const percentDisplay = isVirtualCalc ? '40%' : '30%';
+            const earnings = credits * creditRate * commissionRate;
+            calcResultValue.textContent = '$' + earnings.toFixed(2);
+            calcFormulaText.innerHTML = '<span>' + credits + '</span> × $0.06 × <span>' + percentDisplay + '</span> = $' + earnings.toFixed(2);
+        }
+
+        openCalcBtn.addEventListener('click', openCalculator);
+        calcClose.addEventListener('click', closeCalculator);
+        calcOverlay.addEventListener('click', closeCalculator);
+
+        calcVirtualBtn.addEventListener('click', function() {
+            calcVirtualBtn.classList.add('active');
+            calcRealBtn.classList.remove('active');
+            isVirtualCalc = true;
+            calculateEarnings();
+        });
+
+        calcRealBtn.addEventListener('click', function() {
+            calcRealBtn.classList.add('active');
+            calcVirtualBtn.classList.remove('active');
+            isVirtualCalc = false;
+            calculateEarnings();
+        });
+
+        calcInput.addEventListener('input', calculateEarnings);
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && calcModal.classList.contains('active')) {
+                closeCalculator();
+            }
+        });
     </script>
 </body>
 </html>
