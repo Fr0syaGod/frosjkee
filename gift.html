@@ -201,31 +201,6 @@
             margin-top: 24px;
         }
 
-        .calc-tab-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 14px 28px;
-            background: var(--glass);
-            border: 1px solid var(--glass-border);
-            border-radius: var(--radius-full);
-            color: var(--text-secondary);
-            font-family: inherit;
-            font-size: 15px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        .calc-tab-btn:hover {
-            border-color: var(--primary);
-            color: var(--text-primary);
-            transform: translateY(-2px);
-        }
-        .calc-tab-btn.active {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            border-color: transparent;
-            color: var(--text-hero);
-        }
 
         /* Commission Info - обновленный стиль */
         .commission-info {
@@ -265,254 +240,7 @@
         }
         .commission-info.switching { opacity: 0.5; }
 
-        /* Calculator Modal */
-        .calc-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.7);
-            z-index: 2000;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.2s ease, visibility 0.2s ease;
-        }
-        .calc-overlay.active {
-            opacity: 1;
-            visibility: visible;
-        }
 
-        .calc-modal {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 90%;
-            max-width: 480px;
-            max-height: 90vh;
-            overflow-y: auto;
-            background: var(--bg-main);
-            border: 1px solid var(--glass-border);
-            border-radius: var(--radius-lg);
-            padding: 32px;
-            z-index: 2001;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.2s ease, visibility 0.2s ease;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-        }
-        .calc-modal.active {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        .calc-close {
-            position: absolute;
-            top: 16px;
-            right: 16px;
-            width: 36px;
-            height: 36px;
-            border: 1px solid var(--glass-border);
-            background: var(--glass);
-            border-radius: 50%;
-            color: var(--text-secondary);
-            font-size: 20px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.2s ease;
-        }
-        .calc-close:hover {
-            border-color: var(--primary);
-            color: var(--text-hero);
-        }
-
-        .calc-header {
-            text-align: center;
-            margin-bottom: 28px;
-        }
-        .calc-title {
-            font-size: 24px;
-            font-weight: 800;
-            background: linear-gradient(135deg, var(--text-hero), var(--primary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin-bottom: 8px;
-        }
-        .calc-subtitle {
-            font-size: 14px;
-            color: var(--text-muted);
-        }
-
-        /* Calculator Type Switcher */
-        .calc-type-switcher {
-            display: flex;
-            background: var(--bg-card);
-            border-radius: var(--radius-md);
-            padding: 4px;
-            margin-bottom: 24px;
-            border: 1px solid var(--glass-border);
-        }
-        .calc-type-btn {
-            flex: 1;
-            padding: 14px 20px;
-            border: none;
-            background: transparent;
-            border-radius: calc(var(--radius-md) - 4px);
-            cursor: pointer;
-            font-family: inherit;
-            font-size: 14px;
-            font-weight: 600;
-            color: var(--text-secondary);
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-        }
-        .calc-type-btn:hover:not(.active) {
-            color: var(--text-primary);
-        }
-        .calc-type-btn.active {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: var(--text-hero);
-        }
-        .calc-type-btn .percent-badge {
-            font-family: 'Space Mono', monospace;
-            font-size: 11px;
-            padding: 2px 6px;
-            background: rgba(255,255,255,0.2);
-            border-radius: 4px;
-        }
-
-        /* Calculator Input */
-        .calc-input-group {
-            margin-bottom: 24px;
-        }
-        .calc-input-label {
-            display: block;
-            font-size: 13px;
-            font-weight: 600;
-            color: var(--text-secondary);
-            margin-bottom: 10px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-        .calc-input-wrapper {
-            position: relative;
-        }
-        .calc-input {
-            width: 100%;
-            padding: 18px 24px;
-            padding-right: 60px;
-            background: var(--bg-card);
-            border: 2px solid var(--glass-border);
-            border-radius: var(--radius-md);
-            color: var(--text-hero);
-            font-family: 'Space Mono', monospace;
-            font-size: 24px;
-            font-weight: 700;
-            outline: none;
-            transition: all 0.2s ease;
-        }
-        .calc-input:focus {
-            border-color: var(--primary);
-            box-shadow: 0 0 0 4px var(--primary-glow);
-        }
-        .calc-input::placeholder {
-            color: var(--text-muted);
-            font-size: 18px;
-        }
-        .calc-input-suffix {
-            position: absolute;
-            right: 20px;
-            top: 50%;
-            transform: translateY(-50%);
-            font-size: 20px;
-        }
-
-        /* Calculator Result */
-        .calc-result {
-            background: linear-gradient(135deg, rgba(124, 58, 237, 0.1), rgba(6, 182, 212, 0.1));
-            border: 1px solid rgba(124, 58, 237, 0.3);
-            border-radius: var(--radius-md);
-            padding: 24px;
-            text-align: center;
-        }
-        .calc-result-label {
-            font-size: 13px;
-            font-weight: 600;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 12px;
-        }
-        .calc-result-value {
-            font-family: 'Space Mono', monospace;
-            font-size: 42px;
-            font-weight: 700;
-            background: linear-gradient(135deg, var(--success), var(--secondary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            line-height: 1;
-            margin-bottom: 8px;
-        }
-        .calc-result-currency {
-            font-size: 14px;
-            color: var(--text-secondary);
-        }
-
-        /* Calculator Formula */
-        .calc-formula {
-            margin-top: 20px;
-            padding: 16px;
-            background: var(--glass);
-            border-radius: var(--radius-sm);
-            border: 1px solid var(--glass-border);
-        }
-        .calc-formula-title {
-            font-size: 11px;
-            font-weight: 600;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 8px;
-        }
-        .calc-formula-text {
-            font-family: 'Space Mono', monospace;
-            font-size: 13px;
-            color: var(--text-secondary);
-            word-break: break-all;
-        }
-        .calc-formula-text span {
-            color: var(--primary);
-        }
-
-        @media (max-width: 480px) {
-            .calc-modal {
-                padding: 24px 20px;
-                max-height: 90vh;
-                overflow-y: auto;
-            }
-            .calc-input {
-                font-size: 20px;
-                padding: 16px 20px;
-                padding-right: 50px;
-            }
-            .calc-result-value {
-                font-size: 32px;
-            }
-            .calc-type-btn {
-                padding: 12px 10px;
-                font-size: 13px;
-                flex-direction: column;
-                gap: 4px;
-            }
-        }
 
         .gifts-section { display: none; }
         .gifts-section.active { display: block; animation: fadeIn 0.3s ease; }
@@ -840,7 +568,6 @@
             .header-actions {
                 gap: 12px;
             }
-            .calc-tab-btn,
             .commission-info {
                 padding: 12px 24px;
                 font-size: 14px;
@@ -876,7 +603,6 @@
                 width: 100%;
             }
             
-            .calc-tab-btn,
             .commission-info {
                 width: 100%;
                 justify-content: center;
@@ -911,10 +637,6 @@
                         <span class="commission-type" id="commissionType">виртуальные</span>
                     </div>
                     
-                    <button class="calc-tab-btn" id="openCalcBtn">
-                        <span>🧮</span>
-                        <span>Калькулятор заработка</span>
-                    </button>
                 </div>
             </header>
 
@@ -953,49 +675,6 @@
             <footer class="footer">
                 <p>© 2025 <span class="footer-brand">GIFT</span> | by jkee</p>
             </footer>
-        </div>
-    </div>
-
-    <!-- Calculator Modal -->
-    <div class="calc-overlay" id="calcOverlay"></div>
-    <div class="calc-modal" id="calcModal">
-        <button class="calc-close" id="calcClose">×</button>
-        
-        <div class="calc-header">
-            <div class="calc-title">💵 Калькулятор заработка</div>
-            <div class="calc-subtitle">Узнай сколько ты заработаешь с подарка | здесь лишь примерный чистый ваш заработок</div>
-        </div>
-
-        <div class="calc-type-switcher">
-            <button class="calc-type-btn active" id="calcVirtualBtn">
-                <span>🎮 Виртуальные</span>
-                <span class="percent-badge">40%</span>
-            </button>
-            <button class="calc-type-btn" id="calcRealBtn">
-                <span>📦 Реальные</span>
-                <span class="percent-badge">30%</span>
-            </button>
-        </div>
-
-        <div class="calc-input-group">
-            <label class="calc-input-label">Стоимость подарка</label>
-            <div class="calc-input-wrapper">
-                <input type="number" class="calc-input" id="calcInput" placeholder="0" min="0">
-                <span class="calc-input-suffix">💎</span>
-            </div>
-        </div>
-
-        <div class="calc-result">
-            <div class="calc-result-label">Ты получишь</div>
-            <div class="calc-result-value" id="calcResultValue">$0.00</div>
-            <div class="calc-result-currency">долларов США</div>
-        </div>
-
-        <div class="calc-formula">
-            <div class="calc-formula-title">Формула расчёта</div>
-            <div class="calc-formula-text" id="calcFormulaText">
-                <span>0</span> × 0.06 × <span>40%</span> = $0.00
-            </div>
         </div>
     </div>
 
@@ -1545,68 +1224,6 @@
         generateVirtualCategorySections();
         generateRealCategoryNav();
         generateRealCategorySections();
-
-        // Calculator functionality
-        const calcOverlay = document.getElementById('calcOverlay');
-        const calcModal = document.getElementById('calcModal');
-        const openCalcBtn = document.getElementById('openCalcBtn');
-        const calcClose = document.getElementById('calcClose');
-        const calcVirtualBtn = document.getElementById('calcVirtualBtn');
-        const calcRealBtn = document.getElementById('calcRealBtn');
-        const calcInput = document.getElementById('calcInput');
-        const calcResultValue = document.getElementById('calcResultValue');
-        const calcFormulaText = document.getElementById('calcFormulaText');
-
-        let isVirtualCalc = true;
-
-        function openCalculator() {
-            calcOverlay.classList.add('active');
-            calcModal.classList.add('active');
-            document.body.style.overflow = 'hidden';
-            calcInput.focus();
-        }
-
-        function closeCalculator() {
-            calcOverlay.classList.remove('active');
-            calcModal.classList.remove('active');
-            document.body.style.overflow = '';
-        }
-
-        function calculateEarnings() {
-            const credits = parseFloat(calcInput.value) || 0;
-            const creditRate = 0.06;
-            const commissionRate = isVirtualCalc ? 0.40 : 0.30;
-            const percentDisplay = isVirtualCalc ? '40%' : '30%';
-            const earnings = credits * creditRate * commissionRate;
-            calcResultValue.textContent = '$' + earnings.toFixed(2);
-            calcFormulaText.innerHTML = '<span>' + credits + '</span> × $0.06 × <span>' + percentDisplay + '</span> = $' + earnings.toFixed(2);
-        }
-
-        openCalcBtn.addEventListener('click', openCalculator);
-        calcClose.addEventListener('click', closeCalculator);
-        calcOverlay.addEventListener('click', closeCalculator);
-
-        calcVirtualBtn.addEventListener('click', function() {
-            calcVirtualBtn.classList.add('active');
-            calcRealBtn.classList.remove('active');
-            isVirtualCalc = true;
-            calculateEarnings();
-        });
-
-        calcRealBtn.addEventListener('click', function() {
-            calcRealBtn.classList.add('active');
-            calcVirtualBtn.classList.remove('active');
-            isVirtualCalc = false;
-            calculateEarnings();
-        });
-
-        calcInput.addEventListener('input', calculateEarnings);
-
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape' && calcModal.classList.contains('active')) {
-                closeCalculator();
-            }
-        });
     </script>
 </body>
 </html>
