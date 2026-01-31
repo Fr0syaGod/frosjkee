@@ -397,7 +397,69 @@
             display: -webkit-box; 
             -webkit-line-clamp: 2; 
             -webkit-box-orient: vertical; 
-            overflow: hidden; 
+            overflow: hidden;
+        }
+
+        .copy-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 14px;
+            height: 14px;
+            margin-left: 6px;
+            cursor: pointer;
+            opacity: 0;
+            transition: opacity 0.2s ease, transform 0.1s ease;
+            vertical-align: middle;
+        }
+
+        .copy-icon svg {
+            width: 14px;
+            height: 14px;
+            stroke: var(--primary);
+            fill: none;
+            transition: stroke 0.2s ease;
+        }
+
+        .gift-card:hover .copy-icon {
+            opacity: 0.6;
+        }
+
+        .copy-icon:hover {
+            opacity: 1 !important;
+            transform: scale(1.15);
+        }
+
+        .copy-icon:hover svg {
+            stroke: var(--secondary);
+        }
+
+        .copy-icon:active {
+            transform: scale(0.9);
+        }
+
+        .copy-toast {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            background: rgba(124, 58, 237, 0.95);
+            color: white;
+            padding: 10px 16px;
+            border-radius: var(--radius-sm);
+            font-size: 13px;
+            font-weight: 500;
+            z-index: 10000;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            pointer-events: none;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+        }
+
+        .copy-toast.show {
+            opacity: 1;
+            transform: translateY(0);
         }
 
         .gift-price { text-align: center; margin-top: auto; }
@@ -628,7 +690,6 @@
                     <button class="mode-btn" id="realBtn"><span class="mode-btn-icon">📦</span><span>Реальные</span></button>
                 </div>
                 
-                <!-- Перемещенные элементы в новый блок -->
                 <div class="header-actions">
                     <div class="commission-info" id="commissionInfo">
                         <span class="commission-icon">💰</span>
@@ -673,7 +734,7 @@
             </section>
 
             <footer class="footer">
-                <p>© 2025 <span class="footer-brand">GIFT</span> | by jkee</p>
+                <p>© 2026 <span class="footer-brand">GIFT</span> | by jkee</p>
             </footer>
         </div>
     </div>
@@ -1060,7 +1121,8 @@
             let imageHtml = gift.noImage 
                 ? '<div class="gift-placeholder">🎬</div>' 
                 : `<img src="${baseUrl}${gift.image}" alt="${gift.name}" class="gift-image" loading="lazy">`;
-            return `<div class="gift-card" data-gift-name="${gift.name.toLowerCase()}" data-gift-price="${gift.price}"><div class="gift-image-container">${imageHtml}</div><div class="gift-name">${gift.name}</div><div class="gift-price"><div class="price-badge">${gift.price} 💎</div></div></div>`;
+            const copyIcon = `<span class="copy-icon" onclick="copyGiftName(event, '${gift.name.replace(/'/g, "\\'")}')"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8 4v12a2 2 0 002 2h8a2 2 0 002-2V7.242a2 2 0 00-.602-1.43L16.083 2.57A2 2 0 0014.685 2H10a2 2 0 00-2 2z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M16 18v2a2 2 0 01-2 2H6a2 2 0 01-2-2V9a2 2 0 012-2h2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>`;
+            return `<div class="gift-card" data-gift-name="${gift.name.toLowerCase()}" data-gift-price="${gift.price}"><div class="gift-image-container">${imageHtml}</div><div class="gift-name">${gift.name}${copyIcon}</div><div class="gift-price"><div class="price-badge">${gift.price} 💎</div></div></div>`;
         }
 
         function showAllVirtualGifts(button) {
@@ -1075,6 +1137,33 @@
             button.classList.add('active');
             document.querySelectorAll('#virtualCategorySections .category-section').forEach(section => section.classList.remove('active'));
             document.getElementById(`virtual-category-${category.replace(/[^a-zA-Z0-9]/g, '-')}`).classList.add('active');
+        }
+
+        // Copy functionality
+        function copyGiftName(event, giftName) {
+            event.stopPropagation();
+            navigator.clipboard.writeText(giftName).then(() => {
+                showCopyToast(giftName);
+            }).catch(err => {
+                console.error('Failed to copy:', err);
+            });
+        }
+
+        function showCopyToast(giftName) {
+            let toast = document.getElementById('copyToast');
+            if (!toast) {
+                toast = document.createElement('div');
+                toast.id = 'copyToast';
+                toast.className = 'copy-toast';
+                document.body.appendChild(toast);
+            }
+            
+            toast.textContent = `Скопировано: ${giftName}`;
+            toast.classList.add('show');
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 2000);
         }
 
         let virtualSearchTimeout;
@@ -1142,7 +1231,8 @@
                         badge = '<div class="exclusive-badge badge-latam">🌎 LATAM ONLY</div>';
                         exclusiveType = 'latam';
                     }
-                    return `<div class="gift-card" data-exclusive="${exclusiveType}">${badge}<div class="gift-image-container"><img src="${gift.image}" alt="${gift.name}" class="gift-image" loading="lazy"></div><div class="gift-name">${gift.name}</div><div class="regional-prices"><div class="price-tag"><span class="region">EU</span><span class="amount ${gift.eu ? '' : 'empty'}">${gift.eu ? gift.eu + '💎' : '—'}</span></div><div class="price-tag"><span class="region">ASIA</span><span class="amount ${gift.asia ? '' : 'empty'}">${gift.asia ? gift.asia + '💎' : '—'}</span></div><div class="price-tag"><span class="region">LATAM</span><span class="amount ${gift.latam ? '' : 'empty'}">${gift.latam ? gift.latam + '💎' : '—'}</span></div></div></div>`;
+                    const copyIcon = `<span class="copy-icon" onclick="copyGiftName(event, '${gift.name.replace(/'/g, "\\'")}')"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8 4v12a2 2 0 002 2h8a2 2 0 002-2V7.242a2 2 0 00-.602-1.43L16.083 2.57A2 2 0 0014.685 2H10a2 2 0 00-2 2z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M16 18v2a2 2 0 01-2 2H6a2 2 0 01-2-2V9a2 2 0 012-2h2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>`;
+                    return `<div class="gift-card" data-exclusive="${exclusiveType}">${badge}<div class="gift-image-container"><img src="${gift.image}" alt="${gift.name}" class="gift-image" loading="lazy"></div><div class="gift-name">${gift.name}${copyIcon}</div><div class="regional-prices"><div class="price-tag"><span class="region">EU</span><span class="amount ${gift.eu ? '' : 'empty'}">${gift.eu ? gift.eu + '💎' : '—'}</span></div><div class="price-tag"><span class="region">ASIA</span><span class="amount ${gift.asia ? '' : 'empty'}">${gift.asia ? gift.asia + '💎' : '—'}</span></div><div class="price-tag"><span class="region">LATAM</span><span class="amount ${gift.latam ? '' : 'empty'}">${gift.latam ? gift.latam + '💎' : '—'}</span></div></div></div>`;
                 }).join('')}</div></div>`;
             }).join('');
         }
