@@ -700,6 +700,7 @@
 
         let selectedFiles = [];
 
+        // Показ/скрытие поля для текста
         document.querySelectorAll('input[name="naming"]').forEach(radio => {
             radio.addEventListener('change', (e) => {
                 if (e.target.value === 'suffix' || e.target.value === 'prefix' || e.target.value === 'custom') {
@@ -757,22 +758,40 @@
                     const item = document.createElement('div');
                     item.className = 'preview-item';
                     item.innerHTML = `
-                        <img src="" class="preview-img" alt="${file.name}">
+                        <img src="" class="preview-img" alt="${file.name}" data-index="${index}">
                         <div class="preview-name">${file.name}</div>
                         <button class="remove-btn" onclick="removeFile(${index})">×</button>
                     `;
                     previewGrid.appendChild(item);
-
-                    const reader = new FileReader();
-                    reader.onload = (e) => {
-                        const img = item.querySelector('.preview-img');
-                        img.src = e.target.result;
-                    };
-                    reader.readAsDataURL(file);
                 });
+
+                // Ленивая загрузка превью батчами для оптимизации
+                loadPreviewsBatch(0);
             } else {
                 previewArea.style.display = 'none';
                 compressBtn.disabled = true;
+            }
+        }
+
+        function loadPreviewsBatch(startIndex, batchSize = 20) {
+            const endIndex = Math.min(startIndex + batchSize, selectedFiles.length);
+            
+            for (let i = startIndex; i < endIndex; i++) {
+                const file = selectedFiles[i];
+                const img = previewGrid.querySelector(`img[data-index="${i}"]`);
+                
+                if (img) {
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        img.src = e.target.result;
+                    };
+                    reader.readAsDataURL(file);
+                }
+            }
+            
+            // Загружаем следующую батч после небольшой задержки
+            if (endIndex < selectedFiles.length) {
+                setTimeout(() => loadPreviewsBatch(endIndex, batchSize), 50);
             }
         }
 
@@ -878,20 +897,18 @@
                         canvas.height = img.height;
                         const ctx = canvas.getContext('2d');
                         
-                        ctx.save();
-                        
                         if (flipH || flipV) {
-                            const scaleX = flipH ? -1 : 1;
-                            const scaleY = flipV ? -1 : 1;
-                            const translateX = flipH ? -canvas.width : 0;
-                            const translateY = flipV ? -canvas.height : 0;
-                            
-                            ctx.translate(translateX, translateY);
-                            ctx.scale(scaleX, scaleY);
+                            ctx.translate(
+                                flipH ? canvas.width : 0,
+                                flipV ? canvas.height : 0
+                            );
+                            ctx.scale(
+                                flipH ? -1 : 1,
+                                flipV ? -1 : 1
+                            );
                         }
                         
-                        ctx.drawImage(img, 0, 0);
-                        ctx.restore();
+                        ctx.drawImage(img, 0, 0, img.width, img.height);
                         
                         canvas.toBlob((blob) => {
                             resolve(blob);
