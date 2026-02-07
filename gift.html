@@ -1312,5 +1312,257 @@
         generateRealCategoryNav();
         generateRealCategorySections();
     </script>
+
+    <!-- JKEE MENU -->
+    <style>
+        .jkee-menu-trigger {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #7c3aed, #06b6d4);
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            z-index: 9998;
+            box-shadow: 0 4px 20px rgba(124, 58, 237, 0.4);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            will-change: transform;
+        }
+        .jkee-menu-trigger:hover {
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: 0 8px 30px rgba(124, 58, 237, 0.6);
+        }
+        .jkee-menu-trigger.active { transform: rotate(90deg); }
+        .jkee-menu-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(5px);
+            z-index: 9997;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            will-change: opacity;
+        }
+        .jkee-menu-overlay.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+        .jkee-menu-sidebar {
+            position: fixed;
+            top: 0;
+            right: -400px;
+            width: 350px;
+            height: 100vh;
+            background: linear-gradient(180deg, #0a0f1a 0%, #030712 100%);
+            border-left: 1px solid rgba(255, 255, 255, 0.08);
+            z-index: 9999;
+            transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow-y: auto;
+            box-shadow: -10px 0 40px rgba(0, 0, 0, 0.5);
+            will-change: transform;
+        }
+        .jkee-menu-sidebar.active { right: 0; }
+        .jkee-menu-header {
+            padding: 30px 25px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            background: linear-gradient(135deg, rgba(124, 58, 237, 0.15), rgba(6, 182, 212, 0.15));
+        }
+        .jkee-menu-logo {
+            font-size: 28px;
+            font-weight: 900;
+            background: linear-gradient(90deg, #ff0080, #ff00ff, #8000ff, #0080ff, #00ffff);
+            background-size: 200% 100%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: jkeeGradientShift 5s linear infinite;
+            margin-bottom: 8px;
+            letter-spacing: -0.02em;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+        @keyframes jkeeGradientShift {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 200% 50%; }
+        }
+        .jkee-menu-subtitle {
+            font-size: 13px;
+            color: #94a3b8;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+        .jkee-menu-list { padding: 20px 15px; }
+        .jkee-menu-section-title {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: #64748b;
+            padding: 0 10px 10px;
+            font-weight: 600;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+        .jkee-menu-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px;
+            margin-bottom: 8px;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            text-decoration: none;
+            color: #f1f5f9;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+        .jkee-menu-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(124, 58, 237, 0.1), transparent);
+            transition: left 0.5s;
+        }
+        .jkee-menu-item:hover::before { left: 100%; }
+        .jkee-menu-item:hover {
+            background: rgba(124, 58, 237, 0.2);
+            border-color: #7c3aed;
+            transform: translateX(-5px);
+            box-shadow: 0 4px 20px rgba(124, 58, 237, 0.3);
+        }
+        .jkee-menu-item.active {
+            background: linear-gradient(135deg, rgba(124, 58, 237, 0.3), rgba(6, 182, 212, 0.3));
+            border-color: #7c3aed;
+        }
+        .jkee-menu-item-icon {
+            font-size: 24px;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            flex-shrink: 0;
+        }
+        .jkee-menu-item-content { flex: 1; }
+        .jkee-menu-item-title {
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 2px;
+        }
+        .jkee-menu-item-desc {
+            font-size: 12px;
+            color: #94a3b8;
+        }
+        .jkee-menu-footer {
+            padding: 20px 25px;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            text-align: center;
+        }
+        .jkee-menu-footer-text {
+            font-size: 12px;
+            color: #64748b;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+        .jkee-menu-footer-author {
+            background: linear-gradient(135deg, #7c3aed, #06b6d4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 700;
+        }
+        @media (max-width: 500px) {
+            .jkee-menu-sidebar {
+                width: 100%;
+                right: -100%;
+            }
+            .jkee-menu-trigger {
+                width: 45px;
+                height: 45px;
+                top: 15px;
+                right: 15px;
+            }
+        }
+        .jkee-menu-sidebar::-webkit-scrollbar { width: 6px; }
+        .jkee-menu-sidebar::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.2); }
+        .jkee-menu-sidebar::-webkit-scrollbar-thumb {
+            background: rgba(124, 58, 237, 0.5);
+            border-radius: 3px;
+        }
+        .jkee-menu-sidebar::-webkit-scrollbar-thumb:hover {
+            background: rgba(124, 58, 237, 0.7);
+        }
+    </style>
+
+    <button class="jkee-menu-trigger" id="jkeeMenuTrigger">☰</button>
+    <div class="jkee-menu-overlay" id="jkeeMenuOverlay"></div>
+    <div class="jkee-menu-sidebar" id="jkeeMenuSidebar">
+        <div class="jkee-menu-header">
+            <div class="jkee-menu-logo">JKEE TOOLS</div>
+            <div class="jkee-menu-subtitle">Коллекция инструментов</div>
+        </div>
+        <div class="jkee-menu-list">
+            <div class="jkee-menu-section-title">Инструменты</div>
+
+            <a href="gift.html" class="jkee-menu-item" data-page="gift">
+                <div class="jkee-menu-item-icon">🎁</div>
+                <div class="jkee-menu-item-content">
+                    <div class="jkee-menu-item-title">GIFT</div>
+                    <div class="jkee-menu-item-desc">Каталог подарков</div>
+                </div>
+            </a>
+        </div>
+        <div class="jkee-menu-footer">
+            <div class="jkee-menu-footer-text">
+                Made by <span class="jkee-menu-footer-author">jkee</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    (function() {
+        const trigger = document.getElementById('jkeeMenuTrigger');
+        const overlay = document.getElementById('jkeeMenuOverlay');
+        const sidebar = document.getElementById('jkeeMenuSidebar');
+        function openMenu() {
+            trigger.classList.add('active');
+            overlay.classList.add('active');
+            sidebar.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+        function closeMenu() {
+            trigger.classList.remove('active');
+            overlay.classList.remove('active');
+            sidebar.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+        trigger.addEventListener('click', () => {
+            sidebar.classList.contains('active') ? closeMenu() : openMenu();
+        });
+        overlay.addEventListener('click', closeMenu);
+        const currentPage = window.location.pathname.split('/').pop().replace('.html', '');
+        const menuItems = document.querySelectorAll('.jkee-menu-item');
+        menuItems.forEach(item => {
+            const page = item.getAttribute('data-page');
+            if (currentPage.includes(page)) {
+                item.classList.add('active');
+            }
+        });
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && sidebar.classList.contains('active')) closeMenu();
+        });
+    })();
+    </script>
 </body>
 </html>
