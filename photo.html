@@ -282,6 +282,17 @@
             color: var(--text-muted);
         }
 
+        /* Select dropdown styling */
+        select {
+            cursor: pointer;
+        }
+
+        select option {
+            background: var(--bg-card);
+            color: var(--text-primary);
+            padding: 10px;
+        }
+
         .preview-area {
             display: none;
             margin-bottom: 30px;
@@ -848,9 +859,12 @@
                             </select>
                             <div style="margin-top: 10px;">
                                 <label style="font-size: 13px; color: var(--text-secondary); display: block; margin-bottom: 8px;">
-                                    Обрезать снизу: <span id="cropBottomValue">0</span>%
+                                    Убрать снизу (для водяных знаков): <span id="cropBottomValue">0</span>%
                                 </label>
                                 <input type="range" id="cropBottom" min="0" max="30" value="0" step="1" style="width: 100%;">
+                                <div style="font-size: 11px; color: var(--text-muted); margin-top: 4px;">
+                                    💡 Полезно для удаления логотипов и ссылок снизу фото
+                                </div>
                             </div>
                         </div>
 
@@ -906,7 +920,6 @@
         </div>
     </div>
 
-    <!-- Crop Editor Modal -->
     <div class="crop-modal" id="cropModal">
         <div class="crop-modal-content">
             <div class="crop-modal-header">
@@ -947,7 +960,6 @@
         let selectedFiles = [];
         let manualCropSettings = null;
 
-        // Crop controls
         const enableCrop = document.getElementById('enable-crop');
         const cropOptions = document.getElementById('cropOptions');
         const cropPreset = document.getElementById('crop-preset');
@@ -962,12 +974,12 @@
         const cancelCrop = document.getElementById('cancelCrop');
         const applyCrop = document.getElementById('applyCrop');
 
-        // Enable/disable crop
+
         enableCrop.addEventListener('change', (e) => {
             cropOptions.style.display = e.target.checked ? 'block' : 'none';
         });
 
-        // Switch crop mode
+
         cropPreset.addEventListener('change', () => {
             presetCropOptions.style.display = 'block';
             manualCropOptions.style.display = 'none';
@@ -978,12 +990,11 @@
             manualCropOptions.style.display = 'block';
         });
 
-        // Crop bottom slider
         cropBottom.addEventListener('input', (e) => {
             cropBottomValue.textContent = e.target.value;
         });
 
-        // Open crop editor
+
         openCropEditor.addEventListener('click', () => {
             if (selectedFiles.length === 0) {
                 alert('Сначала загрузите фотографии!');
@@ -992,7 +1003,7 @@
             openCropEditorModal();
         });
 
-        // Close crop modal
+
         closeCropModal.addEventListener('click', () => {
             cropModal.classList.remove('active');
         });
@@ -1001,7 +1012,7 @@
             cropModal.classList.remove('active');
         });
 
-        // Crop editor variables
+
         let cropCanvas, cropCtx, cropImg;
         let cropSelection = null;
         let isDragging = false;
@@ -1014,12 +1025,12 @@
             cropCanvas = document.getElementById('cropCanvas');
             cropCtx = cropCanvas.getContext('2d');
             
-            // Load first image for preview
+
             const reader = new FileReader();
             reader.onload = (e) => {
                 cropImg = new Image();
                 cropImg.onload = () => {
-                    // Set canvas size
+ 
                     const maxWidth = Math.min(800, window.innerWidth - 100);
                     const maxHeight = Math.min(600, window.innerHeight - 200);
                     const scale = Math.min(maxWidth / cropImg.width, maxHeight / cropImg.height, 1);
@@ -1029,7 +1040,7 @@
                     
                     cropCtx.drawImage(cropImg, 0, 0, cropCanvas.width, cropCanvas.height);
                     
-                    // Initialize crop selection (full image)
+
                     cropSelection = {
                         x: 0,
                         y: 0,
@@ -1042,7 +1053,7 @@
             };
             reader.readAsDataURL(selectedFiles[0]);
             
-            // Setup event listeners
+
             setupCropEvents();
         }
 
@@ -1050,11 +1061,23 @@
             const overlay = document.getElementById('cropOverlay');
             const canvas = cropCanvas;
             
+            let rafId = null;
+            let lastUpdate = 0;
+            const throttleMs = 16; 
+            
+            const handleMouseMove = (e) => {
+                const now = Date.now();
+                if (now - lastUpdate < throttleMs) return;
+                lastUpdate = now;
+                
+                if (rafId) cancelAnimationFrame(rafId);
+                rafId = requestAnimationFrame(() => drag(e));
+            };
+            
             overlay.addEventListener('mousedown', startDrag);
-            document.addEventListener('mousemove', drag);
+            document.addEventListener('mousemove', handleMouseMove);
             document.addEventListener('mouseup', stopDrag);
             
-            // Touch support
             overlay.addEventListener('touchstart', (e) => {
                 e.preventDefault();
                 const touch = e.touches[0];
@@ -1064,6 +1087,21 @@
                 });
                 overlay.dispatchEvent(mouseEvent);
             });
+            
+            document.addEventListener('touchmove', (e) => {
+                if (!isDragging && !isResizing) return;
+                e.preventDefault();
+                const touch = e.touches[0];
+                const mouseEvent = new MouseEvent('mousemove', {
+                    clientX: touch.clientX,
+                    clientY: touch.clientY
+                });
+                handleMouseMove(mouseEvent);
+            });
+            
+            document.addEventListener('touchend', () => {
+                stopDrag();
+            });
         }
 
         function startDrag(e) {
@@ -1071,7 +1109,7 @@
             const x = e.clientX - rect.left;
             const y = e.clientY - rect.top;
             
-            // Check if clicking on a handle
+
             const handles = document.querySelectorAll('.crop-handle');
             for (let handle of handles) {
                 const handleRect = handle.getBoundingClientRect();
@@ -1086,7 +1124,7 @@
                 }
             }
             
-            // Check if clicking inside selection
+
             if (x >= cropSelection.x && x <= cropSelection.x + cropSelection.width &&
                 y >= cropSelection.y && y <= cropSelection.y + cropSelection.height) {
                 isDragging = true;
@@ -1105,32 +1143,40 @@
             const y = e.clientY - rect.top;
             
             if (isDragging) {
-                cropSelection.x = Math.max(0, Math.min(x - dragStart.x, cropCanvas.width - cropSelection.width));
-                cropSelection.y = Math.max(0, Math.min(y - dragStart.y, cropCanvas.height - cropSelection.height));
+                const newX = x - dragStart.x;
+                const newY = y - dragStart.y;
+                cropSelection.x = Math.max(0, Math.min(newX, cropCanvas.width - cropSelection.width));
+                cropSelection.y = Math.max(0, Math.min(newY, cropCanvas.height - cropSelection.height));
             } else if (isResizing) {
                 const dx = x - dragStart.x;
                 const dy = y - dragStart.y;
                 
+                const minSize = 50;
+                
                 if (resizeHandle.includes('e')) {
-                    cropSelection.width = Math.max(50, Math.min(cropSelection.width + dx, cropCanvas.width - cropSelection.x));
+                    const newWidth = Math.max(minSize, cropSelection.width + dx);
+                    cropSelection.width = Math.min(newWidth, cropCanvas.width - cropSelection.x);
                 }
                 if (resizeHandle.includes('w')) {
-                    const newWidth = Math.max(50, cropSelection.width - dx);
-                    const newX = cropSelection.x + (cropSelection.width - newWidth);
-                    if (newX >= 0) {
-                        cropSelection.x = newX;
-                        cropSelection.width = newWidth;
+                    const newWidth = Math.max(minSize, cropSelection.width - dx);
+                    const maxMove = cropSelection.width - minSize;
+                    const actualDx = Math.min(dx, maxMove);
+                    if (cropSelection.x + actualDx >= 0) {
+                        cropSelection.width -= actualDx;
+                        cropSelection.x += actualDx;
                     }
                 }
                 if (resizeHandle.includes('s')) {
-                    cropSelection.height = Math.max(50, Math.min(cropSelection.height + dy, cropCanvas.height - cropSelection.y));
+                    const newHeight = Math.max(minSize, cropSelection.height + dy);
+                    cropSelection.height = Math.min(newHeight, cropCanvas.height - cropSelection.y);
                 }
                 if (resizeHandle.includes('n')) {
-                    const newHeight = Math.max(50, cropSelection.height - dy);
-                    const newY = cropSelection.y + (cropSelection.height - newHeight);
-                    if (newY >= 0) {
-                        cropSelection.y = newY;
-                        cropSelection.height = newHeight;
+                    const newHeight = Math.max(minSize, cropSelection.height - dy);
+                    const maxMove = cropSelection.height - minSize;
+                    const actualDy = Math.min(dy, maxMove);
+                    if (cropSelection.y + actualDy >= 0) {
+                        cropSelection.height -= actualDy;
+                        cropSelection.y += actualDy;
                     }
                 }
                 
@@ -1158,7 +1204,7 @@
         applyCrop.addEventListener('click', () => {
             if (!cropSelection) return;
             
-            // Save crop settings as percentage of image
+
             manualCropSettings = {
                 x: cropSelection.x / cropCanvas.width,
                 y: cropSelection.y / cropCanvas.height,
@@ -1170,7 +1216,7 @@
             alert('Настройки обрезки сохранены! Они будут применены ко всем фото при сжатии.');
         });
 
-        // Показ/скрытие поля для текста
+
         document.querySelectorAll('input[name="naming"]').forEach(radio => {
             radio.addEventListener('change', (e) => {
                 if (e.target.value === 'suffix' || e.target.value === 'prefix' || e.target.value === 'custom') {
@@ -1188,7 +1234,7 @@
             });
         });
 
-        // Drag & Drop
+
         uploadArea.addEventListener('click', () => fileInput.click());
 
         uploadArea.addEventListener('dragover', (e) => {
@@ -1235,7 +1281,6 @@
                     previewGrid.appendChild(item);
                 });
 
-                // Ленивая загрузка превью батчами для оптимизации
                 loadPreviewsBatch(0);
             } else {
                 previewArea.style.display = 'none';
@@ -1259,7 +1304,7 @@
                 }
             }
             
-            // Загружаем следующую батч после небольшой задержки
+
             if (endIndex < selectedFiles.length) {
                 setTimeout(() => loadPreviewsBatch(endIndex, batchSize), 50);
             }
@@ -1382,31 +1427,29 @@
                         let sourceWidth = img.width;
                         let sourceHeight = img.height;
                         
-                        // Apply crop
+
                         if (cropEnabled) {
                             if (cropMode === 'preset') {
-                                // Crop by format
+
                                 const [ratioW, ratioH] = cropFormat.split(':').map(Number);
                                 const targetRatio = ratioW / ratioH;
                                 const imageRatio = img.width / img.height;
                                 
                                 if (imageRatio > targetRatio) {
-                                    // Image is wider - crop width
+
                                     sourceWidth = img.height * targetRatio;
                                     sourceX = (img.width - sourceWidth) / 2;
                                 } else {
-                                    // Image is taller - crop height
+
                                     sourceHeight = img.width / targetRatio;
                                     sourceY = (img.height - sourceHeight) / 2;
                                 }
                                 
-                                // Apply bottom crop
                                 if (cropBottomPercent > 0) {
                                     const cropAmount = sourceHeight * (cropBottomPercent / 100);
                                     sourceHeight -= cropAmount;
                                 }
                             } else if (cropMode === 'manual' && manualCropSettings) {
-                                // Apply manual crop settings
                                 sourceX = img.width * manualCropSettings.x;
                                 sourceY = img.height * manualCropSettings.y;
                                 sourceWidth = img.width * manualCropSettings.width;
@@ -1417,7 +1460,6 @@
                         canvas.width = sourceWidth;
                         canvas.height = sourceHeight;
                         
-                        // Apply flip transformations
                         if (flipH || flipV) {
                             ctx.translate(
                                 flipH ? canvas.width : 0,
