@@ -920,6 +920,7 @@
         </div>
     </div>
 
+    <!-- Crop Editor Modal -->
     <div class="crop-modal" id="cropModal">
         <div class="crop-modal-content">
             <div class="crop-modal-header">
@@ -960,6 +961,7 @@
         let selectedFiles = [];
         let manualCropSettings = null;
 
+        // Crop controls
         const enableCrop = document.getElementById('enable-crop');
         const cropOptions = document.getElementById('cropOptions');
         const cropPreset = document.getElementById('crop-preset');
@@ -974,12 +976,12 @@
         const cancelCrop = document.getElementById('cancelCrop');
         const applyCrop = document.getElementById('applyCrop');
 
-
+        // Enable/disable crop
         enableCrop.addEventListener('change', (e) => {
             cropOptions.style.display = e.target.checked ? 'block' : 'none';
         });
 
-
+        // Switch crop mode
         cropPreset.addEventListener('change', () => {
             presetCropOptions.style.display = 'block';
             manualCropOptions.style.display = 'none';
@@ -990,11 +992,12 @@
             manualCropOptions.style.display = 'block';
         });
 
+        // Crop bottom slider
         cropBottom.addEventListener('input', (e) => {
             cropBottomValue.textContent = e.target.value;
         });
 
-
+        // Open crop editor
         openCropEditor.addEventListener('click', () => {
             if (selectedFiles.length === 0) {
                 alert('Сначала загрузите фотографии!');
@@ -1003,34 +1006,37 @@
             openCropEditorModal();
         });
 
-
+        // Close crop modal
         closeCropModal.addEventListener('click', () => {
             cropModal.classList.remove('active');
+            cleanupCropEvents();
         });
 
         cancelCrop.addEventListener('click', () => {
             cropModal.classList.remove('active');
+            cleanupCropEvents();
         });
 
-
+        // Crop editor variables
         let cropCanvas, cropCtx, cropImg;
         let cropSelection = null;
         let isDragging = false;
         let isResizing = false;
         let resizeHandle = null;
         let dragStart = { x: 0, y: 0 };
+        let cropEventListeners = [];
 
         function openCropEditorModal() {
             cropModal.classList.add('active');
             cropCanvas = document.getElementById('cropCanvas');
             cropCtx = cropCanvas.getContext('2d');
             
-
+            // Load first image for preview
             const reader = new FileReader();
             reader.onload = (e) => {
                 cropImg = new Image();
                 cropImg.onload = () => {
- 
+                    // Set canvas size
                     const maxWidth = Math.min(800, window.innerWidth - 100);
                     const maxHeight = Math.min(600, window.innerHeight - 200);
                     const scale = Math.min(maxWidth / cropImg.width, maxHeight / cropImg.height, 1);
@@ -1040,7 +1046,7 @@
                     
                     cropCtx.drawImage(cropImg, 0, 0, cropCanvas.width, cropCanvas.height);
                     
-
+                    // Initialize crop selection (full image)
                     cropSelection = {
                         x: 0,
                         y: 0,
@@ -1053,17 +1059,34 @@
             };
             reader.readAsDataURL(selectedFiles[0]);
             
-
+            // Setup event listeners
             setupCropEvents();
+        }
+
+        function cleanupCropEvents() {
+            // Remove all event listeners
+            cropEventListeners.forEach(({ element, event, handler }) => {
+                element.removeEventListener(event, handler);
+            });
+            cropEventListeners = [];
+            
+            // Clear canvas
+            if (cropCanvas && cropCtx) {
+                cropCtx.clearRect(0, 0, cropCanvas.width, cropCanvas.height);
+            }
+            
+            // Reset variables
+            isDragging = false;
+            isResizing = false;
+            resizeHandle = null;
         }
 
         function setupCropEvents() {
             const overlay = document.getElementById('cropOverlay');
-            const canvas = cropCanvas;
             
             let rafId = null;
             let lastUpdate = 0;
-            const throttleMs = 16; 
+            const throttleMs = 16; // ~60fps
             
             const handleMouseMove = (e) => {
                 const now = Date.now();
@@ -1074,11 +1097,9 @@
                 rafId = requestAnimationFrame(() => drag(e));
             };
             
-            overlay.addEventListener('mousedown', startDrag);
-            document.addEventListener('mousemove', handleMouseMove);
-            document.addEventListener('mouseup', stopDrag);
-            
-            overlay.addEventListener('touchstart', (e) => {
+            const handleMouseDown = (e) => startDrag(e);
+            const handleMouseUp = () => stopDrag();
+            const handleTouchStart = (e) => {
                 e.preventDefault();
                 const touch = e.touches[0];
                 const mouseEvent = new MouseEvent('mousedown', {
@@ -1086,9 +1107,8 @@
                     clientY: touch.clientY
                 });
                 overlay.dispatchEvent(mouseEvent);
-            });
-            
-            document.addEventListener('touchmove', (e) => {
+            };
+            const handleTouchMove = (e) => {
                 if (!isDragging && !isResizing) return;
                 e.preventDefault();
                 const touch = e.touches[0];
@@ -1097,11 +1117,25 @@
                     clientY: touch.clientY
                 });
                 handleMouseMove(mouseEvent);
-            });
+            };
+            const handleTouchEnd = () => stopDrag();
             
-            document.addEventListener('touchend', () => {
-                stopDrag();
-            });
+            // Add listeners and store references for cleanup
+            overlay.addEventListener('mousedown', handleMouseDown);
+            document.addEventListener('mousemove', handleMouseMove);
+            document.addEventListener('mouseup', handleMouseUp);
+            overlay.addEventListener('touchstart', handleTouchStart, { passive: false });
+            document.addEventListener('touchmove', handleTouchMove, { passive: false });
+            document.addEventListener('touchend', handleTouchEnd);
+            
+            cropEventListeners.push(
+                { element: overlay, event: 'mousedown', handler: handleMouseDown },
+                { element: document, event: 'mousemove', handler: handleMouseMove },
+                { element: document, event: 'mouseup', handler: handleMouseUp },
+                { element: overlay, event: 'touchstart', handler: handleTouchStart },
+                { element: document, event: 'touchmove', handler: handleTouchMove },
+                { element: document, event: 'touchend', handler: handleTouchEnd }
+            );
         }
 
         function startDrag(e) {
@@ -1109,7 +1143,7 @@
             const x = e.clientX - rect.left;
             const y = e.clientY - rect.top;
             
-
+            // Check if clicking on a handle
             const handles = document.querySelectorAll('.crop-handle');
             for (let handle of handles) {
                 const handleRect = handle.getBoundingClientRect();
@@ -1124,7 +1158,7 @@
                 }
             }
             
-
+            // Check if clicking inside selection
             if (x >= cropSelection.x && x <= cropSelection.x + cropSelection.width &&
                 y >= cropSelection.y && y <= cropSelection.y + cropSelection.height) {
                 isDragging = true;
@@ -1195,8 +1229,10 @@
         function updateCropOverlay() {
             const overlay = document.getElementById('cropOverlay');
             overlay.style.display = 'block';
-            overlay.style.left = cropSelection.x + 'px';
-            overlay.style.top = cropSelection.y + 'px';
+            // Use transform for better performance
+            overlay.style.transform = `translate(${cropSelection.x}px, ${cropSelection.y}px)`;
+            overlay.style.left = '0';
+            overlay.style.top = '0';
             overlay.style.width = cropSelection.width + 'px';
             overlay.style.height = cropSelection.height + 'px';
         }
@@ -1204,7 +1240,7 @@
         applyCrop.addEventListener('click', () => {
             if (!cropSelection) return;
             
-
+            // Save crop settings as percentage of image
             manualCropSettings = {
                 x: cropSelection.x / cropCanvas.width,
                 y: cropSelection.y / cropCanvas.height,
@@ -1213,10 +1249,11 @@
             };
             
             cropModal.classList.remove('active');
+            cleanupCropEvents();
             alert('Настройки обрезки сохранены! Они будут применены ко всем фото при сжатии.');
         });
 
-
+        // Показ/скрытие поля для текста
         document.querySelectorAll('input[name="naming"]').forEach(radio => {
             radio.addEventListener('change', (e) => {
                 if (e.target.value === 'suffix' || e.target.value === 'prefix' || e.target.value === 'custom') {
@@ -1234,7 +1271,7 @@
             });
         });
 
-
+        // Drag & Drop
         uploadArea.addEventListener('click', () => fileInput.click());
 
         uploadArea.addEventListener('dragover', (e) => {
@@ -1281,6 +1318,7 @@
                     previewGrid.appendChild(item);
                 });
 
+                // Ленивая загрузка превью батчами для оптимизации
                 loadPreviewsBatch(0);
             } else {
                 previewArea.style.display = 'none';
@@ -1304,7 +1342,7 @@
                 }
             }
             
-
+            // Загружаем следующую батч после небольшой задержки
             if (endIndex < selectedFiles.length) {
                 setTimeout(() => loadPreviewsBatch(endIndex, batchSize), 50);
             }
@@ -1421,35 +1459,37 @@
                     const img = new Image();
                     img.onload = () => {
                         let canvas = document.createElement('canvas');
-                        let ctx = canvas.getContext('2d');
+                        let ctx = canvas.getContext('2d', { alpha: false }); // Disable alpha for better performance
                         
                         let sourceX = 0, sourceY = 0;
                         let sourceWidth = img.width;
                         let sourceHeight = img.height;
                         
-
+                        // Apply crop
                         if (cropEnabled) {
                             if (cropMode === 'preset') {
-
+                                // Crop by format
                                 const [ratioW, ratioH] = cropFormat.split(':').map(Number);
                                 const targetRatio = ratioW / ratioH;
                                 const imageRatio = img.width / img.height;
                                 
                                 if (imageRatio > targetRatio) {
-
+                                    // Image is wider - crop width
                                     sourceWidth = img.height * targetRatio;
                                     sourceX = (img.width - sourceWidth) / 2;
                                 } else {
-
+                                    // Image is taller - crop height
                                     sourceHeight = img.width / targetRatio;
                                     sourceY = (img.height - sourceHeight) / 2;
                                 }
                                 
+                                // Apply bottom crop
                                 if (cropBottomPercent > 0) {
                                     const cropAmount = sourceHeight * (cropBottomPercent / 100);
                                     sourceHeight -= cropAmount;
                                 }
                             } else if (cropMode === 'manual' && manualCropSettings) {
+                                // Apply manual crop settings
                                 sourceX = img.width * manualCropSettings.x;
                                 sourceY = img.height * manualCropSettings.y;
                                 sourceWidth = img.width * manualCropSettings.width;
@@ -1460,6 +1500,7 @@
                         canvas.width = sourceWidth;
                         canvas.height = sourceHeight;
                         
+                        // Apply flip transformations
                         if (flipH || flipV) {
                             ctx.translate(
                                 flipH ? canvas.width : 0,
@@ -1474,16 +1515,271 @@
                         ctx.drawImage(img, sourceX, sourceY, sourceWidth, sourceHeight, 0, 0, sourceWidth, sourceHeight);
                         
                         canvas.toBlob((blob) => {
+                            // Cleanup
+                            canvas.width = 0;
+                            canvas.height = 0;
+                            canvas = null;
+                            ctx = null;
+                            img.src = '';
                             resolve(blob);
                         }, 'image/jpeg', quality);
                     };
-                    img.onerror = reject;
+                    img.onerror = () => {
+                        reject(new Error('Failed to load image'));
+                    };
                     img.src = e.target.result;
                 };
-                reader.onerror = reject;
+                reader.onerror = () => {
+                    reject(new Error('Failed to read file'));
+                };
                 reader.readAsDataURL(file);
             });
         }
+    </script>
+
+    <!-- JKEE Universal Menu -->
+    <style>
+        .jkee-menu-trigger {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #7c3aed, #06b6d4);
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            z-index: 9998;
+            box-shadow: 0 4px 20px rgba(124, 58, 237, 0.4);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            will-change: transform;
+        }
+        .jkee-menu-trigger:hover {
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: 0 8px 30px rgba(124, 58, 237, 0.6);
+        }
+        .jkee-menu-trigger.active { transform: rotate(90deg); }
+        .jkee-menu-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(5px);
+            z-index: 9997;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            will-change: opacity;
+        }
+        .jkee-menu-overlay.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+        .jkee-menu-sidebar {
+            position: fixed;
+            top: 0;
+            right: -400px;
+            width: 350px;
+            height: 100vh;
+            background: linear-gradient(180deg, #0a0f1a 0%, #030712 100%);
+            border-left: 1px solid rgba(255, 255, 255, 0.08);
+            z-index: 9999;
+            transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow-y: auto;
+            box-shadow: -10px 0 40px rgba(0, 0, 0, 0.5);
+            will-change: transform;
+        }
+        .jkee-menu-sidebar.active { right: 0; }
+        .jkee-menu-header {
+            padding: 30px 25px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            background: linear-gradient(135deg, rgba(124, 58, 237, 0.15), rgba(6, 182, 212, 0.15));
+        }
+        .jkee-menu-logo {
+            font-size: 28px;
+            font-weight: 900;
+            background: linear-gradient(90deg, #ff0080, #ff00ff, #8000ff, #0080ff, #00ffff);
+            background-size: 200% 100%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: jkeeGradientShift 5s linear infinite;
+            margin-bottom: 8px;
+            letter-spacing: -0.02em;
+        }
+        @keyframes jkeeGradientShift {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 200% 50%; }
+        }
+        .jkee-menu-subtitle {
+            font-size: 13px;
+            color: #94a3b8;
+        }
+        .jkee-menu-list { padding: 20px 15px; }
+        .jkee-menu-section-title {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: #64748b;
+            padding: 0 10px 10px;
+            font-weight: 600;
+        }
+        .jkee-menu-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px;
+            margin-bottom: 8px;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            text-decoration: none;
+            color: #f1f5f9;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .jkee-menu-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(124, 58, 237, 0.1), transparent);
+            transition: left 0.5s;
+        }
+        .jkee-menu-item:hover::before { left: 100%; }
+        .jkee-menu-item:hover {
+            background: rgba(124, 58, 237, 0.2);
+            border-color: #7c3aed;
+            transform: translateX(-5px);
+            box-shadow: 0 4px 20px rgba(124, 58, 237, 0.3);
+        }
+        .jkee-menu-item.active {
+            background: linear-gradient(135deg, rgba(124, 58, 237, 0.3), rgba(6, 182, 212, 0.3));
+            border-color: #7c3aed;
+        }
+        .jkee-menu-item-icon {
+            font-size: 24px;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            flex-shrink: 0;
+        }
+        .jkee-menu-item-content { flex: 1; }
+        .jkee-menu-item-title {
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 2px;
+        }
+        .jkee-menu-item-desc {
+            font-size: 12px;
+            color: #94a3b8;
+        }
+        .jkee-menu-footer {
+            padding: 20px 25px;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            text-align: center;
+        }
+        .jkee-menu-footer-text {
+            font-size: 12px;
+            color: #64748b;
+        }
+        .jkee-menu-footer-author {
+            background: linear-gradient(135deg, #7c3aed, #06b6d4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 700;
+        }
+        @media (max-width: 500px) {
+            .jkee-menu-sidebar {
+                width: 100%;
+                right: -100%;
+            }
+            .jkee-menu-trigger {
+                width: 45px;
+                height: 45px;
+                top: 15px;
+                right: 15px;
+            }
+        }
+        .jkee-menu-sidebar::-webkit-scrollbar { width: 6px; }
+        .jkee-menu-sidebar::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.2); }
+        .jkee-menu-sidebar::-webkit-scrollbar-thumb {
+            background: rgba(124, 58, 237, 0.5);
+            border-radius: 3px;
+        }
+        .jkee-menu-sidebar::-webkit-scrollbar-thumb:hover {
+            background: rgba(124, 58, 237, 0.7);
+        }
+    </style>
+
+    <button class="jkee-menu-trigger" id="jkeeMenuTrigger">☰</button>
+    <div class="jkee-menu-overlay" id="jkeeMenuOverlay"></div>
+    <div class="jkee-menu-sidebar" id="jkeeMenuSidebar">
+        <div class="jkee-menu-header">
+            <div class="jkee-menu-logo">JKEE TOOLS</div>
+            <div class="jkee-menu-subtitle">Коллекция инструментов</div>
+        </div>
+        <div class="jkee-menu-list">
+            <div class="jkee-menu-section-title">Инструменты</div>
+            <a href="compress.html" class="jkee-menu-item active" data-page="compress">
+                <div class="jkee-menu-item-icon">📸</div>
+                <div class="jkee-menu-item-content">
+                    <div class="jkee-menu-item-title">COMPRESS</div>
+                    <div class="jkee-menu-item-desc">Сжатие фотографий</div>
+                </div>
+            </a>
+            <a href="gift.html" class="jkee-menu-item" data-page="gift">
+                <div class="jkee-menu-item-icon">🎁</div>
+                <div class="jkee-menu-item-content">
+                    <div class="jkee-menu-item-title">GIFT</div>
+                    <div class="jkee-menu-item-desc">Каталог подарков</div>
+                </div>
+            </a>
+        </div>
+        <div class="jkee-menu-footer">
+            <div class="jkee-menu-footer-text">
+                Made by <span class="jkee-menu-footer-author">jkee</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    (function() {
+        const trigger = document.getElementById('jkeeMenuTrigger');
+        const overlay = document.getElementById('jkeeMenuOverlay');
+        const sidebar = document.getElementById('jkeeMenuSidebar');
+        function openMenu() {
+            trigger.classList.add('active');
+            overlay.classList.add('active');
+            sidebar.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+        function closeMenu() {
+            trigger.classList.remove('active');
+            overlay.classList.remove('active');
+            sidebar.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+        trigger.addEventListener('click', () => {
+            sidebar.classList.contains('active') ? closeMenu() : openMenu();
+        });
+        overlay.addEventListener('click', closeMenu);
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && sidebar.classList.contains('active')) closeMenu();
+        });
+    })();
     </script>
 </body>
 </html>
