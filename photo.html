@@ -875,6 +875,55 @@
                         </div>
                     </div>
                 </div>
+
+                <div class="setting-card">
+                    <div class="setting-label">
+                        <span class="setting-icon">📐</span>
+                        Изменение размера
+                    </div>
+                    <div class="option-item">
+                        <input type="checkbox" id="enable-resize">
+                        <label for="enable-resize">Включить ресайз</label>
+                    </div>
+                    <div id="resizeOptions" style="display: none; margin-top: 12px;">
+                        <select id="resizeMode" style="width: 100%; padding: 10px; border: 1px solid var(--glass-border); border-radius: var(--radius-sm); background: var(--glass); color: var(--text-primary); font-size: 14px; margin-bottom: 10px;">
+                            <option value="width">По ширине (высота Auto)</option>
+                            <option value="height">По высоте (ширина Auto)</option>
+                            <option value="both">Точные размеры</option>
+                            <option value="percent">В процентах</option>
+                        </select>
+                        
+                        <div id="resizeWidthInput" style="margin-bottom: 10px;">
+                            <label style="font-size: 13px; color: var(--text-secondary); display: block; margin-bottom: 6px;">
+                                Ширина (пикселей):
+                            </label>
+                            <input type="number" id="resizeWidth" value="1920" min="1" max="10000" style="width: 100%; padding: 10px; border: 1px solid var(--glass-border); border-radius: var(--radius-sm); background: var(--glass); color: var(--text-primary); font-size: 14px;">
+                        </div>
+                        
+                        <div id="resizeHeightInput" style="display: none; margin-bottom: 10px;">
+                            <label style="font-size: 13px; color: var(--text-secondary); display: block; margin-bottom: 6px;">
+                                Высота (пикселей):
+                            </label>
+                            <input type="number" id="resizeHeight" value="1080" min="1" max="10000" style="width: 100%; padding: 10px; border: 1px solid var(--glass-border); border-radius: var(--radius-sm); background: var(--glass); color: var(--text-primary); font-size: 14px;">
+                        </div>
+
+                        <div id="resizePercentInput" style="display: none; margin-bottom: 10px;">
+                            <label style="font-size: 13px; color: var(--text-secondary); display: block; margin-bottom: 6px;">
+                                Масштаб: <span id="resizePercentValue">50</span>%
+                            </label>
+                            <input type="range" id="resizePercent" min="10" max="200" value="50" step="5" style="width: 100%;">
+                        </div>
+
+                        <div class="option-item" id="resizeCropOption" style="display: none;">
+                            <input type="checkbox" id="resizeCrop" checked>
+                            <label for="resizeCrop">Обрезать вместо растягивания</label>
+                        </div>
+
+                        <div style="font-size: 11px; color: var(--text-muted); margin-top: 8px; padding: 8px; background: rgba(124, 58, 237, 0.1); border-radius: var(--radius-sm);">
+                            💡 Популярные размеры: 1920px (Full HD), 1280px (HD), 800px (оптимально)
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <div class="preview-area" id="previewArea">
@@ -975,6 +1024,36 @@
         const closeCropModal = document.getElementById('closeCropModal');
         const cancelCrop = document.getElementById('cancelCrop');
         const applyCrop = document.getElementById('applyCrop');
+
+        // Resize controls
+        const enableResize = document.getElementById('enable-resize');
+        const resizeOptions = document.getElementById('resizeOptions');
+        const resizeMode = document.getElementById('resizeMode');
+        const resizeWidthInput = document.getElementById('resizeWidthInput');
+        const resizeHeightInput = document.getElementById('resizeHeightInput');
+        const resizePercentInput = document.getElementById('resizePercentInput');
+        const resizeCropOption = document.getElementById('resizeCropOption');
+        const resizePercent = document.getElementById('resizePercent');
+        const resizePercentValue = document.getElementById('resizePercentValue');
+
+        // Enable/disable resize
+        enableResize.addEventListener('change', (e) => {
+            resizeOptions.style.display = e.target.checked ? 'block' : 'none';
+        });
+
+        // Resize mode change
+        resizeMode.addEventListener('change', (e) => {
+            const mode = e.target.value;
+            resizeWidthInput.style.display = (mode === 'width' || mode === 'both') ? 'block' : 'none';
+            resizeHeightInput.style.display = (mode === 'height' || mode === 'both') ? 'block' : 'none';
+            resizePercentInput.style.display = mode === 'percent' ? 'block' : 'none';
+            resizeCropOption.style.display = mode === 'both' ? 'block' : 'none';
+        });
+
+        // Resize percent slider
+        resizePercent.addEventListener('input', (e) => {
+            resizePercentValue.textContent = e.target.value;
+        });
 
         // Enable/disable crop
         enableCrop.addEventListener('change', (e) => {
@@ -1394,6 +1473,15 @@
             const cropFormat = document.getElementById('cropFormat').value;
             const cropBottomPercent = parseInt(document.getElementById('cropBottom').value);
             
+            const resizeEnabled = document.getElementById('enable-resize').checked;
+            const resizeSettings = resizeEnabled ? {
+                mode: document.getElementById('resizeMode').value,
+                width: parseInt(document.getElementById('resizeWidth').value),
+                height: parseInt(document.getElementById('resizeHeight').value),
+                percent: parseInt(document.getElementById('resizePercent').value),
+                crop: document.getElementById('resizeCrop').checked
+            } : null;
+            
             const zip = new JSZip();
             let processedFiles = 0;
             let totalOriginalSize = 0;
@@ -1412,7 +1500,8 @@
                         cropEnabled,
                         cropMode,
                         cropFormat,
-                        cropBottomPercent
+                        cropBottomPercent,
+                        resizeSettings
                     );
                     totalCompressedSize += compressed.size;
                     
@@ -1452,44 +1541,39 @@
             });
         });
 
-        function compressImage(file, quality, flipH, flipV, cropEnabled, cropMode, cropFormat, cropBottomPercent) {
+        function compressImage(file, quality, flipH, flipV, cropEnabled, cropMode, cropFormat, cropBottomPercent, resizeSettings) {
             return new Promise((resolve, reject) => {
                 const reader = new FileReader();
                 reader.onload = (e) => {
                     const img = new Image();
                     img.onload = () => {
                         let canvas = document.createElement('canvas');
-                        let ctx = canvas.getContext('2d', { alpha: false }); // Disable alpha for better performance
+                        let ctx = canvas.getContext('2d', { alpha: false });
                         
                         let sourceX = 0, sourceY = 0;
                         let sourceWidth = img.width;
                         let sourceHeight = img.height;
                         
-                        // Apply crop
+                        // Apply crop first
                         if (cropEnabled) {
                             if (cropMode === 'preset') {
-                                // Crop by format
                                 const [ratioW, ratioH] = cropFormat.split(':').map(Number);
                                 const targetRatio = ratioW / ratioH;
                                 const imageRatio = img.width / img.height;
                                 
                                 if (imageRatio > targetRatio) {
-                                    // Image is wider - crop width
                                     sourceWidth = img.height * targetRatio;
                                     sourceX = (img.width - sourceWidth) / 2;
                                 } else {
-                                    // Image is taller - crop height
                                     sourceHeight = img.width / targetRatio;
                                     sourceY = (img.height - sourceHeight) / 2;
                                 }
                                 
-                                // Apply bottom crop
                                 if (cropBottomPercent > 0) {
                                     const cropAmount = sourceHeight * (cropBottomPercent / 100);
                                     sourceHeight -= cropAmount;
                                 }
                             } else if (cropMode === 'manual' && manualCropSettings) {
-                                // Apply manual crop settings
                                 sourceX = img.width * manualCropSettings.x;
                                 sourceY = img.height * manualCropSettings.y;
                                 sourceWidth = img.width * manualCropSettings.width;
@@ -1497,8 +1581,48 @@
                             }
                         }
                         
-                        canvas.width = sourceWidth;
-                        canvas.height = sourceHeight;
+                        // Calculate final dimensions with resize
+                        let finalWidth = sourceWidth;
+                        let finalHeight = sourceHeight;
+                        
+                        if (resizeSettings) {
+                            const mode = resizeSettings.mode;
+                            
+                            if (mode === 'width') {
+                                finalWidth = resizeSettings.width;
+                                finalHeight = (sourceHeight / sourceWidth) * finalWidth;
+                            } else if (mode === 'height') {
+                                finalHeight = resizeSettings.height;
+                                finalWidth = (sourceWidth / sourceHeight) * finalHeight;
+                            } else if (mode === 'both') {
+                                if (resizeSettings.crop) {
+                                    // Обрезать вместо растягивания
+                                    const targetRatio = resizeSettings.width / resizeSettings.height;
+                                    const sourceRatio = sourceWidth / sourceHeight;
+                                    
+                                    if (sourceRatio > targetRatio) {
+                                        // Image is wider - crop width
+                                        const newSourceWidth = sourceHeight * targetRatio;
+                                        sourceX += (sourceWidth - newSourceWidth) / 2;
+                                        sourceWidth = newSourceWidth;
+                                    } else {
+                                        // Image is taller - crop height
+                                        const newSourceHeight = sourceWidth / targetRatio;
+                                        sourceY += (sourceHeight - newSourceHeight) / 2;
+                                        sourceHeight = newSourceHeight;
+                                    }
+                                }
+                                finalWidth = resizeSettings.width;
+                                finalHeight = resizeSettings.height;
+                            } else if (mode === 'percent') {
+                                const scale = resizeSettings.percent / 100;
+                                finalWidth = sourceWidth * scale;
+                                finalHeight = sourceHeight * scale;
+                            }
+                        }
+                        
+                        canvas.width = Math.round(finalWidth);
+                        canvas.height = Math.round(finalHeight);
                         
                         // Apply flip transformations
                         if (flipH || flipV) {
@@ -1512,7 +1636,7 @@
                             );
                         }
                         
-                        ctx.drawImage(img, sourceX, sourceY, sourceWidth, sourceHeight, 0, 0, sourceWidth, sourceHeight);
+                        ctx.drawImage(img, sourceX, sourceY, sourceWidth, sourceHeight, 0, 0, canvas.width, canvas.height);
                         
                         canvas.toBlob((blob) => {
                             // Cleanup
@@ -1733,7 +1857,13 @@
         </div>
         <div class="jkee-menu-list">
             <div class="jkee-menu-section-title">Инструменты</div>
-			
+            <a href="compress.html" class="jkee-menu-item active" data-page="compress">
+                <div class="jkee-menu-item-icon">📸</div>
+                <div class="jkee-menu-item-content">
+                    <div class="jkee-menu-item-title">COMPRESS</div>
+                    <div class="jkee-menu-item-desc">Сжатие фотографий</div>
+                </div>
+            </a>
             <a href="gift.html" class="jkee-menu-item" data-page="gift">
                 <div class="jkee-menu-item-icon">🎁</div>
                 <div class="jkee-menu-item-content">
