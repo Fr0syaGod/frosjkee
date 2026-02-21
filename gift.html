@@ -757,12 +757,12 @@
                 {name:"Get well soon!",price:44,image:"393a7ced6aa0bfc666b3fcd4b0a9e7051719849970.rng.png"}
             ],
             "✨ Анимированные": [
-                {name:"I am flushing!",price:119,noImage:true},
-                {name:"Cheers to you!",price:98,noImage:true},
-                {name:"You did it!",price:89,noImage:true},
-                {name:"Take it easy!",price:150,noImage:true},
-                {name:"Surprise!",price:89,noImage:true},
-                {name:"I heart you!",price:289,noImage:true}
+                {name:"I am flushing!",price:119,image:"https://i.ibb.co/B2r8N4ND/svg-image-10-1.png"},
+                {name:"Cheers to you!",price:98,image:"https://i.ibb.co/Tx0xw4CJ/svg-image-11-1.png"},
+                {name:"You did it!",price:89,image:"https://i.ibb.co/7NYNRVLR/svg-image-12-1.png"},
+                {name:"Take it easy!",price:150,image:"https://i.ibb.co/4ZB0xfBB/svg-image-13-1.png"},
+                {name:"Surprise!",price:89,image:"https://i.ibb.co/FLPYNwZB/svg-image-14-1.png"},
+                {name:"I heart you!",price:289,image:"https://i.ibb.co/s929mx09/svg-image-15-3.png"}
             ]
         };
 
@@ -996,7 +996,7 @@
         function createVirtualGiftCard(gift) {
             let imageHtml = gift.noImage 
                 ? '<div class="gift-placeholder">🎬</div>' 
-                : `<img src="${baseUrl}${gift.image}" alt="${gift.name}" class="gift-image" loading="lazy">`;
+                : `<img src="${gift.image?.startsWith('http') ? gift.image : baseUrl + gift.image}" alt="${gift.name}" class="gift-image" loading="lazy">`;
             const copyIcon = `<span class="copy-icon" onclick="copyGiftName(event, '${gift.name.replace(/'/g, "\\'")}')"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8 4v12a2 2 0 002 2h8a2 2 0 002-2V7.242a2 2 0 00-.602-1.43L16.083 2.57A2 2 0 0014.685 2H10a2 2 0 00-2 2z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M16 18v2a2 2 0 01-2 2H6a2 2 0 01-2-2V9a2 2 0 012-2h2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>`;
             return `<div class="gift-card" data-gift-name="${gift.name.toLowerCase()}" data-gift-price="${gift.price}"><div class="gift-image-container">${imageHtml}</div><div class="gift-name">${gift.name}${copyIcon}</div><div class="gift-price"><div class="price-badge">${gift.price} 💎</div></div></div>`;
         }
