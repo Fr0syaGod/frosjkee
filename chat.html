@@ -396,7 +396,6 @@
      6. Готово!
 ═══════════════════════════════════════════════ -->
 <script>
-<script>
 const FIREBASE_CONFIG = {
     apiKey:            "AIzaSyB7dI9IOqQpXIV-4kyPzaUbo9bzd95P36k",
     authDomain:        "alliance-f9696.firebaseapp.com",
@@ -407,7 +406,6 @@ const FIREBASE_CONFIG = {
     appId:             "1:571838881581:web:e4f669775a87c3643d3da4"
 };
 const IS_CONFIGURED = FIREBASE_CONFIG.apiKey !== "ВСТАВЬ_СЮДА";
-</script>
 </script>
 
 <!-- ── SETUP SCREEN ── -->
@@ -422,7 +420,7 @@ const IS_CONFIGURED = FIREBASE_CONFIG.apiKey !== "ВСТАВЬ_СЮДА";
         </div>
 
         <input class="setup-input" id="nickInput" type="text" placeholder="Введи никнейм..." maxlength="24" autocomplete="off" spellcheck="false">
-        <button class="setup-btn" id="enterBtn" onclick="enterChat()">Войти в чат →</button>
+        <button class="setup-btn" id="enterBtn">Войти в чат →</button>
         <div class="setup-hint">Никнейм нигде не сохраняется</div>
     </div>
 </div>
@@ -438,7 +436,7 @@ const IS_CONFIGURED = FIREBASE_CONFIG.apiKey !== "ВСТАВЬ_СЮДА";
                 <span id="onlineCount">0 онлайн</span>
             </div>
         </div>
-        <div class="my-nick" id="myNickBadge" onclick="changeNick()" title="Нажми чтобы сменить ник">
+        <div class="my-nick" id="myNickBadge" title="Нажми чтобы сменить ник">
             <span class="my-nick-label">ты:</span>
             <span id="myNickLabel">—</span>
         </div>
@@ -456,7 +454,7 @@ const IS_CONFIGURED = FIREBASE_CONFIG.apiKey !== "ВСТАВЬ_СЮДА";
     <div class="input-area">
         <div class="input-row">
             <textarea class="msg-input" id="msgInput" placeholder="Напиши сообщение..." rows="1" maxlength="2000"></textarea>
-            <button class="send-btn" id="sendBtn" onclick="sendMessage()">➤</button>
+            <button class="send-btn" id="sendBtn">➤</button>
         </div>
     </div>
 </div>
@@ -564,7 +562,8 @@ function nickToInitials(nick) {
     return nick.slice(0,2).toUpperCase();
 }
 
-window.enterChat = function() {
+// ── WIRE UP EVENTS ──
+document.getElementById('enterBtn').addEventListener('click', () => {
     const val = nickInput.value.trim();
     if (!val || !IS_CONFIGURED) return;
     myNick = val;
@@ -572,16 +571,18 @@ window.enterChat = function() {
     document.getElementById('myNickLabel').textContent = myNick;
     document.getElementById('setupScreen').classList.add('hidden');
     initFirebase();
-};
+});
 
-window.changeNick = function() {
+document.getElementById('myNickBadge').addEventListener('click', () => {
     if (myOnlineRef) remove(myOnlineRef);
     if (myTypingRef) remove(myTypingRef);
     nickInput.value = myNick;
     document.getElementById('setupScreen').classList.remove('hidden');
     seenKeys.clear();
     setTimeout(() => nickInput.select(), 50);
-};
+});
+
+document.getElementById('sendBtn').addEventListener('click', () => sendMessage());
 
 // ── FIREBASE ──
 function initFirebase() {
@@ -664,7 +665,7 @@ function pushSystemMsg(text) {
     push(messagesRef, { type: 'system', text, ts: Date.now() });
 }
 
-window.sendMessage = function() {
+function sendMessage() {
     const input = document.getElementById('msgInput');
     const text = input.value.trim();
     if (!text || !db) return;
