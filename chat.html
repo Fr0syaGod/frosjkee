@@ -542,16 +542,7 @@
 <body>
 <div class="bg-aurora"></div>
 
-<!-- ══════════════════════════════════════════
-     ⚙️ НАСТРОЙКА FIREBASE
-     
-     1. Иди на https://console.firebase.google.com
-     2. Создай новый проект (любое название)
-     3. Нажми </> (Web app), зарегистрируй приложение
-     4. Скопируй значения из firebaseConfig и вставь ниже
-     5. В консоли Firebase: Realtime Database → Создать базу данных → Тестовый режим
-     6. Готово!
-═══════════════════════════════════════════════ -->
+
 <script>
 const FIREBASE_CONFIG = {
     apiKey:            "AIzaSyB7dI9IOqQpXIV-4kyPzaUbo9bzd95P36k",
@@ -1255,19 +1246,18 @@ function startRoll(duelId, d, isChallenger) {
         tick++;
     }, 80);
 
-    // wait for both rolls to be in firebase
+    // wait for both rolls — single onValue listener
     const dRef = ref(db, `duels/${duelId}`);
-    let checkInterval = setInterval(() => {
-        onValue(dRef, snap => {
-            if (!snap.exists()) return;
-            const data = snap.val();
-            if (data.challengerRoll && data.targetRoll) {
-                clearInterval(checkInterval);
-                clearInterval(rollAnim);
-                revealResult(duelId, data);
-            }
-        }, { onlyOnce: true });
-    }, 300);
+    let revealed = false;
+    onValue(dRef, snap => {
+        if (!snap.exists() || revealed) return;
+        const data = snap.val();
+        if (data.challengerRoll && data.targetRoll) {
+            revealed = true;
+            clearInterval(rollAnim);
+            revealResult(duelId, data);
+        }
+    });
 }
 
 function revealResult(duelId, data) {
@@ -1295,8 +1285,9 @@ function revealResult(duelId, data) {
 
     if (res) res.textContent = resultText;
 
-    // write result to chat (only challenger to avoid double)
-    if (data.challenger === myNick) {
+    // write result to chat — only if not already written (check flag in firebase)
+    if (data.challenger === myNick && !data.resultPosted) {
+        set(ref(db, `duels/${duelId}/resultPosted`), true);
         let chatResult = '';
         if (cRoll > tRoll) chatResult = `⚔️ Дуэль: ${data.challenger} [${cRoll}] победил ${data.target} [${tRoll}]!`;
         else if (tRoll > cRoll) chatResult = `⚔️ Дуэль: ${data.target} [${tRoll}] победил ${data.challenger} [${cRoll}]!`;
