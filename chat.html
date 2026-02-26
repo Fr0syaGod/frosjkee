@@ -128,7 +128,7 @@
         .chat-app {
             display: flex; flex-direction: column;
             height: 100vh; width: 100%;
-            max-width: 820px;
+            max-width: 1100px;
             margin: 0 auto;
             border-left: 1px solid var(--glass-border);
             border-right: 1px solid var(--glass-border);
@@ -461,6 +461,58 @@
         .duel-btn-ghost { background: var(--glass); border: 1px solid var(--glass-border); color: var(--text-secondary); }
         .duel-btn-ghost:hover { border-color: rgba(239,68,68,0.4); color: #fca5a5; }
 
+
+        /* ── IMAGES ── */
+        .msg-image {
+            max-width: 320px; max-height: 280px; border-radius: 14px;
+            border: 1px solid var(--glass-border); cursor: pointer;
+            display: block; margin-top: 4px;
+            transition: opacity 0.2s;
+        }
+        .msg-image:hover { opacity: 0.9; }
+
+        /* drop zone highlight */
+        .chat-app.drag-over .messages-wrap {
+            background: rgba(124,58,237,0.06);
+            box-shadow: inset 0 0 0 2px rgba(124,58,237,0.4);
+        }
+        .drop-hint {
+            position: fixed; inset: 0; z-index: 1000;
+            display: none; align-items: center; justify-content: center;
+            background: rgba(3,7,18,0.7); backdrop-filter: blur(6px);
+            font-size: 2rem; font-weight: 900; color: #a78bfa;
+            pointer-events: none;
+        }
+        .drop-hint.show { display: flex; flex-direction: column; gap: 12px; }
+
+        /* uploading indicator */
+        .upload-indicator {
+            display: none; align-items: center; gap: 8px;
+            padding: 6px 16px; font-size: 12px; color: var(--text-muted);
+        }
+        .upload-indicator.show { display: flex; }
+        .upload-dot { width:6px;height:6px;border-radius:50%;background:#a78bfa;animation:dot 1.2s infinite; }
+
+        /* RPS game */
+        .rps-choices {
+            display: flex; gap: 12px; justify-content: center; margin: 20px 0;
+        }
+        .rps-choice {
+            width: 80px; height: 80px; border-radius: 20px;
+            background: rgba(255,255,255,0.04); border: 2px solid var(--glass-border);
+            font-size: 36px; cursor: pointer; transition: all 0.2s;
+            display: flex; align-items: center; justify-content: center;
+            flex-direction: column; gap: 4px;
+        }
+        .rps-choice:hover { border-color: rgba(124,58,237,0.5); background: rgba(124,58,237,0.1); transform: translateY(-3px); }
+        .rps-choice.selected { border-color: #a78bfa; background: rgba(124,58,237,0.2); transform: translateY(-3px); box-shadow: 0 0 20px rgba(124,58,237,0.3); }
+        .rps-choice-label { font-size: 10px; color: var(--text-muted); font-weight: 600; }
+        .rps-waiting { font-size: 13px; color: var(--text-muted); margin: 12px 0; }
+        .rps-reveal { display: flex; align-items: center; justify-content: center; gap: 30px; margin: 20px 0; }
+        .rps-reveal-side { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+        .rps-reveal-emoji { font-size: 52px; animation: msgIn 0.4s cubic-bezier(0.34,1.56,0.64,1); }
+        .rps-reveal-nick { font-size: 12px; font-weight: 600; color: var(--text-muted); }
+
         /* scrollbar */
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: transparent; }
@@ -567,16 +619,6 @@
 <body>
 <div class="bg-aurora"></div>
 
-<!-- ══════════════════════════════════════════
-     ⚙️ НАСТРОЙКА FIREBASE
-     
-     1. Иди на https://console.firebase.google.com
-     2. Создай новый проект (любое название)
-     3. Нажми </> (Web app), зарегистрируй приложение
-     4. Скопируй значения из firebaseConfig и вставь ниже
-     5. В консоли Firebase: Realtime Database → Создать базу данных → Тестовый режим
-     6. Готово!
-═══════════════════════════════════════════════ -->
 <script>
 const FIREBASE_CONFIG = {
     apiKey:            "AIzaSyB7dI9IOqQpXIV-4kyPzaUbo9bzd95P36k",
@@ -587,10 +629,9 @@ const FIREBASE_CONFIG = {
     messagingSenderId: "571838881581",
     appId:             "1:571838881581:web:e4f669775a87c3643d3da4"
 };
-const IS_CONFIGURED = FIREBASE_CONFIG.apiKey !== "ВСТАВЬ_СЮДА";
+const IS_CONFIGURED = FIREBASE_CONFIG.apiKey !== "прикол";
 </script>
 
-<!-- ── SETUP SCREEN ── -->
 <div class="setup-screen" id="setupScreen">
     <div class="setup-box">
         <div class="setup-emoji">💬</div>
@@ -607,7 +648,7 @@ const IS_CONFIGURED = FIREBASE_CONFIG.apiKey !== "ВСТАВЬ_СЮДА";
     </div>
 </div>
 
-<!-- ── CHAT APP ── -->
+
 <div class="chat-app">
     <div class="chat-header">
         <div class="chat-header-left">
@@ -625,7 +666,12 @@ const IS_CONFIGURED = FIREBASE_CONFIG.apiKey !== "ВСТАВЬ_СЮДА";
     </div>
 
     <div class="messages-wrap" id="messagesWrap">
-        <!-- messages here -->
+
+    </div>
+
+    <div class="drop-hint" id="dropHint">
+        <span>🖼️</span>
+        <span style="font-size:1.2rem">Отпусти чтобы отправить</span>
     </div>
 
     <div class="typing-indicator" id="typingIndicator">
@@ -634,30 +680,33 @@ const IS_CONFIGURED = FIREBASE_CONFIG.apiKey !== "ВСТАВЬ_СЮДА";
     </div>
 
     <div class="input-area" style="position:relative">
-        <!-- EMOJI PICKER -->
+      
         <div class="emoji-picker" id="emojiPicker">
             <div class="emoji-picker-tabs" id="epTabs"></div>
             <input class="emoji-search" id="emojiSearch" placeholder="🔍 Поиск эмодзи...">
             <div class="emoji-grid" id="emojiGrid"></div>
         </div>
 
+        <div class="upload-indicator" id="uploadIndicator">
+            <div class="upload-dot"></div> Загрузка изображения...
+        </div>
         <div class="input-row">
             <button class="emoji-btn" id="emojiBtn" title="Эмодзи">😊</button>
-            <textarea class="msg-input" id="msgInput" placeholder="Напиши сообщение..." rows="1" maxlength="2000"></textarea>
+            <textarea class="msg-input" id="msgInput" placeholder="Напиши сообщение... или вставь картинку Ctrl+V" rows="1" maxlength="2000"></textarea>
             <button class="send-btn" id="sendBtn">➤</button>
         </div>
     </div>
 </div>
 
 
-<!-- DUEL OVERLAY -->
+
 <div class="duel-overlay" id="duelOverlay">
     <div class="duel-box" id="duelBox">
-        <!-- content injected by JS -->
+   
     </div>
 </div>
 
-<!-- SIDEBAR -->
+
 <button class="jkee-menu-trigger" id="jkeeMenuTrigger">☰</button>
 <div class="jkee-menu-overlay" id="jkeeMenuOverlay"></div>
 <div class="jkee-menu-sidebar" id="jkeeMenuSidebar">
@@ -681,6 +730,13 @@ const IS_CONFIGURED = FIREBASE_CONFIG.apiKey !== "ВСТАВЬ_СЮДА";
                 <div>
                     <div class="jkee-game-btn-name">/rollduel</div>
                     <div class="jkee-game-btn-desc">Вызвать на дуэль</div>
+                </div>
+            </button>
+            <button class="jkee-game-btn" id="sidebarRpsBtn">
+                <span class="jkee-game-btn-icon">✂️</span>
+                <div>
+                    <div class="jkee-game-btn-name">/rps</div>
+                    <div class="jkee-game-btn-desc">Камень, ножницы, бумага</div>
                 </div>
             </button>
         </div>
@@ -727,13 +783,13 @@ const IS_CONFIGURED = FIREBASE_CONFIG.apiKey !== "ВСТАВЬ_СЮДА";
     </div>
 </div>
 
-<!-- Firebase SDK -->
+
 <script type="module">
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
 import { getDatabase, ref, push, onChildAdded, onValue, set, remove, serverTimestamp, query, limitToLast, onDisconnect }
     from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js';
 
-// ── SIDEBAR ──
+
 (function() {
     const trigger = document.getElementById('jkeeMenuTrigger');
     const overlay = document.getElementById('jkeeMenuOverlay');
@@ -746,22 +802,24 @@ import { getDatabase, ref, push, onChildAdded, onValue, set, remove, serverTimes
     const cur = window.location.pathname.split('/').pop().replace('.html','');
     document.querySelectorAll('.jkee-menu-item').forEach(el => { if(cur.includes(el.dataset.page)) el.classList.add('active'); });
 
-    // game buttons — wired after DOM ready
+  
     setTimeout(() => {
         const rollBtn = document.getElementById('sidebarRollBtn');
         const duelBtn = document.getElementById('sidebarDuelBtn');
         if (rollBtn) rollBtn.addEventListener('click', () => { close(); setTimeout(doRoll, 100); });
         if (duelBtn) duelBtn.addEventListener('click', () => { close(); setTimeout(doDuel, 100); });
+        const rpsBtn = document.getElementById('sidebarRpsBtn');
+        if (rpsBtn) rpsBtn.addEventListener('click', () => { close(); setTimeout(doRps, 100); });
     }, 500);
 })();
 
-// ── CHECK CONFIG ──
+
 if (!IS_CONFIGURED) {
     document.getElementById('notConfiguredBanner').style.display = 'block';
     document.getElementById('enterBtn').disabled = true;
 }
 
-// ── NICK SETUP ──
+
 const nickInput = document.getElementById('nickInput');
 nickInput.focus();
 nickInput.addEventListener('keydown', e => { if (e.key === 'Enter') enterChat(); });
@@ -787,7 +845,6 @@ function nickToInitials(nick) {
     return nick.slice(0,2).toUpperCase();
 }
 
-// ── WIRE UP EVENTS ──
 document.getElementById('enterBtn').addEventListener('click', () => {
     const val = nickInput.value.trim();
     if (!val || !IS_CONFIGURED) return;
@@ -809,7 +866,6 @@ document.getElementById('myNickBadge').addEventListener('click', () => {
 
 document.getElementById('sendBtn').addEventListener('click', () => sendMessage());
 
-// ── FIREBASE ──
 function initFirebase() {
     const app = initializeApp(FIREBASE_CONFIG);
     db = getDatabase(app);
@@ -818,23 +874,19 @@ function initFirebase() {
     onlineRef   = ref(db, 'online');
     typingRef   = ref(db, 'typing');
 
-    // my presence
     const presenceId = Math.random().toString(36).slice(2);
     myOnlineRef = ref(db, `online/${presenceId}`);
     set(myOnlineRef, { nick: myNick, color: myColor });
     onDisconnect(myOnlineRef).remove();
 
-    // my typing
     myTypingRef = ref(db, `typing/${presenceId}`);
     onDisconnect(myTypingRef).remove();
 
-    // online count
     onValue(onlineRef, snap => {
         const count = snap.exists() ? Object.keys(snap.val()).length : 0;
         document.getElementById('onlineCount').textContent = count + ' онлайн';
     });
 
-    // typing indicators
     onValue(typingRef, snap => {
         const typing = snap.exists() ? Object.values(snap.val()) : [];
         const others = typing.filter(t => t.nick !== myNick).map(t => t.nick);
@@ -848,14 +900,12 @@ function initFirebase() {
         }
     });
 
-    // join message
     pushSystemMsg(`${myNick} вошёл в чат`);
 
-    // track users and listen for duels
     trackOnlineUsers();
     listenForDuels();
+    listenForRps();
 
-    // listen messages — last 100
     const recentQ = query(messagesRef, limitToLast(100));
     onChildAdded(recentQ, snap => {
         if (seenKeys.has(snap.key)) return;
@@ -863,13 +913,12 @@ function initFirebase() {
         const d = snap.val();
         if (d.type === 'system') renderSystem(d.text);
         else if (d.type === 'dice') renderDice(d);
+        else if (d.type === 'image') renderImage(d);
         else renderMsg(d);
 
-        // auto-delete messages older than 24h (client-side cleanup for own messages)
-        // Firebase rules can handle server-side TTL if needed
+
     });
 
-    // input textarea auto-resize
     const input = document.getElementById('msgInput');
     input.addEventListener('input', () => {
         input.style.height = 'auto';
@@ -920,7 +969,6 @@ function sendMessage() {
     clearTimeout(typingTimeout);
 };
 
-// ── RENDER ──
 function renderSystem(text) {
     const wrap = document.getElementById('messagesWrap');
     const el = document.createElement('div');
@@ -947,7 +995,6 @@ function renderMsg(d) {
 
     let bubbleContent = escHtml(d.text).replace(/\n/g,'<br>');
 
-    // если это чистая YouTube ссылка — не дублируем текст
     const isOnlyUrl = /^https?:\/\/\S+$/.test(d.text.trim());
 
     let ytBlock = '';
@@ -1085,18 +1132,16 @@ function trackOnlineUsers() {
 
 function handleCommand(text) {
     const cmd = text.trim().toLowerCase();
-    if (cmd === '/roll') {
-        doRoll();
-        return true;
-    }
-    if (cmd === '/rollduel') {
-        doDuel();
-        return true;
-    }
-    // secret clear command — only for frosjkee
+    if (cmd === '/roll') { doRoll(); return true; }
+    if (cmd === '/rollduel') { doDuel(); return true; }
+    if (cmd === '/rps') { doRps(); return true; }
     if (cmd === '/clearchat' && myNick.toLowerCase() === 'frosjkee') {
-        remove(messagesRef);
-        push(messagesRef, { type: 'system', text: '🧹 Чат очищен', ts: Date.now() });
+        remove(messagesRef).then(() => {
+            // очищаем DOM сразу
+            document.getElementById('messagesWrap').innerHTML = '';
+            seenKeys.clear();
+            push(messagesRef, { type: 'system', text: '🧹 Чат очищен', ts: Date.now() });
+        });
         return true;
     }
     return false;
@@ -1110,11 +1155,18 @@ function doRoll() {
 
 function doDuel() {
     if (!db) return;
-    // close sidebar first
     document.getElementById('jkeeMenuSidebar').classList.remove('active');
     document.getElementById('jkeeMenuOverlay').classList.remove('active');
     document.getElementById('jkeeMenuTrigger').classList.remove('active');
     openDuelChallenge();
+}
+
+function doRps() {
+    if (!db) return;
+    document.getElementById('jkeeMenuSidebar').classList.remove('active');
+    document.getElementById('jkeeMenuOverlay').classList.remove('active');
+    document.getElementById('jkeeMenuTrigger').classList.remove('active');
+    openRpsChallenge();
 }
 
 // ── RENDER DICE MSG ──
@@ -1131,6 +1183,7 @@ function renderDice(d) {
 
 // ── DUEL: CHALLENGER SIDE ──
 function openDuelChallenge() {
+    if (_isBusy) { alert('Ты уже в игре!'); return; }
     const others = Object.values(onlineUsers).filter(u => u.nick !== myNick);
     if (!others.length) {
         showDuelBox(`
@@ -1184,6 +1237,8 @@ window.closeDuel = function() {
     duelClearUnsub();
     _duelId = null;
     _duelHandled = false;
+    remove(ref(db, `online_busy/${myNick}`));
+    setBusy(false);
     document.getElementById('duelOverlay').classList.remove('open');
 };
 
@@ -1211,12 +1266,15 @@ function startTimer(seconds, onExpire) {
 
 // ── CHALLENGER: send challenge ──
 window.sendChallenge = function() {
+    if (_isBusy) return;
     const btn = document.getElementById('challengeBtn');
     const targetNick = btn.dataset.target;
     const targetColor = btn.dataset.targetColor;
 
     _duelId = Math.random().toString(36).slice(2);
     _duelHandled = false;
+    setBusy(true);
+    set(ref(db, `online_busy/${myNick}`), true);
 
     set(ref(db, `duels/${_duelId}`), {
         id: _duelId,
@@ -1268,7 +1326,6 @@ window.cancelDuel = function(expired) {
     }
 };
 
-// ── TARGET: listen for incoming duels ──
 function listenForDuels() {
     // use onValue on whole duels node, filter fresh duels for me
     onValue(ref(db, 'duels'), snap => {
@@ -1292,8 +1349,11 @@ function listenForDuels() {
 }
 
 function showIncomingDuel(d) {
+    if (_isBusy) { set(ref(db, `duels/${d.id}/status`), 'declined'); return; }
     _duelId = d.id;
     _duelHandled = false;
+    setBusy(true);
+    set(ref(db, `online_busy/${myNick}`), true);
 
     showDuelBox(`
         <div class="duel-title">⚔️ ВЫЗОВ НА ДУЭЛЬ</div>
