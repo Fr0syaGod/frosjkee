@@ -641,7 +641,6 @@ const FIREBASE_CONFIG = {
 };
 const IS_CONFIGURED = FIREBASE_CONFIG.apiKey !== "ВСТАВЬ_СЮДА";
 </script>
-
 <!-- ── SETUP SCREEN ── -->
 <div class="setup-screen" id="setupScreen">
     <div class="setup-box">
@@ -1504,6 +1503,300 @@ function revealResult(duelId, data, isChallenger) {
     setTimeout(window.closeDuel, 4000);
 }
 
+
+
+// ── BUSY STATE ──
+let _isBusy = false;
+function setBusy(val) { _isBusy = val; }
+
+// ── IMAGE RENDERING ──
+function renderImage(d) {
+    const wrap = document.getElementById('messagesWrap');
+    const isOwn = d.nick === myNick;
+    const color = d.color || nickToColor(d.nick);
+    const el = document.createElement('div');
+    el.className = 'msg' + (isOwn ? ' own' : '');
+    el.innerHTML = `
+        <div class="msg-avatar" style="background:${color}20;color:${color};border:1px solid ${color}40">${nickToInitials(d.nick)}</div>
+        <div class="msg-content">
+            ${!isOwn ? `<div class="msg-nick" style="color:${color}">${escHtml(d.nick)}</div>` : ''}
+            <div class="msg-bubble" style="padding:6px">
+                <img class="msg-image" src="${d.src}" alt="img" onclick="window.open('${d.src}','_blank')">
+            </div>
+            <div class="msg-time">${formatTime(d.ts)}</div>
+        </div>`;
+    wrap.appendChild(el);
+    scrollBottom();
+}
+
+// ── IMAGE UPLOAD (base64) ──
+function sendImage(file) {
+    if (!file || !file.type.startsWith('image/')) return;
+    if (file.size > 900000) {
+        alert('Картинка слишком большая (макс ~700KB). Сожми её и попробуй снова.');
+        return;
+    }
+    const indicator = document.getElementById('uploadIndicator');
+    indicator.classList.add('show');
+    const reader = new FileReader();
+    reader.onload = e => {
+        push(messagesRef, {
+            type: 'image', nick: myNick, color: myColor,
+            src: e.target.result, ts: Date.now()
+        });
+        indicator.classList.remove('show');
+    };
+    reader.readAsDataURL(file);
+}
+
+// paste Ctrl+V
+document.addEventListener('paste', e => {
+    if (!db) return;
+    const items = e.clipboardData?.items;
+    if (!items) return;
+    for (const item of items) {
+        if (item.type.startsWith('image/')) { sendImage(item.getAsFile()); break; }
+    }
+});
+
+// drag & drop
+const chatApp = document.querySelector('.chat-app');
+const dropHint = document.getElementById('dropHint');
+let dragCounter = 0;
+document.addEventListener('dragenter', e => {
+    if ([...e.dataTransfer.items].some(i => i.type.startsWith('image/'))) {
+        dragCounter++;
+        dropHint.classList.add('show');
+        chatApp.classList.add('drag-over');
+    }
+});
+document.addEventListener('dragleave', () => {
+    dragCounter--;
+    if (dragCounter <= 0) { dragCounter = 0; dropHint.classList.remove('show'); chatApp.classList.remove('drag-over'); }
+});
+document.addEventListener('dragover', e => e.preventDefault());
+document.addEventListener('drop', e => {
+    e.preventDefault();
+    dragCounter = 0; dropHint.classList.remove('show'); chatApp.classList.remove('drag-over');
+    if (!db) return;
+    const file = e.dataTransfer.files[0];
+    if (file) sendImage(file);
+});
+
+// ── RPS GAME ──
+const RPS_EMOJI = { rock: '🪨', scissors: '✂️', paper: '📄' };
+const RPS_NAMES = { rock: 'Камень', scissors: 'Ножницы', paper: 'Бумага' };
+let _rpsUnsub = null;
+let _rpsInUnsub = null;
+let _rpsId = null;
+let _rpsHandled = false;
+let _rpsTimerInterval = null;
+
+function rpsClearAll() {
+    if (_rpsUnsub) { _rpsUnsub(); _rpsUnsub = null; }
+    if (_rpsInUnsub) { _rpsInUnsub(); _rpsInUnsub = null; }
+    if (_rpsTimerInterval) { clearInterval(_rpsTimerInterval); _rpsTimerInterval = null; }
+}
+
+function rpsWinner(c, t) {
+    if (c === t) return 'draw';
+    if ((c==='rock'&&t==='scissors')||(c==='scissors'&&t==='paper')||(c==='paper'&&t==='rock')) return 'challenger';
+    return 'target';
+}
+
+function openRpsChallenge() {
+    if (_isBusy) { alert('Ты уже в игре!'); return; }
+    const others = Object.values(onlineUsers).filter(u => u.nick !== myNick);
+    if (!others.length) {
+        showDuelBox(`<div class="duel-title">✂️ КНБ</div><div class="duel-sub">Нет других игроков онлайн</div><button class="duel-btn duel-btn-ghost" onclick="closeDuel()">Закрыть</button>`);
+        return;
+    }
+    const listHtml = others.map(u => {
+        const color = u.color || nickToColor(u.nick);
+        return `<div class="player-item" data-nick="${escHtml(u.nick)}" data-color="${color}" onclick="selectPlayer(this)">
+            <div class="player-avatar-sm" style="background:${color}20;color:${color};border:1px solid ${color}40">${u.nick.slice(0,2).toUpperCase()}</div>
+            <div class="player-name">${escHtml(u.nick)}</div>
+            <div class="player-check">✓</div>
+        </div>`;
+    }).join('');
+    showDuelBox(`
+        <div class="duel-title">✂️ КНБ</div>
+        <div class="duel-sub">Выбери противника</div>
+        <div class="player-list">${listHtml}</div>
+        <div style="display:flex;gap:10px;justify-content:center">
+            <button class="duel-btn duel-btn-ghost" onclick="closeDuel()">Отмена</button>
+            <button class="duel-btn duel-btn-primary" id="challengeBtn" disabled onclick="sendRpsChallenge()">Вызвать ✂️</button>
+        </div>`);
+}
+
+window.sendRpsChallenge = function() {
+    if (_isBusy) return;
+    const btn = document.getElementById('challengeBtn');
+    const targetNick = btn.dataset.target;
+    const targetColor = btn.dataset.targetColor;
+    _rpsId = Math.random().toString(36).slice(2);
+    _rpsHandled = false;
+    setBusy(true);
+    set(ref(db, `online_busy/${myNick}`), true);
+    set(ref(db, `rps/${_rpsId}`), {
+        id: _rpsId, challenger: myNick, challengerColor: myColor,
+        target: targetNick, targetColor: targetColor,
+        status: 'pending', ts: Date.now()
+    });
+    let left = 10;
+    showDuelBox(`
+        <div class="duel-title">✂️ ВЫЗОВ КНБ</div>
+        <div class="duel-sub">Ожидаем ответа от <b style="color:${targetColor}">${escHtml(targetNick)}</b></div>
+        <div class="timer-bar-wrap"><div class="timer-bar" id="timerBar" style="width:100%"></div></div>
+        <div class="timer-text" id="timerText"></div>
+        <button class="duel-btn duel-btn-ghost" onclick="cancelRps()">Отменить</button>`);
+    const upd = () => { const tb=document.getElementById('timerBar'),tt=document.getElementById('timerText'); if(tb)tb.style.width=(left/10*100)+'%'; if(tt)tt.textContent=`Осталось ${left} сек...`; };
+    upd();
+    _rpsTimerInterval = setInterval(() => { left--; upd(); if(left<=0){clearInterval(_rpsTimerInterval);cancelRps(true);}}, 1000);
+    rpsClearAll();
+    _rpsUnsub = onValue(ref(db, `rps/${_rpsId}`), snap => {
+        if (!snap.exists()) { closeRps(); return; }
+        const d = snap.val();
+        if (d.status === 'accepted') { rpsClearAll(); showRpsPick(_rpsId, d, true); }
+        else if (d.status === 'declined') { rpsClearAll(); showDuelBox(`<div class="duel-title">😔 ОТКАЗ</div><div class="duel-sub">Противник отказался</div><button class="duel-btn duel-btn-ghost" onclick="closeRps()">Закрыть</button>`); setTimeout(closeRps, 2500); }
+        else if (d.status === 'cancelled') { rpsClearAll(); closeRps(); }
+    });
+};
+
+window.cancelRps = function(expired) {
+    rpsClearAll();
+    if (_rpsId) { set(ref(db, `rps/${_rpsId}/status`), 'cancelled'); }
+    remove(ref(db, `online_busy/${myNick}`));
+    setBusy(false); _rpsId = null;
+    if (expired) { showDuelBox(`<div class="duel-title">⏱ ВРЕМЯ ВЫШЛО</div><div class="duel-sub">Противник не ответил</div><button class="duel-btn duel-btn-ghost" onclick="closeRps()">Закрыть</button>`); setTimeout(closeRps, 2500); }
+    else closeRps();
+};
+
+window.closeRps = function() {
+    rpsClearAll(); _rpsId = null; _rpsHandled = false;
+    remove(ref(db, `online_busy/${myNick}`));
+    setBusy(false);
+    window.closeDuel();
+};
+
+function listenForRps() {
+    onValue(ref(db, 'rps'), snap => {
+        if (!snap.exists()) return;
+        snap.forEach(child => {
+            const d = child.val();
+            if (d.target === myNick && d.status === 'pending' && Date.now() - d.ts < 11000) {
+                if (!document.getElementById('duelOverlay').classList.contains('open')) {
+                    if (_isBusy) { set(ref(db, `rps/${d.id}/status`), 'declined'); return; }
+                    showIncomingRps(d);
+                }
+            }
+            if (d.target === myNick && d.status === 'cancelled' &&
+                document.getElementById('duelOverlay').classList.contains('open') && _rpsId === d.id) {
+                rpsClearAll(); closeRps();
+            }
+        });
+    });
+}
+
+function showIncomingRps(d) {
+    _rpsId = d.id; _rpsHandled = false; setBusy(true);
+    set(ref(db, `online_busy/${myNick}`), true);
+    let left = 10;
+    showDuelBox(`
+        <div class="duel-title">✂️ ВЫЗОВ НА КНБ</div>
+        <div class="duel-sub"><b style="color:${d.challengerColor}">${escHtml(d.challenger)}</b> вызывает тебя!</div>
+        <div class="timer-bar-wrap"><div class="timer-bar" id="timerBar" style="width:100%"></div></div>
+        <div class="timer-text" id="timerText"></div>
+        <div style="display:flex;gap:10px;justify-content:center">
+            <button class="duel-btn duel-btn-ghost" onclick="declineRps('${d.id}')">Отказать</button>
+            <button class="duel-btn duel-btn-primary" onclick="acceptRps('${d.id}')">Принять ✂️</button>
+        </div>`);
+    const upd = () => { const tb=document.getElementById('timerBar'),tt=document.getElementById('timerText'); if(tb)tb.style.width=(left/10*100)+'%'; if(tt)tt.textContent=`Осталось ${left} сек...`; };
+    upd();
+    _rpsTimerInterval = setInterval(() => { left--; upd(); if(left<=0){clearInterval(_rpsTimerInterval);closeRps();}}, 1000);
+    _rpsInUnsub = onValue(ref(db, `rps/${d.id}`), snap => {
+        if (!snap.exists() || snap.val().status === 'cancelled') { rpsClearAll(); closeRps(); }
+    });
+}
+
+window.acceptRps = function(rpsId) {
+    rpsClearAll();
+    set(ref(db, `rps/${rpsId}/status`), 'accepted');
+    onValue(ref(db, `rps/${rpsId}`), snap => {
+        if (!snap.exists()) return;
+        showRpsPick(rpsId, snap.val(), false);
+    }, { onlyOnce: true });
+};
+
+window.declineRps = function(rpsId) {
+    rpsClearAll(); set(ref(db, `rps/${rpsId}/status`), 'declined');
+    _rpsId = null; setBusy(false); remove(ref(db, `online_busy/${myNick}`));
+    window.closeDuel();
+};
+
+function showRpsPick(rpsId, d, isChallenger) {
+    showDuelBox(`
+        <div class="duel-title">✂️ КНБ</div>
+        <div class="duel-sub">Выбери свой ход!</div>
+        <div class="rps-choices">
+            <button class="rps-choice" onclick="pickRps('${rpsId}','rock',${isChallenger})"><span>🪨</span><span class="rps-choice-label">Камень</span></button>
+            <button class="rps-choice" onclick="pickRps('${rpsId}','scissors',${isChallenger})"><span>✂️</span><span class="rps-choice-label">Ножницы</span></button>
+            <button class="rps-choice" onclick="pickRps('${rpsId}','paper',${isChallenger})"><span>📄</span><span class="rps-choice-label">Бумага</span></button>
+        </div>
+        <div class="rps-waiting" id="rpsWaiting" style="display:none">Ждём противника...</div>`);
+}
+
+window.pickRps = function(rpsId, choice, isChallenger) {
+    document.querySelectorAll('.rps-choice').forEach(b => { b.disabled = true; b.classList.remove('selected'); });
+    document.querySelectorAll('.rps-choice').forEach(b => { if(b.textContent.includes(RPS_EMOJI[choice])) b.classList.add('selected'); });
+    const waiting = document.getElementById('rpsWaiting');
+    if (waiting) waiting.style.display = 'block';
+    const field = isChallenger ? 'challengerChoice' : 'targetChoice';
+    set(ref(db, `rps/${rpsId}/${field}`), choice);
+    _rpsUnsub = onValue(ref(db, `rps/${rpsId}`), snap => {
+        if (_rpsHandled || !snap.exists()) return;
+        const data = snap.val();
+        if (data.challengerChoice && data.targetChoice) {
+            _rpsHandled = true;
+            if (_rpsUnsub) { _rpsUnsub(); _rpsUnsub = null; }
+            revealRps(rpsId, data, isChallenger);
+        }
+    });
+};
+
+function revealRps(rpsId, data, isChallenger) {
+    const cc = data.challengerChoice, tc = data.targetChoice;
+    const winner = rpsWinner(cc, tc);
+    const cColor = data.challengerColor || nickToColor(data.challenger);
+    const tColor = data.targetColor || nickToColor(data.target);
+    let resultText = winner==='draw' ? '🤝 Ничья!' : winner==='challenger' ? `🏆 Победил ${escHtml(data.challenger)}!` : `🏆 Победил ${escHtml(data.target)}!`;
+    showDuelBox(`
+        <div class="duel-title">✂️ РЕЗУЛЬТАТ</div>
+        <div class="rps-reveal">
+            <div class="rps-reveal-side">
+                <div class="rps-reveal-nick" style="color:${cColor}">${escHtml(data.challenger)}</div>
+                <div class="rps-reveal-emoji">${RPS_EMOJI[cc]}</div>
+                <div style="font-size:12px;color:var(--text-muted)">${RPS_NAMES[cc]}</div>
+            </div>
+            <div style="font-size:24px;font-weight:900;color:var(--text-muted)">VS</div>
+            <div class="rps-reveal-side">
+                <div class="rps-reveal-nick" style="color:${tColor}">${escHtml(data.target)}</div>
+                <div class="rps-reveal-emoji">${RPS_EMOJI[tc]}</div>
+                <div style="font-size:12px;color:var(--text-muted)">${RPS_NAMES[tc]}</div>
+            </div>
+        </div>
+        <div class="duel-result">${resultText}</div>`);
+    if (isChallenger) {
+        let chatTxt = winner==='draw'
+            ? `✂️ КНБ между ${data.challenger} и ${data.target} — Ничья! [${RPS_EMOJI[cc]} vs ${RPS_EMOJI[tc]}]`
+            : winner==='challenger'
+            ? `✂️ КНБ между ${data.challenger} и ${data.target} завершилась победой ${data.challenger}! [${RPS_EMOJI[cc]} vs ${RPS_EMOJI[tc]}]`
+            : `✂️ КНБ между ${data.challenger} и ${data.target} завершилась победой ${data.target}! [${RPS_EMOJI[cc]} vs ${RPS_EMOJI[tc]}]`;
+        push(messagesRef, { type: 'system', text: chatTxt, ts: Date.now() });
+        setTimeout(() => remove(ref(db, `rps/${rpsId}`)), 5000);
+    }
+    setTimeout(closeRps, 4000);
+}
 
 // disconnect cleanup
 window.addEventListener('beforeunload', () => {
