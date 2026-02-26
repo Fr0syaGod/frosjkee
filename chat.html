@@ -177,6 +177,41 @@
             transition: all 0.2s;
         }
         .my-nick:hover { background: rgba(124,58,237,0.2); }
+
+        /* ── RADIO PLAYER ── */
+        .radio-player {
+            display: flex; align-items: center; gap: 8px;
+            padding: 5px 12px; border-radius: var(--r-full);
+            background: rgba(6,182,212,0.08); border: 1px solid rgba(6,182,212,0.2);
+            font-size: 12px; color: #67e8f9; font-weight: 600;
+            cursor: pointer; transition: all 0.2s; user-select: none;
+        }
+        .radio-player:hover { background: rgba(6,182,212,0.15); border-color: rgba(6,182,212,0.4); }
+        .radio-play-btn {
+            width: 26px; height: 26px; border-radius: 50%;
+            background: rgba(6,182,212,0.2); border: 1px solid rgba(6,182,212,0.3);
+            color: #67e8f9; font-size: 10px; cursor: pointer; flex-shrink: 0;
+            display: flex; align-items: center; justify-content: center;
+            transition: all 0.2s;
+        }
+        .radio-play-btn:hover { background: rgba(6,182,212,0.35); }
+        .radio-label { font-size: 11px; font-weight: 700; letter-spacing: 0.3px; }
+        .radio-bars {
+            display: flex; align-items: flex-end; gap: 2px; height: 14px;
+        }
+        .radio-bars span {
+            width: 3px; background: #67e8f9; border-radius: 2px;
+            animation: radioBar 0.8s ease-in-out infinite;
+        }
+        .radio-bars span:nth-child(1) { animation-delay: 0s; }
+        .radio-bars span:nth-child(2) { animation-delay: 0.15s; }
+        .radio-bars span:nth-child(3) { animation-delay: 0.3s; }
+        @keyframes radioBar {
+            0%,100% { height: 4px; }
+            50% { height: 14px; }
+        }
+        .radio-bars.paused span { animation: none; height: 4px; opacity: 0.4; }
+
         .my-nick-label { color: var(--text-muted); font-weight: 400; }
 
         /* ── MESSAGES ── */
@@ -631,7 +666,6 @@ const FIREBASE_CONFIG = {
 };
 const IS_CONFIGURED = FIREBASE_CONFIG.apiKey !== "ВСТАВЬ_СЮДА";
 </script>
-
 <!-- ── SETUP SCREEN ── -->
 <div class="setup-screen" id="setupScreen">
     <div class="setup-box">
@@ -658,6 +692,13 @@ const IS_CONFIGURED = FIREBASE_CONFIG.apiKey !== "ВСТАВЬ_СЮДА";
             <div class="online-badge">
                 <div class="online-dot"></div>
                 <span id="onlineCount">0 онлайн</span>
+            </div>
+            <div class="radio-player" id="radioPlayer" title="Бутырка FM">
+                <button class="radio-play-btn" id="radioPlayBtn">▶</button>
+                <span class="radio-label">БУТЫРКА FM</span>
+                <div class="radio-bars paused" id="radioBars">
+                    <span></span><span></span><span></span>
+                </div>
             </div>
         </div>
         <div class="my-nick" id="myNickBadge" title="Нажми чтобы сменить ник">
@@ -1807,6 +1848,40 @@ function revealRps(rpsId, data, isChallenger) {
     }
     setTimeout(closeRps, 4000);
 }
+
+
+// ── RADIO PLAYER ──
+const radioAudio = new Audio('https://stream03.pcradio.ru/Butirka-med');
+radioAudio.preload = 'none';
+let radioPlaying = false;
+
+document.getElementById('radioPlayBtn').addEventListener('click', e => {
+    e.stopPropagation();
+    toggleRadio();
+});
+document.getElementById('radioPlayer').addEventListener('click', toggleRadio);
+
+function toggleRadio() {
+    if (radioPlaying) {
+        radioAudio.pause();
+        radioAudio.src = '';
+        radioPlaying = false;
+        document.getElementById('radioPlayBtn').textContent = '▶';
+        document.getElementById('radioBars').classList.add('paused');
+    } else {
+        radioAudio.src = 'https://stream03.pcradio.ru/Butirka-med';
+        radioAudio.play().catch(() => {});
+        radioPlaying = true;
+        document.getElementById('radioPlayBtn').textContent = '⏸';
+        document.getElementById('radioBars').classList.remove('paused');
+    }
+}
+
+radioAudio.addEventListener('error', () => {
+    radioPlaying = false;
+    document.getElementById('radioPlayBtn').textContent = '▶';
+    document.getElementById('radioBars').classList.add('paused');
+});
 
 // disconnect cleanup
 window.addEventListener('beforeunload', () => {
