@@ -619,6 +619,16 @@
 <body>
 <div class="bg-aurora"></div>
 
+<!-- ══════════════════════════════════════════
+     ⚙️ НАСТРОЙКА FIREBASE
+     
+     1. Иди на https://console.firebase.google.com
+     2. Создай новый проект (любое название)
+     3. Нажми </> (Web app), зарегистрируй приложение
+     4. Скопируй значения из firebaseConfig и вставь ниже
+     5. В консоли Firebase: Realtime Database → Создать базу данных → Тестовый режим
+     6. Готово!
+═══════════════════════════════════════════════ -->
 <script>
 const FIREBASE_CONFIG = {
     apiKey:            "AIzaSyB7dI9IOqQpXIV-4kyPzaUbo9bzd95P36k",
@@ -629,9 +639,10 @@ const FIREBASE_CONFIG = {
     messagingSenderId: "571838881581",
     appId:             "1:571838881581:web:e4f669775a87c3643d3da4"
 };
-const IS_CONFIGURED = FIREBASE_CONFIG.apiKey !== "прикол";
+const IS_CONFIGURED = FIREBASE_CONFIG.apiKey !== "ВСТАВЬ_СЮДА";
 </script>
 
+<!-- ── SETUP SCREEN ── -->
 <div class="setup-screen" id="setupScreen">
     <div class="setup-box">
         <div class="setup-emoji">💬</div>
@@ -648,7 +659,7 @@ const IS_CONFIGURED = FIREBASE_CONFIG.apiKey !== "прикол";
     </div>
 </div>
 
-
+<!-- ── CHAT APP ── -->
 <div class="chat-app">
     <div class="chat-header">
         <div class="chat-header-left">
@@ -666,7 +677,7 @@ const IS_CONFIGURED = FIREBASE_CONFIG.apiKey !== "прикол";
     </div>
 
     <div class="messages-wrap" id="messagesWrap">
-
+        <!-- messages here -->
     </div>
 
     <div class="drop-hint" id="dropHint">
@@ -680,7 +691,7 @@ const IS_CONFIGURED = FIREBASE_CONFIG.apiKey !== "прикол";
     </div>
 
     <div class="input-area" style="position:relative">
-      
+        <!-- EMOJI PICKER -->
         <div class="emoji-picker" id="emojiPicker">
             <div class="emoji-picker-tabs" id="epTabs"></div>
             <input class="emoji-search" id="emojiSearch" placeholder="🔍 Поиск эмодзи...">
@@ -699,14 +710,14 @@ const IS_CONFIGURED = FIREBASE_CONFIG.apiKey !== "прикол";
 </div>
 
 
-
+<!-- DUEL OVERLAY -->
 <div class="duel-overlay" id="duelOverlay">
     <div class="duel-box" id="duelBox">
-   
+        <!-- content injected by JS -->
     </div>
 </div>
 
-
+<!-- SIDEBAR -->
 <button class="jkee-menu-trigger" id="jkeeMenuTrigger">☰</button>
 <div class="jkee-menu-overlay" id="jkeeMenuOverlay"></div>
 <div class="jkee-menu-sidebar" id="jkeeMenuSidebar">
@@ -783,13 +794,13 @@ const IS_CONFIGURED = FIREBASE_CONFIG.apiKey !== "прикол";
     </div>
 </div>
 
-
+<!-- Firebase SDK -->
 <script type="module">
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
 import { getDatabase, ref, push, onChildAdded, onValue, set, remove, serverTimestamp, query, limitToLast, onDisconnect }
     from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js';
 
-
+// ── SIDEBAR ──
 (function() {
     const trigger = document.getElementById('jkeeMenuTrigger');
     const overlay = document.getElementById('jkeeMenuOverlay');
@@ -802,7 +813,7 @@ import { getDatabase, ref, push, onChildAdded, onValue, set, remove, serverTimes
     const cur = window.location.pathname.split('/').pop().replace('.html','');
     document.querySelectorAll('.jkee-menu-item').forEach(el => { if(cur.includes(el.dataset.page)) el.classList.add('active'); });
 
-  
+    // game buttons — wired after DOM ready
     setTimeout(() => {
         const rollBtn = document.getElementById('sidebarRollBtn');
         const duelBtn = document.getElementById('sidebarDuelBtn');
@@ -813,15 +824,24 @@ import { getDatabase, ref, push, onChildAdded, onValue, set, remove, serverTimes
     }, 500);
 })();
 
-
+// ── CHECK CONFIG ──
 if (!IS_CONFIGURED) {
     document.getElementById('notConfiguredBanner').style.display = 'block';
     document.getElementById('enterBtn').disabled = true;
 }
 
-
+// ── NICK SETUP ──
 const nickInput = document.getElementById('nickInput');
 nickInput.focus();
+function enterChat() {
+    const val = nickInput.value.trim();
+    if (!val || !IS_CONFIGURED) return;
+    myNick = val;
+    myColor = nickToColor(myNick);
+    document.getElementById('myNickLabel').textContent = myNick;
+    document.getElementById('setupScreen').classList.add('hidden');
+    initFirebase();
+}
 nickInput.addEventListener('keydown', e => { if (e.key === 'Enter') enterChat(); });
 
 let myNick = '';
@@ -845,15 +865,8 @@ function nickToInitials(nick) {
     return nick.slice(0,2).toUpperCase();
 }
 
-document.getElementById('enterBtn').addEventListener('click', () => {
-    const val = nickInput.value.trim();
-    if (!val || !IS_CONFIGURED) return;
-    myNick = val;
-    myColor = nickToColor(myNick);
-    document.getElementById('myNickLabel').textContent = myNick;
-    document.getElementById('setupScreen').classList.add('hidden');
-    initFirebase();
-});
+// ── WIRE UP EVENTS ──
+document.getElementById('enterBtn').addEventListener('click', enterChat);
 
 document.getElementById('myNickBadge').addEventListener('click', () => {
     if (myOnlineRef) remove(myOnlineRef);
@@ -866,6 +879,7 @@ document.getElementById('myNickBadge').addEventListener('click', () => {
 
 document.getElementById('sendBtn').addEventListener('click', () => sendMessage());
 
+// ── FIREBASE ──
 function initFirebase() {
     const app = initializeApp(FIREBASE_CONFIG);
     db = getDatabase(app);
@@ -874,19 +888,23 @@ function initFirebase() {
     onlineRef   = ref(db, 'online');
     typingRef   = ref(db, 'typing');
 
+    // my presence
     const presenceId = Math.random().toString(36).slice(2);
     myOnlineRef = ref(db, `online/${presenceId}`);
     set(myOnlineRef, { nick: myNick, color: myColor });
     onDisconnect(myOnlineRef).remove();
 
+    // my typing
     myTypingRef = ref(db, `typing/${presenceId}`);
     onDisconnect(myTypingRef).remove();
 
+    // online count
     onValue(onlineRef, snap => {
         const count = snap.exists() ? Object.keys(snap.val()).length : 0;
         document.getElementById('onlineCount').textContent = count + ' онлайн';
     });
 
+    // typing indicators
     onValue(typingRef, snap => {
         const typing = snap.exists() ? Object.values(snap.val()) : [];
         const others = typing.filter(t => t.nick !== myNick).map(t => t.nick);
@@ -900,12 +918,15 @@ function initFirebase() {
         }
     });
 
+    // join message
     pushSystemMsg(`${myNick} вошёл в чат`);
 
+    // track users and listen for duels
     trackOnlineUsers();
     listenForDuels();
     listenForRps();
 
+    // listen messages — last 100
     const recentQ = query(messagesRef, limitToLast(100));
     onChildAdded(recentQ, snap => {
         if (seenKeys.has(snap.key)) return;
@@ -916,9 +937,11 @@ function initFirebase() {
         else if (d.type === 'image') renderImage(d);
         else renderMsg(d);
 
-
+        // auto-delete messages older than 24h (client-side cleanup for own messages)
+        // Firebase rules can handle server-side TTL if needed
     });
 
+    // input textarea auto-resize
     const input = document.getElementById('msgInput');
     input.addEventListener('input', () => {
         input.style.height = 'auto';
@@ -969,6 +992,7 @@ function sendMessage() {
     clearTimeout(typingTimeout);
 };
 
+// ── RENDER ──
 function renderSystem(text) {
     const wrap = document.getElementById('messagesWrap');
     const el = document.createElement('div');
@@ -995,6 +1019,7 @@ function renderMsg(d) {
 
     let bubbleContent = escHtml(d.text).replace(/\n/g,'<br>');
 
+    // если это чистая YouTube ссылка — не дублируем текст
     const isOnlyUrl = /^https?:\/\/\S+$/.test(d.text.trim());
 
     let ytBlock = '';
@@ -1326,6 +1351,7 @@ window.cancelDuel = function(expired) {
     }
 };
 
+// ── TARGET: listen for incoming duels ──
 function listenForDuels() {
     // use onValue on whole duels node, filter fresh duels for me
     onValue(ref(db, 'duels'), snap => {
