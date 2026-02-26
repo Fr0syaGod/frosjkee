@@ -619,16 +619,6 @@
 <body>
 <div class="bg-aurora"></div>
 
-<!-- ══════════════════════════════════════════
-     ⚙️ НАСТРОЙКА FIREBASE
-     
-     1. Иди на https://console.firebase.google.com
-     2. Создай новый проект (любое название)
-     3. Нажми </> (Web app), зарегистрируй приложение
-     4. Скопируй значения из firebaseConfig и вставь ниже
-     5. В консоли Firebase: Realtime Database → Создать базу данных → Тестовый режим
-     6. Готово!
-═══════════════════════════════════════════════ -->
 <script>
 const FIREBASE_CONFIG = {
     apiKey:            "AIzaSyB7dI9IOqQpXIV-4kyPzaUbo9bzd95P36k",
@@ -641,6 +631,7 @@ const FIREBASE_CONFIG = {
 };
 const IS_CONFIGURED = FIREBASE_CONFIG.apiKey !== "ВСТАВЬ_СЮДА";
 </script>
+
 <!-- ── SETUP SCREEN ── -->
 <div class="setup-screen" id="setupScreen">
     <div class="setup-box">
@@ -697,6 +688,12 @@ const IS_CONFIGURED = FIREBASE_CONFIG.apiKey !== "ВСТАВЬ_СЮДА";
             <div class="emoji-grid" id="emojiGrid"></div>
         </div>
 
+        <div id="imgPreview" style="display:none; padding: 6px 4px 0;">
+          <div style="position:relative;display:inline-block">
+            <img id="imgPreviewSrc" style="max-height:80px;border-radius:10px;border:1px solid rgba(255,255,255,0.1)">
+            <button onclick="clearPendingImage()" style="position:absolute;top:-6px;right:-6px;background:#ef4444;border:none;border-radius:50%;width:20px;height:20px;color:white;cursor:pointer;font-size:12px;line-height:1">✕</button>
+          </div>
+        </div>
         <div class="upload-indicator" id="uploadIndicator">
             <div class="upload-dot"></div> Загрузка изображения...
         </div>
@@ -969,7 +966,16 @@ function pushSystemMsg(text) {
 function sendMessage() {
     const input = document.getElementById('msgInput');
     const text = input.value.trim();
-    if (!text || !db) return;
+    if ((!text && !pendingImage) || !db) return;
+
+    if (pendingImage) {
+        const src = pendingImage;
+        clearPendingImage();
+        push(messagesRef, { type: 'image', nick: myNick, color: myColor, src, ts: Date.now() });
+        return;
+    }
+
+    if (!text) return;
 
     if (handleCommand(text)) {
         input.value = '';
@@ -1530,24 +1536,28 @@ function renderImage(d) {
 }
 
 // ── IMAGE UPLOAD (base64) ──
+let pendingImage = null;
+
 function sendImage(file) {
     if (!file || !file.type.startsWith('image/')) return;
     if (file.size > 900000) {
         alert('Картинка слишком большая (макс ~700KB). Сожми её и попробуй снова.');
         return;
     }
-    const indicator = document.getElementById('uploadIndicator');
-    indicator.classList.add('show');
     const reader = new FileReader();
     reader.onload = e => {
-        push(messagesRef, {
-            type: 'image', nick: myNick, color: myColor,
-            src: e.target.result, ts: Date.now()
-        });
-        indicator.classList.remove('show');
+        pendingImage = e.target.result;
+        document.getElementById('imgPreviewSrc').src = pendingImage;
+        document.getElementById('imgPreview').style.display = 'block';
     };
     reader.readAsDataURL(file);
 }
+
+window.clearPendingImage = function() {
+    pendingImage = null;
+    document.getElementById('imgPreview').style.display = 'none';
+    document.getElementById('imgPreviewSrc').src = '';
+};
 
 // paste Ctrl+V
 document.addEventListener('paste', e => {
