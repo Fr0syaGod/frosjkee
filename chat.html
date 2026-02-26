@@ -542,7 +542,6 @@
 <body>
 <div class="bg-aurora"></div>
 
-
 <script>
 const FIREBASE_CONFIG = {
     apiKey:            "AIzaSyB7dI9IOqQpXIV-4kyPzaUbo9bzd95P36k",
@@ -555,6 +554,7 @@ const FIREBASE_CONFIG = {
 };
 const IS_CONFIGURED = FIREBASE_CONFIG.apiKey !== "ВСТАВЬ_СЮДА";
 </script>
+
 <!-- ── SETUP SCREEN ── -->
 <div class="setup-screen" id="setupScreen">
     <div class="setup-box">
@@ -1196,8 +1196,7 @@ window.acceptDuel = function(duelId) {
         if (!snap.exists()) return;
         const d = snap.val();
         set(ref(db, `duels/${duelId}/status`), 'accepted');
-        set(ref(db, `duels/${duelId}/targetRoll`), Math.floor(Math.random() * 100) + 1);
-        startRoll(duelId, d, false);
+        startRoll(duelId, d, false); // roll is written inside startRoll
     }, { onlyOnce: true });
 };
 
@@ -1209,14 +1208,7 @@ window.declineDuel = function(duelId) {
 
 // ── ROLLING ANIMATION ──
 function startRoll(duelId, d, isChallenger) {
-    const myRoll = isChallenger
-        ? Math.floor(Math.random() * 100) + 1
-        : (d.targetRoll || Math.floor(Math.random() * 100) + 1);
-
-    if (isChallenger) {
-        set(ref(db, `duels/${duelId}/challengerRoll`), myRoll);
-    }
-
+    const myRoll = Math.floor(Math.random() * 100) + 1;
     const cColor = d.challengerColor || nickToColor(d.challenger);
     const tColor = d.targetColor || nickToColor(d.target);
 
@@ -1236,31 +1228,37 @@ function startRoll(duelId, d, isChallenger) {
         <div class="duel-result" id="duelResult"></div>
     `);
 
-    // animate dice for 2s then reveal
-    let tick = 0;
+    // animate dice
     const rollAnim = setInterval(() => {
         const d1 = document.getElementById('die1');
         const d2 = document.getElementById('die2');
         if (d1) d1.textContent = Math.floor(Math.random()*100)+1;
         if (d2) d2.textContent = Math.floor(Math.random()*100)+1;
-        tick++;
     }, 80);
 
-    // wait for both rolls — single onValue listener
+    // write MY roll to firebase
+    const rollField = isChallenger ? 'challengerRoll' : 'targetRoll';
+    set(ref(db, `duels/${duelId}/${rollField}`), myRoll);
+
+    // one-time listener — fires once when BOTH rolls exist
     const dRef = ref(db, `duels/${duelId}`);
-    let revealed = false;
-    onValue(dRef, snap => {
-        if (!snap.exists() || revealed) return;
+    let unsubscribe;
+    let handled = false;
+
+    const handler = snap => {
+        if (!snap.exists() || handled) return;
         const data = snap.val();
         if (data.challengerRoll && data.targetRoll) {
-            revealed = true;
+            handled = true;
+            if (unsubscribe) unsubscribe(); // detach immediately
             clearInterval(rollAnim);
-            revealResult(duelId, data);
+            revealResult(duelId, data, isChallenger);
         }
-    });
+    };
+    unsubscribe = onValue(dRef, handler);
 }
 
-function revealResult(duelId, data) {
+function revealResult(duelId, data, isChallenger) {
     const cRoll = data.challengerRoll;
     const tRoll = data.targetRoll;
     const d1 = document.getElementById('die1');
@@ -1282,18 +1280,15 @@ function revealResult(duelId, data) {
     } else {
         resultText = `🤝 Ничья!`;
     }
-
     if (res) res.textContent = resultText;
 
-    // write result to chat — only if not already written (check flag in firebase)
-    if (data.challenger === myNick && !data.resultPosted) {
-        set(ref(db, `duels/${duelId}/resultPosted`), true);
+    // ONLY challenger writes to chat, ONCE
+    if (isChallenger) {
         let chatResult = '';
         if (cRoll > tRoll) chatResult = `⚔️ Дуэль: ${data.challenger} [${cRoll}] победил ${data.target} [${tRoll}]!`;
         else if (tRoll > cRoll) chatResult = `⚔️ Дуэль: ${data.target} [${tRoll}] победил ${data.challenger} [${cRoll}]!`;
         else chatResult = `⚔️ Дуэль: ${data.challenger} [${cRoll}] vs ${data.target} [${tRoll}] — Ничья!`;
         push(messagesRef, { type: 'system', text: chatResult, ts: Date.now() });
-        // cleanup duel
         setTimeout(() => remove(ref(db, `duels/${duelId}`)), 5000);
     }
 
