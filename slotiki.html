@@ -743,7 +743,7 @@ function closeDeposit() { playUIClick(); document.getElementById('depositModal')
 function selectDepAmt(el, amt) {
   playUIClick(); depAmount = amt;
   document.querySelectorAll('.dep-amt').forEach(b => b.classList.remove('active')); el.classList.add('active');
-  document.getElementById('payAmountLabel').textContent = amt.toLocaleString('ru') + ' ₽';
+  document.getElementById('payAmountLabel').textContent = amt.toLocaleString('ru') + ' ₴';
 }
 
 function formatCard(el) {
@@ -836,7 +836,7 @@ function confirm3ds() {
   setTimeout(() => {
     document.getElementById('tdsProcessing').classList.remove('show');
     document.getElementById('tdsSuccess').classList.add('show');
-    document.getElementById('tdsSuccessText').textContent = 'Баланс пополнен на ' + depAmount.toLocaleString('ru') + ' ₽';
+    document.getElementById('tdsSuccessText').textContent = 'Баланс пополнен на ' + depAmount.toLocaleString('ru') + ' ₴';
 
     balance += depAmount; updateBalance();
     playPaymentSuccess(); spawnCoins(8);
