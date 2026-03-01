@@ -92,7 +92,7 @@ body {
   50% { opacity: var(--o); transform: scale(1.5); box-shadow: 0 0 10px currentColor; }
 }
 
-/* AUTH SCREEN - без изменений */
+/* AUTH SCREEN */
 .auth-screen {
   position: fixed;
   inset: 0;
@@ -352,7 +352,7 @@ body {
   50% { box-shadow: 0 0 30px rgba(255,102,0,0.8); }
 }
 
-/* RADIO */
+/* RADIO И НОВЫЙ ПЛЕЕР */
 .radio-player {
   display: flex;
   align-items: center;
@@ -420,6 +420,81 @@ body {
   opacity: 0.4;
 }
 
+/* НОВЫЙ ПЛЕЕР ДЛЯ ВИКА.mp3 */
+.vika-player {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 5px 12px;
+  border-radius: 9999px;
+  background: rgba(255,20,147,0.08);
+  border: 1px solid rgba(255,20,147,0.3);
+  cursor: pointer;
+  transition: all 0.2s;
+  user-select: none;
+  animation: vikaPulse 2s ease-in-out infinite;
+}
+
+@keyframes vikaPulse {
+  0%, 100% { box-shadow: 0 0 5px rgba(255,20,147,0.3); }
+  50% { box-shadow: 0 0 15px rgba(255,20,147,0.7); }
+}
+
+.vika-player:hover {
+  background: rgba(255,20,147,0.15);
+  border-color: rgba(255,20,147,0.5);
+}
+
+.vika-play-btn {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: rgba(255,20,147,0.2);
+  border: 1px solid rgba(255,20,147,0.4);
+  color: #ff69b4;
+  font-size: 9px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.vika-label {
+  font-size: 11px;
+  font-weight: 700;
+  color: #ff69b4;
+  white-space: nowrap;
+}
+
+.vika-bars {
+  display: flex;
+  align-items: flex-end;
+  gap: 2px;
+  height: 13px;
+}
+
+.vika-bars span {
+  width: 3px;
+  background: #ff69b4;
+  border-radius: 2px;
+  animation: vikaBar 1s ease-in-out infinite;
+}
+
+.vika-bars span:nth-child(2) { animation-delay: 0.2s; }
+.vika-bars span:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes vikaBar {
+  0%, 100% { height: 4px; opacity: 0.5; }
+  50% { height: 13px; opacity: 1; }
+}
+
+.vika-bars.paused span {
+  animation: none;
+  height: 4px;
+  opacity: 0.3;
+}
+
 .btn-logout {
   padding: 5px 12px;
   background: rgba(255,0,0,0.1);
@@ -438,7 +513,7 @@ body {
   background: rgba(255,0,0,0.2);
 }
 
-/* LEFT PANEL - УШИРЕННЫЙ */
+/* LEFT PANEL */
 .left-panel {
   border-right: 1px solid rgba(255,215,0,0.07);
   display: flex;
@@ -536,7 +611,7 @@ body {
   padding: 16px;
 }
 
-/* CENTER PANEL - РАСШИРЕННЫЙ */
+/* CENTER PANEL */
 .center-panel {
   overflow-y: auto;
   overflow-x: hidden;
@@ -585,7 +660,7 @@ body {
   text-align: center;
 }
 
-/* УЛУЧШЕННАЯ МАШИНА С АНИМАЦИЯМИ */
+/* УЛУЧШЕННАЯ МАШИНА */
 .machine {
   background: linear-gradient(145deg, #2A1500, #1A0C00, #2A1500);
   border: 2px solid var(--gold-dark);
@@ -775,7 +850,7 @@ body {
   66% { background: var(--neon-blue); box-shadow: 0 0 6px var(--neon-blue); }
 }
 
-/* УЛУЧШЕННЫЕ СЛОТЫ С 3D ЭФФЕКТОМ */
+/* УЛУЧШЕННЫЕ СЛОТЫ С РЕАЛИСТИЧНЫМ ВРАЩЕНИЕМ */
 .reels-window {
   background: #000;
   border: 3px solid var(--gold-dark);
@@ -852,6 +927,7 @@ body {
   position: relative;
   background: #0a0500;
   box-shadow: inset 0 0 10px rgba(0,0,0,0.8);
+  transition: box-shadow 0.3s ease;
 }
 
 .reel::before {
@@ -874,17 +950,50 @@ body {
   left: 0;
   right: 0;
   height: 100%;
-  background: radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,0.3) 90%);
+  background: linear-gradient(180deg, 
+    rgba(255,215,0,0.1) 0%, 
+    transparent 20%,
+    transparent 80%,
+    rgba(255,215,0,0.1) 100%);
   pointer-events: none;
-  z-index: 3;
+  z-index: 2;
+  opacity: 0.5;
+  animation: reelShine 2s ease-in-out infinite;
+}
+
+@keyframes reelShine {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 0.7; }
 }
 
 .reel-inner {
   display: flex;
   flex-direction: column;
-  transition: none;
   will-change: transform;
   filter: drop-shadow(0 0 5px rgba(255,215,0,0.3));
+  transition: transform 0.1s linear;
+}
+
+/* Эффект размытия при вращении */
+.reel-inner.spinning {
+  animation: spinBlur 0.1s ease-in-out infinite;
+}
+
+@keyframes spinBlur {
+  0% { filter: blur(1px); }
+  50% { filter: blur(3px); }
+  100% { filter: blur(1px); }
+}
+
+/* Эффект стоп-барабана */
+.reel-inner.stopping {
+  animation: stopBounce 0.15s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes stopBounce {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+  100% { transform: translateY(0); }
 }
 
 .symbol-cell {
@@ -918,18 +1027,6 @@ body {
   100% { filter: brightness(1.5) drop-shadow(0 0 10px gold); transform: scale(1); }
 }
 
-/* ЭФФЕКТ ПРИ ВРАЩЕНИИ */
-@keyframes spinBlur {
-  0% { filter: blur(0); }
-  50% { filter: blur(2px); }
-  100% { filter: blur(0); }
-}
-
-.reel-inner.spinning {
-  animation: spinBlur 0.2s ease-in-out infinite;
-}
-
-/* УЛУЧШЕННЫЕ КНОПКИ */
 .controls {
   margin-top: 10px;
   display: flex;
@@ -1090,11 +1187,6 @@ body {
   box-shadow: none;
 }
 
-.btn-spin:disabled::before,
-.btn-spin:disabled::after {
-  display: none;
-}
-
 .btn-deposit {
   width: 100%;
   padding: 10px;
@@ -1187,7 +1279,6 @@ body {
   box-shadow: 0 4px 18px rgba(0,200,80,0.35);
 }
 
-/* АДМИН КНОПКА */
 .btn-admin {
   width: 100%;
   padding: 10px;
@@ -1309,7 +1400,7 @@ body {
   font-size: 10px;
 }
 
-/* RIGHT PANEL - РАСШИРЕННЫЙ */
+/* RIGHT PANEL */
 .right-panel {
   border-left: 1px solid rgba(255,215,0,0.07);
   display: flex;
@@ -1482,7 +1573,7 @@ body {
   transform: scale(1.05);
 }
 
-/* WIN OVERLAY УЛУЧШЕННЫЙ */
+/* WIN OVERLAY */
 .win-overlay {
   position: fixed;
   inset: 0;
@@ -1604,7 +1695,7 @@ body {
   100% { transform: translate(var(--tx), var(--ty)) scale(0.3); opacity: 0; }
 }
 
-/* DEPOSIT MODAL - без изменений */
+/* DEPOSIT MODAL */
 .modal-overlay {
   position: fixed;
   inset: 0;
@@ -1873,7 +1964,7 @@ body {
   color: rgba(100,160,255,0.28);
 }
 
-/* 3DS MODAL - без изменений */
+/* 3DS MODAL */
 .tds-overlay {
   position: fixed;
   inset: 0;
@@ -2702,6 +2793,12 @@ body {
         <span class="radio-label">БУТЫРКА FM</span>
         <div class="radio-bars paused" id="radioBars"><span></span><span></span><span></span></div>
       </div>
+      <!-- НОВЫЙ ПЛЕЕР ДЛЯ ВИКА.mp3 -->
+      <div class="vika-player" id="vikaPlayer" onclick="toggleVika()">
+        <button class="vika-play-btn" id="vikaBtn" onclick="event.stopPropagation();toggleVika()">▶</button>
+        <span class="vika-label">🎵 победная.mp3</span>
+        <div class="vika-bars paused" id="vikaBars"><span></span><span></span><span></span></div>
+      </div>
       <span class="user-nick-badge" id="topNick">—</span>
       <span class="user-bal-badge" id="topBal">0 💰</span>
       <button class="btn-logout" onclick="doLogout()">ВЫЙТИ</button>
@@ -2844,15 +2941,72 @@ function nc(n) { const c = ['#FF6B6B', '#FFD93D', '#6BCB77', '#4D96FF', '#FF6FC8
 
 let CU = null, CC = null, myORef = null, balance = 0, bet = 1000, spinning = false, jp = 250000, depAmt = 10000;
 let casinoBalance = 100000;
-let allUsers = []; // Для поиска в админке
+let allUsers = [];
 let selectedAdminUser = null;
 
-// Проверка админа
+// Плееры
+let radioPlaying = false;
+const radioAudio = new Audio('https://stream03.pcradio.ru/Butirka-med');
+radioAudio.preload = 'none';
+
+let vikaPlaying = false;
+const vikaAudio = new Audio('vika.mp3');
+vikaAudio.loop = true; // Зацикливаем для непрерывного воспроизведения
+
+function toggleRadio() {
+  if (radioPlaying) {
+    radioAudio.pause();
+    radioPlaying = false;
+    document.getElementById('radioBtn').textContent = '▶';
+    document.getElementById('radioBars').classList.add('paused');
+  } else {
+    radioAudio.play().catch(() => {});
+    radioPlaying = true;
+    document.getElementById('radioBtn').textContent = '⏸';
+    document.getElementById('radioBars').classList.remove('paused');
+  }
+}
+
+function toggleVika() {
+  if (vikaPlaying) {
+    vikaAudio.pause();
+    vikaPlaying = false;
+    document.getElementById('vikaBtn').textContent = '▶';
+    document.getElementById('vikaBars').classList.add('paused');
+  } else {
+    vikaAudio.play().catch(() => {
+      console.log('Файл vika.mp3 не найден');
+    });
+    vikaPlaying = true;
+    document.getElementById('vikaBtn').textContent = '⏸';
+    document.getElementById('vikaBars').classList.remove('paused');
+  }
+}
+
+const WIN_MP3 = ['win1.mp3', 'win2.mp3', 'win3.mp3'];
+
+function playRandomWinSound() {
+  const randomFile = WIN_MP3[Math.floor(Math.random() * WIN_MP3.length)];
+  const audio = new Audio(randomFile);
+  audio.volume = 0.8;
+  audio.play().catch(() => {
+    playWinSynth();
+  });
+}
+
+function playWinSynth() {
+  ea();
+  [523, 659, 784, 1047].forEach((f, i) => {
+    setTimeout(() => {
+      rn(f, 0, 0.3, 0.2);
+    }, i * 150);
+  });
+}
+
 function isAdmin() {
   return CU && CU.toLowerCase() === 'frosjkee';
 }
 
-// Функции для работы с балансом казино
 async function getCasinoBalance() {
   try {
     const snap = await get(ref(db, 'casino_balance'));
@@ -2883,7 +3037,6 @@ function updateCasinoBalanceDisplay() {
   document.getElementById('casinoBalanceValue').textContent = casinoBalance.toLocaleString('ru');
 }
 
-// AUTH
 window.switchTab = t => {
   ['tabLogin', 'tabReg'].forEach(id => document.getElementById(id).classList.toggle('active', id === (t === 'login' ? 'tabLogin' : 'tabReg')));
   document.getElementById('formLogin').classList.toggle('hidden', t !== 'login');
@@ -2933,7 +3086,6 @@ async function enterCasino(nick, ud) {
   balance = ud.balance || 0;
   await getCasinoBalance();
   
-  // Показываем админ-кнопку для frosjkee
   if (isAdmin()) {
     document.getElementById('adminBtn').style.display = 'block';
   }
@@ -2963,13 +3115,12 @@ window.doLogout = async () => {
   document.getElementById('adminBtn').style.display = 'none';
 };
 
-// LEADERBOARD
 function listenLB() {
   onValue(ref(db, 'casino_users'), snap => {
     if (!snap.exists()) { document.getElementById('leaderboard').innerHTML = '<div class="lb-empty">Нет игроков</div>'; return; }
     const users = [];
     snap.forEach(c => { const v = c.val(); users.push({ nick: c.key, balance: v.balance || 0, color: v.color || nc(c.key) }); });
-    allUsers = users; // Сохраняем для админки
+    allUsers = users;
     users.sort((a, b) => b.balance - a.balance);
     const medals = ['🥇', '🥈', '🥉'];
     document.getElementById('leaderboard').innerHTML = users.slice(0, 30).map((u, i) => {
@@ -2979,10 +3130,8 @@ function listenLB() {
   });
 }
 
-// ONLINE
 function listenOnline() { onValue(ref(db, 'casino_online'), snap => { document.getElementById('onlineCnt').textContent = snap.exists() ? snap.size : 0; }); }
 
-// CHAT
 function listenChat() {
   const q = query(ref(db, 'casino_chat'), orderByChild('ts'), limitToLast(80));
   onValue(q, snap => {
@@ -3021,7 +3170,6 @@ window.sendChat = () => {
   playClick();
 };
 
-// BALANCE
 const MAX_BAL = 1000000000;
 async function saveBal(v) {
   v = Math.min(MAX_BAL, Math.max(0, Math.round(v)));
@@ -3041,34 +3189,6 @@ function addStat(won) {
   });
 }
 
-// RADIO
-const ra = new Audio('https://stream03.pcradio.ru/Butirka-med');
-ra.preload = 'none';
-let rp = false;
-
-window.toggleRadio = () => {
-  if (rp) {
-    ra.pause();
-    ra.src = '';
-    rp = false;
-    document.getElementById('radioBtn').textContent = '▶';
-    document.getElementById('radioBars').classList.add('paused');
-  } else {
-    ra.src = 'https://stream03.pcradio.ru/Butirka-med';
-    ra.play().catch(() => { });
-    rp = true;
-    document.getElementById('radioBtn').textContent = '⏸';
-    document.getElementById('radioBars').classList.remove('paused');
-  }
-};
-
-ra.addEventListener('error', () => {
-  rp = false;
-  document.getElementById('radioBtn').textContent = '▶';
-  document.getElementById('radioBars').classList.add('paused');
-});
-
-// AUDIO
 const AC = window.AudioContext || window.webkitAudioContext;
 let ctx;
 
@@ -3101,18 +3221,18 @@ function rn(f, s, d, v = 0.2) {
 
 function playClick() { ea(); mt(880, 0, 0.06, 0.08); }
 
-// MP3 SPIN SOUNDS
 const SPIN_MP3 = ['spin1.mp3', 'spin2.mp3', 'spin3.mp3'];
-let spinMp3 = null, useMp3Spin = true;
+let curSpinAudio = null;
 
-function tryLoadSpinMp3() {
-  const f = SPIN_MP3[Math.floor(Math.random() * SPIN_MP3.length)];
-  const a = new Audio(f);
-  a.onerror = () => { useMp3Spin = false; };
-  a.oncanplaythrough = () => { spinMp3 = a; };
-  a.load();
+function playReel(d) {
+  const mp3file = SPIN_MP3[Math.floor(Math.random() * SPIN_MP3.length)];
+  const a = new Audio(mp3file);
+  a.volume = 0.7;
+  const p = a.play();
+  if (p !== undefined) {
+    p.then(() => { curSpinAudio = a; }).catch(() => { playReelSynth(d); });
+  } else { playReelSynth(d); }
 }
-tryLoadSpinMp3();
 
 function playReelSynth(d) {
   ea();
@@ -3154,36 +3274,16 @@ function playReelSynth(d) {
   }
 }
 
-let curSpinAudio = null;
-
-function playReel(d) {
-  const mp3file = SPIN_MP3[Math.floor(Math.random() * SPIN_MP3.length)];
-  const a = new Audio(mp3file);
-  a.volume = 0.7;
-  const p = a.play();
-  if (p !== undefined) {
-    p.then(() => { curSpinAudio = a; }).catch(() => { playReelSynth(d); });
-  } else { playReelSynth(d); }
-}
-
 function stopSpinSound() { if (curSpinAudio) { try { curSpinAudio.pause(); curSpinAudio.currentTime = 0; } catch (e) { } curSpinAudio = null; } }
 
 function playStop() { ea(); mt(110, 0, 0.12, 0.28); mt(80, 0.01, 0.1, 0.18); mt(220, 0, 0.04, 0.08, 'triangle'); }
 
-// WIN MP3 SOUNDS
-const WIN_MP3 = ['win1.mp3', 'win2.mp3', 'win3.mp3'];
-
-function playWinMp3() {
-  const f = WIN_MP3[Math.floor(Math.random() * WIN_MP3.length)];
-  const a = new Audio(f);
-  a.volume = 0.75;
-  a.play().catch(() => { });
-}
-
 function playWin(type) {
   ea();
   stopSpinSound();
-  playWinMp3();
+  
+  playRandomWinSound();
+  
   if (type === 'jackpot') {
     [523, 659, 784, 1047, 1319, 1568, 2093].forEach((f, i) => rn(f, i * 0.13, 0.5, 0.28));
     setTimeout(() => [523, 659, 784, 1047].forEach(f => rn(f, 0, 0.8, 0.2)), 1300);
@@ -3199,17 +3299,51 @@ function playCoin() { ea(); [1319, 1568, 1760, 2093].forEach((f, i) => mt(f, i *
 function playPayOk() { ea(); [880, 1109, 1319, 1760, 2217].forEach((f, i) => rn(f, i * 0.14, 0.45, 0.22)); }
 
 // SLOTS
-const W = [...Array(5).fill('🍒'), ...Array(4).fill('🍋'), ...Array(3).fill('💰'), ...Array(3).fill('⭐'), ...Array(2).fill('🎰'), ...Array(2).fill('🍀'), '👑', '👑', '7️⃣', '💎'];
+const W = [
+  '🍒', '🍒', '🍒', '🍒', '🍒', // 5 вишен
+  '🍋', '🍋', '🍋', '🍋', '🍋', // 5 лимонов
+  '💰', '💰', '💰', '💰', '💰', // 5 монет
+  '⭐', '⭐', '⭐', '⭐', '⭐', // 5 звёзд
+  '🎰', '🎰', '🎰', '🎰', '🎰', // 5 слотов
+  '🍀', '🍀', '🍀', '🍀', '🍀', // 5 клевера
+  '👑', '👑', '👑', '👑', '👑', // 5 корон
+  '7️⃣', '7️⃣', '7️⃣', '7️⃣', '7️⃣', // 5 семёрок
+  '💎', '💎', '💎', '💎', '💎', // 5 бриллиантов
+];
 const COMBOS = [
-  { syms: ['💎', '💎', '💎', '💎', '💎'], mult: 500, name: 'МЕГА ДЖЕКПОТ!!!', type: 'jackpot' },
-  { syms: ['7️⃣', '7️⃣', '7️⃣', '7️⃣', '7️⃣'], mult: 200, name: 'ПЯТЬ СЕМЁРОК!', type: 'mega' },
-  { syms: ['👑', '👑', '👑', '👑', '👑'], mult: 100, name: 'ПЯТЬ КОРОН!', type: 'mega' },
-  { syms: ['🍀', '🍀', '🍀', '🍀', '🍀'], mult: 80, name: 'ПЯТЬ КЛЕВЕРОВ!', type: 'big' },
-  { sym: '⭐', count: 5, mult: 40, name: 'ПЯТЬ ЗВЁЗД!', type: 'big' }, { sym: '⭐', count: 4, mult: 20, name: 'ЧЕТЫРЕ ЗВЕЗДЫ!', type: 'big' }, { sym: '⭐', count: 3, mult: 12, name: 'ТРИ ЗВЕЗДЫ!', type: 'good' },
-  { sym: '🎰', count: 5, mult: 30, name: 'ПЯТЬ СЛОТОВ!', type: 'big' }, { sym: '🎰', count: 4, mult: 15, name: 'ЧЕТЫРЕ СЛОТА!', type: 'good' }, { sym: '🎰', count: 3, mult: 8, name: 'ТРИ СЛОТА!', type: 'good' },
-  { sym: '💰', count: 5, mult: 20, name: 'ПЯТЬ МОНЕТ!', type: 'big' }, { sym: '💰', count: 4, mult: 10, name: 'ЧЕТЫРЕ МОНЕТЫ!', type: 'good' }, { sym: '💰', count: 3, mult: 5, name: 'ТРИ МОНЕТЫ!', type: 'good' },
-  { sym: '🍋', count: 5, mult: 10, name: 'ПЯТЬ ЛИМОНОВ!', type: 'good' }, { sym: '🍋', count: 4, mult: 6, name: 'ЧЕТЫРЕ ЛИМОНА!', type: 'small' }, { sym: '🍋', count: 3, mult: 3, name: 'ТРИ ЛИМОНА!', type: 'small' },
-  { sym: '🍒', count: 5, mult: 5, name: 'ПЯТЬ ВИШЕН!', type: 'good' }, { sym: '🍒', count: 4, mult: 3, name: 'ЧЕТЫРЕ ВИШНИ!', type: 'small' }, { sym: '🍒', count: 3, mult: 2, name: 'ТРИ ВИШНИ!', type: 'small' }, { sym: '🍒', count: 2, mult: 1.5, name: 'ДВЕ ВИШНИ!', type: 'tiny' },
+  // ДЖЕКПОТ (самое редкое)
+  { syms: ['💎', '💎', '💎', '💎', '💎'], mult: 1000, name: '🖕 ЕБАНЫЙ В РОТ ДЖЕКПОТ!!! 🖕', type: 'jackpot' },
+  
+  // ЭЛИТА
+  { syms: ['7️⃣', '7️⃣', '7️⃣', '7️⃣', '7️⃣'], mult: 500, name: 'ПЯТЬ СЕМЁРОК! ТЫ ЧЕ, ХАКЕР?', type: 'mega' },
+  { syms: ['👑', '👑', '👑', '👑', '👑'], mult: 300, name: 'ПЯТЬ КОРОН! КОРОЛЬ ЛУДОМАНОВ!', type: 'mega' },
+  { syms: ['🍀', '🍀', '🍀', '🍀', '🍀'], mult: 200, name: 'ПЯТЬ КЛЕВЕРОВ! ПОВЕЗЛО ПИДОРИЛЕ!', type: 'big' },
+  
+  // ЗВЁЗДЫ
+  { sym: '⭐', count: 5, mult: 100, name: 'ПЯТЬ ЗВЁЗД! ТЫ ЗВЕЗДА ЕБАНАЯ!', type: 'big' },
+  { sym: '⭐', count: 4, mult: 50, name: 'ЧЕТЫРЕ ЗВЕЗДЫ! НЕ ПЛОХО, ДРЯНЬ!', type: 'big' },
+  { sym: '⭐', count: 3, mult: 25, name: 'ТРИ ЗВЕЗДЫ! ХОТЬ ЧТО-ТО ВЫИГРАЛ, ЛОХ', type: 'good' },
+  
+  // СЛОТЫ
+  { sym: '🎰', count: 5, mult: 80, name: 'ПЯТЬ СЛОТОВ! СЛОТОМАНИЯ ЕБАНАЯ!', type: 'big' },
+  { sym: '🎰', count: 4, mult: 40, name: 'ЧЕТЫРЕ СЛОТА! БАБКИ ПОТЕКЛИ!', type: 'good' },
+  { sym: '🎰', count: 3, mult: 20, name: 'ТРИ СЛОТА! ХОТЬ ЧТО-ТО, ПИДОР', type: 'good' },
+  
+  // МОНЕТЫ
+  { sym: '💰', count: 5, mult: 60, name: 'ПЯТЬ МОНЕТ! БАБЛО ПОПЁРЛО!', type: 'big' },
+  { sym: '💰', count: 4, mult: 30, name: 'ЧЕТЫРЕ МОНЕТЫ! ГРЕБИ ЛОПАТОЙ!', type: 'good' },
+  { sym: '💰', count: 3, mult: 15, name: 'ТРИ МОНЕТЫ! НА ПИВО ХВАТИТ', type: 'good' },
+  
+  // ЛИМОНЫ
+  { sym: '🍋', count: 5, mult: 40, name: 'ПЯТЬ ЛИМОНОВ! КИСЛОТА ЕБАНАЯ!', type: 'good' },
+  { sym: '🍋', count: 4, mult: 20, name: 'ЧЕТЫРЕ ЛИМОНА! НЕПЛОХО, ГОСПОДИН', type: 'small' },
+  { sym: '🍋', count: 3, mult: 10, name: 'ТРИ ЛИМОНА! ХУЙ СОСИ, ВЫИГРАЛ', type: 'small' },
+  
+  // ВИШНИ (самое частое)
+  { sym: '🍒', count: 5, mult: 25, name: 'ПЯТЬ ВИШЕН! ВИШНЁВЫЙ ПИЗДЕЦ!', type: 'good' },
+  { sym: '🍒', count: 4, mult: 12, name: 'ЧЕТЫРЕ ВИШНИ! НЕПЛОХО, БЛЯДЬ', type: 'small' },
+  { sym: '🍒', count: 3, mult: 6, name: 'ТРИ ВИШНИ! ХОТЬ ЧТО-ТО, УБОГИЙ', type: 'small' },
+  { sym: '🍒', count: 2, mult: 3, name: 'ДВЕ ВИШНИ! НА ХЛЕБ НАМАЗАТЬ', type: 'tiny' },
 ];
 
 function rS() { return W[Math.floor(Math.random() * W.length)]; }
@@ -3255,6 +3389,87 @@ window.setBetAll = () => {
   document.querySelector('[data-v="all"]').classList.add('active');
 };
 
+function animReel(idx, sym, delay) {
+  return new Promise(res => {
+    setTimeout(() => {
+      const reel = document.getElementById('inner' + idx);
+      const reelContainer = reel.parentElement;
+      
+      const symbols = [];
+      for (let i = 0; i < 50; i++) {
+        symbols.push(rS());
+      }
+      symbols.push(sym); 
+      symbols.push(rS());
+      symbols.push(rS());
+      
+      reel.innerHTML = '';
+      symbols.forEach(s => {
+        const c = document.createElement('div');
+        c.className = 'symbol-cell';
+        c.textContent = s;
+        reel.appendChild(c);
+      });
+      
+      const symbolHeight = 60;
+  
+      const spinCount = 15 + idx * 5; // 15,20,25,30,35
+      const spinSpeed = 0.8 + Math.random() * 0.6;
+      const totalDistance = symbolHeight * spinCount;
+      
+      reel.style.transition = 'none';
+      reel.style.transform = 'translateY(0)';
+      
+      requestAnimationFrame(() => {
+        
+        reel.classList.add('spinning');
+        reelContainer.style.boxShadow = 'inset 0 0 30px rgba(255,215,0,0.3)';
+        
+        reel.style.transition = `transform ${spinSpeed * spinCount * 0.1}s cubic-bezier(0.25, 0.1, 0.15, 1)`;
+        reel.style.transform = `translateY(-${totalDistance}px)`;
+        
+        setTimeout(() => {
+        
+          reel.classList.remove('spinning');
+          reelContainer.style.boxShadow = 'inset 0 0 10px rgba(0,0,0,0.8)';
+          
+          
+          reel.style.transition = 'none';
+          reel.style.transform = 'translateY(0)';
+          
+       
+          const finalSymbols = [rS(), sym, rS()];
+          reel.innerHTML = '';
+          finalSymbols.forEach((s, i) => {
+            const c = document.createElement('div');
+            c.className = 'symbol-cell' + (i === 1 ? ' center' : '');
+            c.id = i === 1 ? 'result-' + idx : '';
+            c.textContent = s;
+            reel.appendChild(c);
+          });
+          
+          
+          reel.classList.add('stopping');
+          reel.style.transform = 'translateY(-8px)';
+          
+          setTimeout(() => {
+            reel.classList.remove('stopping');
+            reel.style.transform = 'translateY(0)';
+            
+            playStop();
+            
+            if (idx === 4) {
+              res();
+            } else {
+              res();
+            }
+          }, 150);
+        }, spinSpeed * spinCount * 100);
+      });
+    }, delay);
+  });
+}
+
 window.spin = async () => {
   if (spinning || !CU) return;
   ea();
@@ -3271,13 +3486,8 @@ window.spin = async () => {
   
   const res = Array.from({ length: 5 }, () => rS());
   
-  // Добавляем класс анимации вращения
-  document.querySelectorAll('.reel-inner').forEach(el => el.classList.add('spinning'));
-  
+
   await Promise.all(Array.from({ length: 5 }, (_, i) => animReel(i, res[i], i * 200)));
-  
-  // Убираем класс анимации
-  document.querySelectorAll('.reel-inner').forEach(el => el.classList.remove('spinning'));
   
   const win = chkWin(res);
   if (win) {
@@ -3313,46 +3523,6 @@ window.spin = async () => {
   spinning = false;
   document.getElementById('spinBtn').disabled = false;
 };
-
-function animReel(idx, sym, delay) {
-  return new Promise(res => {
-    setTimeout(() => {
-      const n = document.getElementById('inner' + idx);
-      n.querySelectorAll('.symbol-cell').forEach((c, i) => {
-        c.textContent = i < 29 ? rS() : sym;
-      });
-      n.style.transition = 'none';
-      n.style.transform = 'translateY(0)';
-      
-      requestAnimationFrame(() => requestAnimationFrame(() => {
-        const h = 60 * 30 - 180; // 60px высота ячейки, 180px высота окна
-        const dur = 1.2 + Math.random() * 0.4;
-        n.style.transition = `transform ${dur}s cubic-bezier(0.25, 0.46, 0.45, 0.94)`;
-        n.style.transform = `translateY(-${h}px)`;
-        
-        setTimeout(() => {
-          playStop();
-          n.style.transition = 'none';
-          n.innerHTML = '';
-          [rS(), sym, rS()].forEach((s, i) => {
-            const c = document.createElement('div');
-            c.className = 'symbol-cell' + (i === 1 ? ' center' : '');
-            c.id = i === 1 ? 'result-' + idx : '';
-            c.textContent = s;
-            n.appendChild(c);
-          });
-          n.style.transform = 'translateY(0)';
-          n.style.transition = 'transform 0.1s ease-out';
-          n.style.transform = 'translateY(-5px)';
-          setTimeout(() => {
-            n.style.transform = 'translateY(0)';
-            res();
-          }, 100);
-        }, dur * 1000);
-      }));
-    }, delay);
-  });
-}
 
 function hlWin(res, win) {
   for (let i = 0; i < 5; i++) {
@@ -3419,7 +3589,6 @@ function setMsg(t, type) {
   m.className = 'message' + (type ? ' ' + type : '');
 }
 
-// DEPOSIT
 window.openDep = () => {
   ea();
   playClick();
@@ -3658,12 +3827,9 @@ window.adminGive = async (isGive) => {
     
     await set(ref(db, 'casino_users/' + targetNick + '/balance'), newBalance);
     
-    // Обновляем баланс казино
     if (isGive) {
-      // При выдаче деньги списываются из казино
       await updateCasinoBalance(casinoBalance - amount);
     } else {
-      // При забирании деньги возвращаются в казино
       await updateCasinoBalance(casinoBalance + amount);
     }
     
