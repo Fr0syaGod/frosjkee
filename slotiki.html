@@ -3,205 +3,333 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>🎰 GOLDEN CROWN CASINO</title>
+<title>🎰 LIPSI LUDIK CASINO</title>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Rajdhani:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --gold: #FFD700; --gold-light: #FFF0A0; --gold-dark: #B8860B;
-    --dark: #0A0500; --panel: #1A0F00; --panel2: #241500;
-    --green: #00FF88;
-  }
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { background: var(--dark); font-family: 'Rajdhani', sans-serif; min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; overflow-x: hidden; color: var(--gold); }
-  .bg { position: fixed; inset: 0; z-index: 0; background: radial-gradient(ellipse at 50% 0%, #3D1A00 0%, #0A0500 60%); }
-  .bg::before { content: ''; position: absolute; inset: 0; background-image: repeating-linear-gradient(0deg,transparent,transparent 40px,rgba(255,215,0,0.03) 40px,rgba(255,215,0,0.03) 41px), repeating-linear-gradient(90deg,transparent,transparent 40px,rgba(255,215,0,0.03) 40px,rgba(255,215,0,0.03) 41px); }
-  .bg-stars { position: fixed; inset: 0; z-index: 0; overflow: hidden; }
-  .star { position: absolute; width: 2px; height: 2px; background: var(--gold); border-radius: 50%; animation: twinkle var(--d) ease-in-out infinite; opacity: 0; }
-  @keyframes twinkle { 0%,100%{opacity:0} 50%{opacity:var(--o)} }
+:root{--gold:#FFD700;--gold-light:#FFF0A0;--gold-dark:#B8860B;--dark:#060300;--panel:#1A0F00;--panel2:#241500;--green:#00FF88;}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+html,body{height:100%;overflow:hidden;}
+body{font-family:'Rajdhani',sans-serif;background:var(--dark);color:var(--gold);-webkit-font-smoothing:antialiased;}
+.bg{position:fixed;inset:0;z-index:0;background:radial-gradient(ellipse at 50% 0%,#3D1A00,#060300 60%);}
+.bg::before{content:'';position:absolute;inset:0;background-image:repeating-linear-gradient(0deg,transparent,transparent 40px,rgba(255,215,0,0.025) 40px,rgba(255,215,0,0.025) 41px),repeating-linear-gradient(90deg,transparent,transparent 40px,rgba(255,215,0,0.025) 40px,rgba(255,215,0,0.025) 41px);}
+.bg-stars{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none;}
+.star{position:absolute;width:2px;height:2px;background:var(--gold);border-radius:50%;animation:twinkle var(--d) ease-in-out infinite;opacity:0;}
+@keyframes twinkle{0%,100%{opacity:0}50%{opacity:var(--o)}}
+/* AUTH */
+.auth-screen{position:fixed;inset:0;z-index:900;display:flex;align-items:center;justify-content:center;padding:20px;background:rgba(3,2,0,0.97);backdrop-filter:blur(20px);}
+.auth-screen.hidden{display:none;}
+.auth-box{background:linear-gradient(145deg,#110800,#0A0500);border:2px solid rgba(255,215,0,0.25);border-radius:24px;padding:40px 36px;width:100%;max-width:400px;text-align:center;box-shadow:0 0 80px rgba(255,100,0,0.15);animation:authIn 0.5s cubic-bezier(0.34,1.56,0.64,1);}
+@keyframes authIn{from{opacity:0;transform:scale(0.85) translateY(20px)}to{opacity:1;transform:none}}
+.auth-logo{font-family:'Cinzel Decorative',serif;font-size:clamp(18px,4vw,26px);font-weight:900;background:linear-gradient(180deg,#FFF8D0,#FFD700 40%,#B8860B);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;filter:drop-shadow(0 0 15px rgba(255,215,0,0.5));margin-bottom:4px;}
+.auth-tagline{font-size:11px;letter-spacing:5px;color:var(--gold-dark);text-transform:uppercase;margin-bottom:28px;}
+.auth-tabs{display:flex;gap:0;background:rgba(0,0,0,0.4);border-radius:10px;padding:4px;margin-bottom:24px;}
+.auth-tab{flex:1;padding:9px;border:none;background:none;color:rgba(255,215,0,0.4);font-family:'Rajdhani',sans-serif;font-size:14px;font-weight:700;letter-spacing:2px;cursor:pointer;border-radius:7px;transition:all 0.2s;text-transform:uppercase;}
+.auth-tab.active{background:rgba(255,215,0,0.15);color:var(--gold);box-shadow:0 0 15px rgba(255,215,0,0.2);}
+.auth-form{display:flex;flex-direction:column;gap:12px;}
+.auth-form.hidden{display:none;}
+.auth-label{font-size:10px;letter-spacing:3px;color:var(--gold-dark);text-transform:uppercase;text-align:left;margin-bottom:-4px;}
+.auth-input{padding:13px 16px;background:rgba(0,0,0,0.5);border:1px solid rgba(255,215,0,0.2);border-radius:10px;color:var(--gold-light);font-family:'Rajdhani',sans-serif;font-size:16px;font-weight:600;outline:none;transition:all 0.2s;}
+.auth-input::placeholder{color:rgba(255,215,0,0.2);font-weight:400;}
+.auth-input:focus{border-color:rgba(255,215,0,0.5);box-shadow:0 0 15px rgba(255,215,0,0.1);}
+.auth-btn{padding:14px;background:linear-gradient(135deg,#8B4500,#CC6600,#FF8800,#CC6600,#8B4500);background-size:200% 200%;border:none;border-radius:12px;color:#FFF8D0;font-family:'Cinzel Decorative',serif;font-size:15px;font-weight:700;cursor:pointer;letter-spacing:3px;box-shadow:0 4px 20px rgba(200,80,0,0.4);transition:all 0.2s;margin-top:4px;animation:abp 3s ease-in-out infinite;}
+@keyframes abp{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+.auth-btn:hover{transform:translateY(-2px);}
+.auth-btn:disabled{opacity:0.5;cursor:not-allowed;transform:none;animation:none;}
+.auth-error{font-size:12px;color:#FF6B6B;min-height:16px;text-align:center;}
+.auth-loading{font-size:11px;color:rgba(255,215,0,0.4);letter-spacing:2px;min-height:14px;text-align:center;}
+.auth-hint{font-size:11px;color:rgba(255,215,0,0.25);margin-top:8px;}
+/* LAYOUT */
+.app{position:relative;z-index:10;display:grid;grid-template-columns:220px 1fr 260px;grid-template-rows:auto 1fr;height:100vh;max-width:1440px;margin:0 auto;}
+/* TOP BAR */
+.top-bar{grid-column:1/-1;display:flex;align-items:center;justify-content:space-between;padding:9px 18px;background:rgba(6,3,0,0.92);border-bottom:1px solid rgba(255,215,0,0.1);backdrop-filter:blur(20px);gap:12px;flex-shrink:0;}
+.top-bar-logo{font-family:'Cinzel Decorative',serif;font-size:clamp(12px,1.8vw,18px);font-weight:900;background:linear-gradient(90deg,#FFF8D0,#FFD700,#B8860B);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:3px;white-space:nowrap;}
+.top-bar-right{display:flex;align-items:center;gap:10px;flex-shrink:0;}
+.user-nick-badge{font-family:'Cinzel Decorative',serif;font-size:13px;color:var(--gold);}
+.user-bal-badge{font-size:12px;color:var(--green);font-weight:700;letter-spacing:1px;}
+/* RADIO */
+.radio-player{display:flex;align-items:center;gap:7px;padding:5px 12px;border-radius:9999px;background:rgba(6,182,212,0.08);border:1px solid rgba(6,182,212,0.2);cursor:pointer;transition:all 0.2s;user-select:none;}
+.radio-player:hover{background:rgba(6,182,212,0.15);border-color:rgba(6,182,212,0.4);}
+.radio-play-btn{width:24px;height:24px;border-radius:50%;background:rgba(6,182,212,0.2);border:1px solid rgba(6,182,212,0.3);color:#67e8f9;font-size:9px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.radio-label{font-size:11px;font-weight:700;color:#67e8f9;}
+.radio-bars{display:flex;align-items:flex-end;gap:2px;height:13px;}
+.radio-bars span{width:3px;background:#67e8f9;border-radius:2px;animation:radioBar 0.8s ease-in-out infinite;}
+.radio-bars span:nth-child(2){animation-delay:0.15s;}
+.radio-bars span:nth-child(3){animation-delay:0.3s;}
+@keyframes radioBar{0%,100%{height:4px}50%{height:13px}}
+.radio-bars.paused span{animation:none;height:4px;opacity:0.4;}
+.btn-logout{padding:5px 12px;background:rgba(255,0,0,0.1);border:1px solid rgba(255,0,0,0.3);border-radius:6px;color:#FF6B6B;font-family:'Rajdhani',sans-serif;font-size:12px;font-weight:700;cursor:pointer;letter-spacing:2px;transition:all 0.2s;}
+.btn-logout:hover{background:rgba(255,0,0,0.2);}
+/* LEFT */
+.left-panel{border-right:1px solid rgba(255,215,0,0.07);display:flex;flex-direction:column;overflow:hidden;background:rgba(4,2,0,0.6);}
+.panel-header{padding:12px 14px 8px;border-bottom:1px solid rgba(255,215,0,0.07);flex-shrink:0;text-align:center;}
+.panel-title{font-size:10px;letter-spacing:4px;color:var(--gold-dark);text-transform:uppercase;}
+.leaderboard{flex:1;overflow-y:auto;padding:8px;}
+.leaderboard::-webkit-scrollbar{width:3px;}
+.leaderboard::-webkit-scrollbar-thumb{background:rgba(255,215,0,0.15);border-radius:2px;}
+.lb-item{display:flex;align-items:center;gap:7px;padding:7px 8px;border-radius:8px;margin-bottom:3px;transition:background 0.2s;}
+.lb-item:hover{background:rgba(255,215,0,0.04);}
+.lb-item.me{background:rgba(255,215,0,0.08);border:1px solid rgba(255,215,0,0.15);}
+.lb-rank{font-size:10px;width:18px;text-align:center;flex-shrink:0;color:rgba(255,215,0,0.3);}
+.lb-medal{font-size:14px;flex-shrink:0;width:18px;text-align:center;}
+.lb-info{flex:1;min-width:0;}
+.lb-name{font-size:12px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.lb-chips{font-size:10px;color:var(--green);font-weight:600;}
+.lb-empty{text-align:center;color:rgba(255,215,0,0.2);font-size:12px;padding:16px;}
+/* CENTER */
+.center-panel{overflow-y:auto;overflow-x:hidden;display:flex;flex-direction:column;align-items:center;padding:14px 10px 18px;}
+.center-panel::-webkit-scrollbar{width:3px;}
+.center-panel::-webkit-scrollbar-thumb{background:rgba(255,215,0,0.12);border-radius:2px;}
+.casino{display:flex;flex-direction:column;align-items:center;gap:14px;width:100%;max-width:460px;}
+.header h1{font-family:'Cinzel Decorative',serif;font-size:clamp(16px,2.5vw,28px);font-weight:900;background:linear-gradient(180deg,#FFF8D0,#FFD700 40%,#B8860B);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:4px;filter:drop-shadow(0 0 20px rgba(255,215,0,0.5));text-align:center;}
+.header .subtitle{font-size:9px;letter-spacing:8px;color:var(--gold-dark);text-transform:uppercase;text-align:center;}
+.machine{background:linear-gradient(145deg,#2A1500,#1A0C00,#2A1500);border:2px solid var(--gold-dark);border-radius:18px;padding:16px;box-shadow:0 0 0 1px rgba(255,215,0,0.1),0 0 40px rgba(255,100,0,0.22),inset 0 1px 0 rgba(255,215,0,0.2);position:relative;width:100%;}
+.machine::before{content:'';position:absolute;inset:-1px;border-radius:19px;background:linear-gradient(135deg,rgba(255,215,0,0.3),transparent 40%,rgba(255,215,0,0.1),transparent 60%,rgba(255,215,0,0.3));pointer-events:none;}
+.corner{position:absolute;width:22px;height:22px;border-color:var(--gold);border-style:solid;border-width:0;}
+.corner-tl{top:7px;left:7px;border-top-width:2px;border-left-width:2px;}
+.corner-tr{top:7px;right:7px;border-top-width:2px;border-right-width:2px;}
+.corner-bl{bottom:7px;left:7px;border-bottom-width:2px;border-left-width:2px;}
+.corner-br{bottom:7px;right:7px;border-bottom-width:2px;border-right-width:2px;}
+.jackpot-bar{text-align:center;padding:6px;background:var(--dark);border:1px solid rgba(255,215,0,0.15);border-radius:7px;}
+.jackpot-label{font-size:9px;letter-spacing:4px;color:var(--gold-dark);}
+.jackpot-amount{font-family:'Cinzel Decorative',serif;font-size:17px;color:#FF6B00;text-shadow:0 0 20px rgba(255,107,0,0.7);}
+.balance-bar{display:flex;justify-content:space-between;align-items:center;margin:10px 0;padding:8px 12px;background:var(--dark);border:1px solid rgba(255,215,0,0.2);border-radius:9px;}
+.balance-label{font-size:9px;letter-spacing:3px;color:var(--gold-dark);text-transform:uppercase;}
+.balance-amount{font-family:'Cinzel Decorative',serif;font-size:18px;font-weight:700;color:var(--gold);text-shadow:0 0 20px rgba(255,215,0,0.6);transition:all 0.3s;}
+.balance-amount.win-flash{animation:balFlash 0.6s ease;}
+@keyframes balFlash{0%,100%{color:var(--gold)}50%{color:var(--green);text-shadow:0 0 30px rgba(0,255,136,0.8)}}
+.lights-strip{display:flex;justify-content:center;gap:6px;margin:3px 0;}
+.light{width:8px;height:8px;border-radius:50%;background:var(--gold);box-shadow:0 0 6px var(--gold);animation:lightBlink 1.5s ease-in-out infinite;}
+.light:nth-child(2n){animation-delay:0.75s;}
+.light:nth-child(3n){animation-delay:0.25s;}
+@keyframes lightBlink{0%,100%{opacity:1;box-shadow:0 0 6px var(--gold)}50%{opacity:0.3;box-shadow:none}}
+.reels-window{background:#000;border:3px solid var(--gold-dark);border-radius:10px;padding:3px;position:relative;overflow:hidden;box-shadow:inset 0 0 30px rgba(0,0,0,0.8);}
+.reels-window::before{content:'';position:absolute;top:0;left:0;right:0;height:40%;background:linear-gradient(180deg,rgba(255,255,255,0.05),transparent);pointer-events:none;z-index:5;border-radius:7px 7px 0 0;}
+.win-line{position:absolute;top:50%;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--gold),#FFD700,var(--gold),transparent);transform:translateY(-50%);z-index:6;opacity:0.5;}
+.reels-container{display:flex;gap:3px;}
+.reel{flex:1;height:150px;overflow:hidden;border-radius:4px;}
+.reel-inner{display:flex;flex-direction:column;transition:none;}
+.symbol-cell{height:50px;display:flex;align-items:center;justify-content:center;font-size:28px;user-select:none;flex-shrink:0;}
+.symbol-cell.center{background:rgba(255,215,0,0.05);}
+.symbol-cell.highlight{animation:sGlow 0.6s ease forwards;}
+@keyframes sGlow{0%{filter:brightness(1);transform:scale(1)}50%{filter:brightness(2) drop-shadow(0 0 12px gold);transform:scale(1.2)}100%{filter:brightness(1.5) drop-shadow(0 0 6px gold);transform:scale(1)}}
+.controls{margin-top:10px;display:flex;flex-direction:column;gap:9px;}
+.bet-row{display:flex;align-items:center;gap:7px;justify-content:space-between;}
+.bet-label{font-size:9px;letter-spacing:3px;color:var(--gold-dark);text-transform:uppercase;white-space:nowrap;}
+.bet-display{flex:1;text-align:center;font-family:'Cinzel Decorative',serif;font-size:16px;color:var(--gold);padding:5px 8px;background:var(--dark);border:1px solid rgba(255,215,0,0.2);border-radius:7px;}
+.bet-buttons{display:flex;gap:5px;flex-wrap:wrap;justify-content:center;}
+.btn-bet{padding:6px 11px;background:var(--panel2);border:1px solid rgba(255,215,0,0.3);border-radius:7px;color:var(--gold);font-family:'Rajdhani',sans-serif;font-size:12px;font-weight:600;cursor:pointer;transition:all 0.15s;}
+.btn-bet:hover{background:rgba(255,215,0,0.15);border-color:var(--gold);transform:translateY(-1px);}
+.btn-bet.active{background:rgba(255,215,0,0.2);border-color:var(--gold);box-shadow:0 0 10px rgba(255,215,0,0.4);}
+.btn-spin{width:100%;padding:13px;background:linear-gradient(135deg,#8B0000,#CC0000,#FF1100,#CC0000,#8B0000);background-size:200% 200%;border:none;border-radius:11px;color:#FFF8D0;font-family:'Cinzel Decorative',serif;font-size:15px;font-weight:700;cursor:pointer;letter-spacing:3px;position:relative;overflow:hidden;transition:all 0.2s;box-shadow:0 4px 18px rgba(200,0,0,0.5);animation:sbp 3s ease-in-out infinite;}
+@keyframes sbp{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+.btn-spin::before{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.15),transparent);transition:left 0.5s;}
+.btn-spin:hover::before{left:100%;}
+.btn-spin:hover{transform:translateY(-2px);}
+.btn-spin:active{transform:translateY(1px);}
+.btn-spin:disabled{opacity:0.6;cursor:not-allowed;animation:none;transform:none;}
+.btn-deposit{width:100%;padding:9px;background:linear-gradient(135deg,#003D80,#0055B3,#0077FF,#0055B3,#003D80);background-size:200% 200%;border:1px solid rgba(0,140,255,0.5);border-radius:11px;color:#E0F0FF;font-family:'Rajdhani',sans-serif;font-size:13px;font-weight:700;cursor:pointer;letter-spacing:3px;text-transform:uppercase;transition:all 0.2s;animation:dbp 4s ease-in-out infinite;}
+@keyframes dbp{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+.btn-deposit:hover{transform:translateY(-1px);}
+.message{text-align:center;font-size:12px;letter-spacing:2px;min-height:16px;color:var(--gold-dark);transition:all 0.3s;}
+.message.win{color:var(--green);text-shadow:0 0 12px rgba(0,255,136,0.6);}
+.message.lose{color:#AA4400;}
+.divider{width:100%;height:1px;background:linear-gradient(90deg,transparent,rgba(255,215,0,0.3),transparent);margin:3px 0;}
+.paytable{background:var(--panel);border:1px solid rgba(255,215,0,0.2);border-radius:11px;padding:10px 12px;width:100%;}
+.paytable-title{text-align:center;font-size:9px;letter-spacing:4px;color:var(--gold-dark);text-transform:uppercase;margin-bottom:7px;}
+.paytable-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:4px;}
+.pay-row{display:flex;align-items:center;justify-content:space-between;padding:4px 6px;background:rgba(0,0,0,0.3);border-radius:5px;font-size:11px;}
+.pay-symbols{font-size:12px;}
+.pay-mult{color:var(--gold);font-weight:700;font-size:10px;}
+/* RIGHT CHAT */
+.right-panel{border-left:1px solid rgba(255,215,0,0.07);display:flex;flex-direction:column;overflow:hidden;background:rgba(4,2,0,0.65);}
+.chat-header-bar{padding:11px 13px 9px;border-bottom:1px solid rgba(255,215,0,0.07);display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
+.chat-title{font-size:10px;letter-spacing:4px;color:var(--gold-dark);text-transform:uppercase;}
+.online-count{font-size:10px;color:var(--green);display:flex;align-items:center;gap:5px;}
+.online-dot{width:6px;height:6px;border-radius:50%;background:var(--green);box-shadow:0 0 5px var(--green);animation:odot 2s ease-in-out infinite;}
+@keyframes odot{0%,100%{opacity:1}50%{opacity:0.4}}
+.chat-messages{flex:1;overflow-y:auto;padding:7px;display:flex;flex-direction:column;gap:5px;}
+.chat-messages::-webkit-scrollbar{width:3px;}
+.chat-messages::-webkit-scrollbar-thumb{background:rgba(255,215,0,0.12);border-radius:2px;}
+.chat-msg{display:flex;flex-direction:column;gap:2px;padding:6px 8px;border-radius:8px;background:rgba(0,0,0,0.2);border:1px solid rgba(255,215,0,0.04);animation:msgIn 0.25s ease;}
+@keyframes msgIn{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
+.chat-msg.mine{background:rgba(255,215,0,0.06);border-color:rgba(255,215,0,0.1);}
+.chat-msg.sys{background:rgba(255,150,0,0.05);border:1px solid rgba(255,150,0,0.1);text-align:center;}
+.chat-msg.event{background:rgba(255,180,0,0.08);border:1px solid rgba(255,180,0,0.18);}
+.msg-header{display:flex;align-items:baseline;gap:5px;}
+.msg-nick{font-size:11px;font-weight:700;letter-spacing:1px;}
+.msg-time{font-size:9px;color:rgba(255,215,0,0.2);}
+.msg-text{font-size:12px;color:rgba(255,240,200,0.8);line-height:1.4;word-break:break-word;}
+.msg-sys-text{font-size:10px;color:rgba(255,180,0,0.5);letter-spacing:1px;}
+.chat-input-area{padding:9px 11px;border-top:1px solid rgba(255,215,0,0.07);display:flex;gap:7px;align-items:center;flex-shrink:0;}
+.chat-input{flex:1;padding:8px 11px;background:rgba(0,0,0,0.5);border:1px solid rgba(255,215,0,0.13);border-radius:9px;color:var(--gold-light);font-family:'Rajdhani',sans-serif;font-size:13px;outline:none;transition:all 0.2s;}
+.chat-input::placeholder{color:rgba(255,215,0,0.18);}
+.chat-input:focus{border-color:rgba(255,215,0,0.3);}
+.chat-send{padding:8px 12px;background:rgba(255,215,0,0.13);border:1px solid rgba(255,215,0,0.25);border-radius:9px;color:var(--gold);font-size:14px;cursor:pointer;transition:all 0.15s;}
+.chat-send:hover{background:rgba(255,215,0,0.22);}
+/* WIN */
+.win-overlay{position:fixed;inset:0;z-index:300;display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:none;opacity:0;transition:opacity 0.3s;}
+.win-overlay.show{opacity:1;pointer-events:auto;}
+.win-overlay .bg-dim{position:absolute;inset:0;background:rgba(0,0,0,0.82);backdrop-filter:blur(6px);}
+.win-content{position:relative;z-index:1;text-align:center;animation:winIn 0.5s cubic-bezier(0.34,1.56,0.64,1) forwards;}
+@keyframes winIn{0%{transform:scale(0.3) rotate(-10deg);opacity:0}100%{transform:scale(1) rotate(0);opacity:1}}
+.win-title{font-family:'Cinzel Decorative',serif;font-size:clamp(44px,9vw,88px);font-weight:900;background:linear-gradient(180deg,#FFFFFF,#FFD700 30%,#FF8C00 70%,#FF3300);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;filter:drop-shadow(0 0 30px rgba(255,200,0,0.9));animation:winPulse 0.5s ease-in-out infinite alternate;line-height:1.1;}
+@keyframes winPulse{0%{transform:scale(1)}100%{filter:drop-shadow(0 0 70px rgba(255,200,0,1));transform:scale(1.03)}}
+.win-amount{font-family:'Cinzel Decorative',serif;font-size:clamp(24px,5vw,54px);color:var(--green);text-shadow:0 0 30px rgba(0,255,136,0.8);margin-top:8px;}
+.win-combo{font-size:clamp(13px,3vw,20px);color:var(--gold-light);letter-spacing:3px;margin-top:5px;font-weight:600;}
+.win-tap{font-size:12px;color:rgba(255,215,0,0.4);letter-spacing:4px;margin-top:18px;text-transform:uppercase;animation:blink 1s ease-in-out infinite;}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0.2}}
+.confetti-piece{position:fixed;width:9px;height:11px;top:-20px;animation:cFall var(--d) linear forwards;z-index:301;border-radius:2px;}
+@keyframes cFall{0%{transform:translateY(0) rotate(0) translateX(0);opacity:1}80%{opacity:1}100%{transform:translateY(110vh) rotate(720deg) translateX(var(--dx));opacity:0}}
+.coin{position:fixed;font-size:20px;pointer-events:none;z-index:50;animation:coinFly var(--d) ease-out forwards;}
+@keyframes coinFly{0%{transform:translate(0,0) scale(0);opacity:1}50%{opacity:1}100%{transform:translate(var(--tx),var(--ty)) scale(0.3);opacity:0}}
+/* DEPOSIT MODAL */
+.modal-overlay{position:fixed;inset:0;z-index:400;background:rgba(0,0,10,0.9);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.3s;}
+.modal-overlay.show{opacity:1;pointer-events:auto;}
+.modal-box{background:linear-gradient(145deg,#0A0A1A,#111130);border:2px solid rgba(0,140,255,0.4);border-radius:18px;padding:22px;width:min(390px,92vw);box-shadow:0 0 60px rgba(0,80,255,0.3);position:relative;animation:mIn 0.4s cubic-bezier(0.34,1.56,0.64,1);max-height:90vh;overflow-y:auto;}
+@keyframes mIn{0%{transform:scale(0.8) translateY(30px);opacity:0}100%{transform:scale(1) translateY(0);opacity:1}}
+.bank-logos{display:flex;justify-content:center;align-items:center;gap:9px;margin-bottom:12px;flex-wrap:wrap;}
+.bank-logo{padding:3px 8px;border-radius:4px;font-size:11px;font-weight:700;}
+.visa{background:#1A1F71;color:#fff;font-style:italic;font-size:13px;}
+.mc{background:#252525;color:#fff;font-size:15px;letter-spacing:-3px;}
+.mir{background:#0EA652;color:#fff;}
+.ssl-badge{display:flex;align-items:center;gap:3px;background:rgba(0,200,80,0.13);border:1px solid rgba(0,200,80,0.3);border-radius:4px;padding:2px 7px;font-size:9px;color:#00C850;}
+.modal-title{font-family:'Cinzel Decorative',serif;font-size:15px;color:#89C4FF;text-align:center;margin-bottom:3px;letter-spacing:2px;}
+.modal-sub{text-align:center;font-size:10px;color:rgba(100,160,255,0.45);letter-spacing:3px;text-transform:uppercase;margin-bottom:12px;}
+.dep-amounts{display:flex;gap:6px;margin-bottom:14px;}
+.dep-amt{flex:1;padding:8px 4px;background:rgba(0,100,200,0.14);border:1px solid rgba(0,140,255,0.2);border-radius:7px;color:#89C4FF;font-family:'Rajdhani',sans-serif;font-size:12px;font-weight:600;text-align:center;cursor:pointer;transition:all 0.15s;}
+.dep-amt:hover,.dep-amt.active{background:rgba(0,120,255,0.28);border-color:rgba(0,180,255,0.6);color:#C8E8FF;}
+.card-preview{background:linear-gradient(135deg,#1A2A6C,#B21F1F,#1A2A6C);border-radius:11px;padding:12px;margin-bottom:12px;min-height:82px;box-shadow:0 8px 28px rgba(0,0,0,0.5);position:relative;}
+.card-chip{width:28px;height:22px;background:linear-gradient(135deg,#C8A000,#FFD700,#C8A000);border-radius:3px;margin-bottom:7px;}
+.card-num-prev{font-family:'Courier New',monospace;font-size:13px;color:rgba(255,255,255,0.9);letter-spacing:3px;font-weight:700;margin-bottom:6px;}
+.card-info-row{display:flex;justify-content:space-between;align-items:flex-end;}
+.card-holder-prev{font-size:9px;color:rgba(255,255,255,0.7);letter-spacing:2px;text-transform:uppercase;}
+.card-exp-prev{font-size:10px;color:rgba(255,255,255,0.8);letter-spacing:2px;font-weight:600;}
+.card-logo-badge{position:absolute;bottom:10px;right:12px;font-size:11px;font-weight:900;font-style:italic;color:#fff;}
+.form-group{margin-bottom:9px;}
+.form-label{font-size:9px;letter-spacing:3px;color:rgba(100,160,255,0.6);text-transform:uppercase;margin-bottom:4px;display:block;}
+.form-input{width:100%;padding:9px 11px;background:rgba(0,20,60,0.8);border:1px solid rgba(0,140,255,0.3);border-radius:8px;color:#C8E8FF;font-family:'Rajdhani',sans-serif;font-size:14px;font-weight:600;letter-spacing:2px;outline:none;transition:all 0.2s;}
+.form-input::placeholder{color:rgba(100,160,255,0.22);}
+.form-input:focus{border-color:rgba(0,200,255,0.6);box-shadow:0 0 10px rgba(0,160,255,0.18);}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:9px;}
+.btn-pay{width:100%;padding:11px;background:linear-gradient(135deg,#004DB3,#0066FF,#0088FF,#0066FF,#004DB3);background-size:200%;border:none;border-radius:10px;color:#fff;font-family:'Rajdhani',sans-serif;font-size:13px;font-weight:700;cursor:pointer;letter-spacing:3px;text-transform:uppercase;box-shadow:0 4px 18px rgba(0,100,255,0.5);transition:all 0.2s;margin-top:3px;}
+.btn-pay:hover{transform:translateY(-1px);}
+.btn-mclose{position:absolute;top:9px;right:11px;background:none;border:none;color:rgba(100,160,255,0.4);font-size:19px;cursor:pointer;}
+.btn-mclose:hover{color:#89C4FF;}
+.modal-sec{display:flex;align-items:center;justify-content:center;gap:7px;margin-top:10px;padding-top:9px;border-top:1px solid rgba(100,100,255,0.1);}
+.sec-item{font-size:9px;color:rgba(100,160,255,0.28);}
+/* 3DS */
+.tds-overlay{position:fixed;inset:0;z-index:500;background:rgba(0,0,20,0.97);backdrop-filter:blur(12px);display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.3s;}
+.tds-overlay.show{opacity:1;pointer-events:auto;}
+.tds-box{background:linear-gradient(145deg,#0D0D30,#1A1A50);border:2px solid rgba(100,100,255,0.4);border-radius:15px;padding:24px;width:min(350px,90vw);text-align:center;box-shadow:0 0 60px rgba(50,50,255,0.3);}
+.tds-bank-hdr{display:flex;align-items:center;justify-content:center;gap:9px;margin-bottom:14px;padding-bottom:12px;border-bottom:1px solid rgba(100,100,255,0.2);}
+.tds-bank-icon{width:36px;height:36px;background:linear-gradient(135deg,#0050A0,#0080FF);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;}
+.tds-bank-name{font-family:'Rajdhani',sans-serif;font-weight:700;font-size:13px;color:#89C4FF;letter-spacing:2px;text-align:left;}
+.tds-bank-sub{font-size:8px;color:rgba(100,160,255,0.4);text-align:left;}
+.tds-ttl{font-size:10px;color:rgba(100,160,255,0.6);letter-spacing:3px;text-transform:uppercase;margin-bottom:4px;}
+.tds-amt{font-family:'Cinzel Decorative',serif;font-size:26px;color:#89C4FF;margin-bottom:3px;}
+.tds-desc{font-size:10px;color:rgba(100,160,255,0.38);margin-bottom:16px;}
+.tds-otp-lbl{font-size:10px;color:rgba(100,160,255,0.6);letter-spacing:2px;margin-bottom:4px;text-transform:uppercase;}
+.tds-sms-row{font-size:11px;color:rgba(100,160,255,0.48);margin-bottom:10px;}
+.tds-boxes{display:flex;gap:6px;justify-content:center;margin-bottom:11px;}
+.tds-box-inp{width:38px;height:46px;background:rgba(0,20,80,0.8);border:2px solid rgba(100,100,255,0.3);border-radius:8px;color:#89C4FF;font-size:19px;font-weight:700;text-align:center;outline:none;transition:all 0.2s;font-family:'Courier New',monospace;}
+.tds-box-inp:focus{border-color:rgba(0,200,255,0.8);}
+.tds-box-inp.filled{border-color:rgba(0,200,200,0.6);}
+.tds-resend{font-size:10px;color:rgba(100,160,255,0.28);margin-bottom:14px;}
+.btn-tds{width:100%;padding:11px;background:linear-gradient(135deg,#004DB3,#0066FF,#0088FF);border:none;border-radius:9px;color:#fff;font-family:'Rajdhani',sans-serif;font-size:13px;font-weight:700;letter-spacing:3px;cursor:pointer;transition:all 0.2s;}
+.btn-tds:hover{transform:translateY(-1px);}
+.btn-tds:disabled{opacity:0.35;cursor:not-allowed;transform:none;}
+.tds-proc{display:none;}
+.tds-proc.show{display:block;}
+.tds-inp-area.hide{display:none;}
+.tds-spinner{width:42px;height:42px;border:3px solid rgba(100,100,255,0.2);border-top-color:#0088FF;border-radius:50%;animation:sp360 0.8s linear infinite;margin:0 auto 12px;}
+@keyframes sp360{100%{transform:rotate(360deg)}}
+.tds-prog-bar{width:100%;height:3px;background:rgba(100,100,255,0.2);border-radius:2px;overflow:hidden;margin-bottom:8px;}
+.tds-prog-fill{height:100%;background:linear-gradient(90deg,#0044FF,#00CCFF);border-radius:2px;width:0%;}
+.tds-stat{font-size:11px;color:rgba(100,160,255,0.7);letter-spacing:2px;animation:stPulse 1s ease-in-out infinite;}
+@keyframes stPulse{0%,100%{opacity:1}50%{opacity:0.4}}
+.tds-ok{display:none;}
+.tds-ok.show{display:block;}
+.tds-check{font-size:52px;animation:chkPop 0.5s cubic-bezier(0.34,1.56,0.64,1);margin-bottom:7px;}
+@keyframes chkPop{0%{transform:scale(0);opacity:0}100%{transform:scale(1);opacity:1}}
+.tds-ok-title{font-family:'Cinzel Decorative',serif;font-size:18px;color:var(--green);margin-bottom:4px;}
+.tds-ok-sub{font-size:11px;color:rgba(100,255,160,0.55);letter-spacing:2px;}
 
-  .casino { position: relative; z-index: 10; display: flex; flex-direction: column; align-items: center; gap: 20px; }
-  .header { text-align: center; }
-  .header h1 { font-family: 'Cinzel Decorative', serif; font-size: clamp(22px,5vw,40px); font-weight: 900; background: linear-gradient(180deg,#FFF8D0 0%,#FFD700 40%,#B8860B 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; letter-spacing: 4px; filter: drop-shadow(0 0 20px rgba(255,215,0,0.5)); }
-  .header .subtitle { font-size: 12px; letter-spacing: 8px; color: var(--gold-dark); text-transform: uppercase; }
-
-  .machine { background: linear-gradient(145deg,#2A1500,#1A0C00,#2A1500); border: 2px solid var(--gold-dark); border-radius: 20px; padding: 22px; box-shadow: 0 0 0 1px rgba(255,215,0,0.1), 0 0 40px rgba(255,100,0,0.3), 0 0 80px rgba(255,50,0,0.1), inset 0 1px 0 rgba(255,215,0,0.2); position: relative; width: min(520px,95vw); }
-  .machine::before { content: ''; position: absolute; inset: -1px; border-radius: 21px; background: linear-gradient(135deg,rgba(255,215,0,0.3),transparent 40%,rgba(255,215,0,0.1),transparent 60%,rgba(255,215,0,0.3)); pointer-events: none; }
-  .corner { position: absolute; width: 28px; height: 28px; border-color: var(--gold); border-style: solid; border-width: 0; }
-  .corner-tl { top: 8px; left: 8px; border-top-width: 2px; border-left-width: 2px; }
-  .corner-tr { top: 8px; right: 8px; border-top-width: 2px; border-right-width: 2px; }
-  .corner-bl { bottom: 8px; left: 8px; border-bottom-width: 2px; border-left-width: 2px; }
-  .corner-br { bottom: 8px; right: 8px; border-bottom-width: 2px; border-right-width: 2px; }
-
-  .jackpot-bar { text-align: center; padding: 8px; background: var(--dark); border: 1px solid rgba(255,215,0,0.15); border-radius: 8px; }
-  .jackpot-label { font-size: 10px; letter-spacing: 4px; color: var(--gold-dark); }
-  .jackpot-amount { font-family: 'Cinzel Decorative', serif; font-size: 20px; color: #FF6B00; text-shadow: 0 0 20px rgba(255,107,0,0.7); }
-
-  .balance-bar { display: flex; justify-content: space-between; align-items: center; margin: 14px 0; padding: 10px 16px; background: var(--dark); border: 1px solid rgba(255,215,0,0.2); border-radius: 10px; }
-  .balance-label { font-size: 11px; letter-spacing: 3px; color: var(--gold-dark); text-transform: uppercase; }
-  .balance-amount { font-family: 'Cinzel Decorative', serif; font-size: 22px; font-weight: 700; color: var(--gold); text-shadow: 0 0 20px rgba(255,215,0,0.6); transition: all 0.3s; }
-  .balance-amount.win-flash { animation: balanceFlash 0.6s ease; }
-  @keyframes balanceFlash { 0%,100%{color:var(--gold);text-shadow:0 0 20px rgba(255,215,0,0.6)} 50%{color:var(--green);text-shadow:0 0 30px rgba(0,255,136,0.8)} }
-
-  .lights-strip { display: flex; justify-content: center; gap: 8px; margin: 4px 0; }
-  .light { width: 10px; height: 10px; border-radius: 50%; background: var(--gold); box-shadow: 0 0 8px var(--gold); animation: lightBlink 1.5s ease-in-out infinite; }
-  .light:nth-child(2n) { animation-delay: 0.75s; }
-  .light:nth-child(3n) { animation-delay: 0.25s; }
-  @keyframes lightBlink { 0%,100%{opacity:1;box-shadow:0 0 8px var(--gold)} 50%{opacity:0.3;box-shadow:none} }
-
-  .reels-window { background: #000; border: 3px solid var(--gold-dark); border-radius: 12px; padding: 4px; position: relative; overflow: hidden; box-shadow: inset 0 0 30px rgba(0,0,0,0.8), 0 0 20px rgba(255,150,0,0.2); }
-  .reels-window::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 40%; background: linear-gradient(180deg,rgba(255,255,255,0.05) 0%,transparent 100%); pointer-events: none; z-index: 5; border-radius: 9px 9px 0 0; }
-  .win-line { position: absolute; top: 50%; left: 0; right: 0; height: 3px; background: linear-gradient(90deg,transparent,var(--gold),#FFD700,var(--gold),transparent); transform: translateY(-50%); z-index: 6; opacity: 0.5; }
-  .reels-container { display: flex; gap: 4px; }
-  .reel { flex: 1; height: 180px; overflow: hidden; border-radius: 6px; position: relative; }
-  .reel-inner { display: flex; flex-direction: column; transition: none; }
-  .symbol-cell { height: 60px; display: flex; align-items: center; justify-content: center; font-size: 36px; user-select: none; flex-shrink: 0; }
-  .symbol-cell.center { background: rgba(255,215,0,0.05); }
-  .symbol-cell.highlight { animation: symbolGlow 0.6s ease forwards; }
-  @keyframes symbolGlow { 0%{filter:brightness(1);transform:scale(1)} 50%{filter:brightness(2) drop-shadow(0 0 15px gold);transform:scale(1.2)} 100%{filter:brightness(1.5) drop-shadow(0 0 8px gold);transform:scale(1)} }
-
-  .controls { margin-top: 16px; display: flex; flex-direction: column; gap: 12px; }
-  .bet-row { display: flex; align-items: center; gap: 10px; justify-content: space-between; }
-  .bet-label { font-size: 11px; letter-spacing: 3px; color: var(--gold-dark); text-transform: uppercase; white-space: nowrap; }
-  .bet-display { flex: 1; text-align: center; font-family: 'Cinzel Decorative', serif; font-size: 20px; color: var(--gold); text-shadow: 0 0 10px rgba(255,215,0,0.5); padding: 6px 12px; background: var(--dark); border: 1px solid rgba(255,215,0,0.2); border-radius: 8px; }
-  .bet-buttons { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; }
-  .btn-bet { padding: 8px 14px; background: var(--panel2); border: 1px solid rgba(255,215,0,0.3); border-radius: 8px; color: var(--gold); font-family: 'Rajdhani', sans-serif; font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.15s; letter-spacing: 1px; }
-  .btn-bet:hover { background: rgba(255,215,0,0.15); border-color: var(--gold); box-shadow: 0 0 15px rgba(255,215,0,0.3); transform: translateY(-1px); }
-  .btn-bet.active { background: rgba(255,215,0,0.2); border-color: var(--gold); box-shadow: 0 0 15px rgba(255,215,0,0.4); }
-
-  .btn-spin { width: 100%; padding: 16px; background: linear-gradient(135deg,#8B0000,#CC0000,#FF1100,#CC0000,#8B0000); background-size: 200% 200%; border: none; border-radius: 12px; color: #FFF8D0; font-family: 'Cinzel Decorative', serif; font-size: 18px; font-weight: 700; cursor: pointer; letter-spacing: 4px; text-transform: uppercase; position: relative; overflow: hidden; transition: all 0.2s; box-shadow: 0 4px 20px rgba(200,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.2), inset 0 -2px 0 rgba(0,0,0,0.3); animation: spinBtnPulse 3s ease-in-out infinite; }
-  @keyframes spinBtnPulse { 0%,100%{background-position:0% 50%} 50%{background-position:100% 50%} }
-  .btn-spin::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg,transparent,rgba(255,255,255,0.15),transparent); transition: left 0.5s; }
-  .btn-spin:hover::before { left: 100%; }
-  .btn-spin:hover { transform: translateY(-2px); box-shadow: 0 6px 30px rgba(255,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.3), inset 0 -2px 0 rgba(0,0,0,0.3); }
-  .btn-spin:active { transform: translateY(1px); }
-  .btn-spin:disabled { opacity: 0.6; cursor: not-allowed; animation: none; transform: none; }
-
-  .btn-deposit { width: 100%; padding: 12px; background: linear-gradient(135deg,#003D80,#0055B3,#0077FF,#0055B3,#003D80); background-size: 200% 200%; border: 1px solid rgba(0,140,255,0.5); border-radius: 12px; color: #E0F0FF; font-family: 'Rajdhani', sans-serif; font-size: 15px; font-weight: 700; cursor: pointer; letter-spacing: 3px; text-transform: uppercase; transition: all 0.2s; box-shadow: 0 2px 15px rgba(0,100,255,0.3), inset 0 1px 0 rgba(255,255,255,0.1); animation: depositPulse 4s ease-in-out infinite; }
-  @keyframes depositPulse { 0%,100%{background-position:0% 50%} 50%{background-position:100% 50%} }
-  .btn-deposit:hover { transform: translateY(-1px); box-shadow: 0 4px 25px rgba(0,120,255,0.5); }
-
-  .message { text-align: center; font-size: 14px; letter-spacing: 2px; min-height: 20px; color: var(--gold-dark); transition: all 0.3s; }
-  .message.win { color: var(--green); text-shadow: 0 0 15px rgba(0,255,136,0.6); }
-  .message.lose { color: #AA4400; }
-  .divider { width: 100%; height: 1px; background: linear-gradient(90deg,transparent,rgba(255,215,0,0.3),transparent); margin: 4px 0; }
-
-  .paytable { background: var(--panel); border: 1px solid rgba(255,215,0,0.2); border-radius: 12px; padding: 14px 16px; width: min(520px,95vw); }
-  .paytable-title { text-align: center; font-size: 11px; letter-spacing: 4px; color: var(--gold-dark); text-transform: uppercase; margin-bottom: 10px; }
-  .paytable-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 6px; }
-  .pay-row { display: flex; align-items: center; justify-content: space-between; padding: 5px 8px; background: rgba(0,0,0,0.3); border-radius: 6px; font-size: 13px; }
-  .pay-symbols { font-size: 15px; letter-spacing: 2px; }
-  .pay-mult { color: var(--gold); font-weight: 700; font-size: 12px; }
-
-  /* WIN OVERLAY */
-  .win-overlay { position: fixed; inset: 0; z-index: 100; display: flex; flex-direction: column; align-items: center; justify-content: center; pointer-events: none; opacity: 0; transition: opacity 0.3s; }
-  .win-overlay.show { opacity: 1; pointer-events: auto; }
-  .win-overlay .bg-dim { position: absolute; inset: 0; background: rgba(0,0,0,0.75); backdrop-filter: blur(4px); }
-  .win-content { position: relative; z-index: 1; text-align: center; animation: winEntrance 0.5s cubic-bezier(0.34,1.56,0.64,1) forwards; }
-  @keyframes winEntrance { 0%{transform:scale(0.3) rotate(-10deg);opacity:0} 100%{transform:scale(1) rotate(0);opacity:1} }
-  .win-title { font-family: 'Cinzel Decorative', serif; font-size: clamp(44px,12vw,96px); font-weight: 900; background: linear-gradient(180deg,#FFFFFF 0%,#FFD700 30%,#FF8C00 70%,#FF3300 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; filter: drop-shadow(0 0 30px rgba(255,200,0,0.8)); animation: winPulse 0.5s ease-in-out infinite alternate; line-height: 1.1; }
-  @keyframes winPulse { 0%{filter:drop-shadow(0 0 30px rgba(255,200,0,0.8));transform:scale(1)} 100%{filter:drop-shadow(0 0 60px rgba(255,200,0,1)) drop-shadow(0 0 100px rgba(255,100,0,0.6));transform:scale(1.03)} }
-  .win-amount { font-family: 'Cinzel Decorative', serif; font-size: clamp(28px,8vw,60px); color: var(--green); text-shadow: 0 0 30px rgba(0,255,136,0.8), 0 0 60px rgba(0,255,136,0.4); margin-top: 10px; }
-  .win-combo { font-size: clamp(16px,4vw,22px); color: var(--gold-light); letter-spacing: 3px; margin-top: 8px; font-weight: 600; }
-  .win-tap { font-size: 13px; color: rgba(255,215,0,0.5); letter-spacing: 4px; margin-top: 20px; text-transform: uppercase; animation: blink 1s ease-in-out infinite; }
-  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.2} }
-
-  .confetti-piece { position: fixed; width: 10px; height: 12px; top: -20px; animation: confettiFall var(--d) linear forwards; z-index: 101; border-radius: 2px; }
-  @keyframes confettiFall { 0%{transform:translateY(0) rotate(0) translateX(0);opacity:1} 80%{opacity:1} 100%{transform:translateY(110vh) rotate(720deg) translateX(var(--dx));opacity:0} }
-  .coin { position: fixed; font-size: 24px; pointer-events: none; z-index: 50; animation: coinFly var(--d) ease-out forwards; }
-  @keyframes coinFly { 0%{transform:translate(0,0) scale(0);opacity:1} 50%{opacity:1} 100%{transform:translate(var(--tx),var(--ty)) scale(0.3);opacity:0} }
-
-  /* ========== DEPOSIT MODAL ========== */
-  .modal-overlay { position: fixed; inset: 0; z-index: 200; background: rgba(0,0,10,0.88); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.3s; }
-  .modal-overlay.show { opacity: 1; pointer-events: auto; }
-  .modal-box { background: linear-gradient(145deg,#0A0A1A,#111130,#0A0A1A); border: 2px solid rgba(0,140,255,0.4); border-radius: 20px; padding: 26px; width: min(420px,92vw); box-shadow: 0 0 0 1px rgba(0,140,255,0.1), 0 0 60px rgba(0,80,255,0.3), inset 0 1px 0 rgba(255,255,255,0.07); position: relative; overflow: hidden; animation: modalIn 0.4s cubic-bezier(0.34,1.56,0.64,1); max-height: 90vh; overflow-y: auto; }
-  @keyframes modalIn { 0%{transform:scale(0.8) translateY(30px);opacity:0} 100%{transform:scale(1) translateY(0);opacity:1} }
-  .modal-box::before { content: ''; position: absolute; inset: -1px; border-radius: 21px; background: linear-gradient(135deg,rgba(0,140,255,0.2),transparent 40%,rgba(100,0,255,0.1),transparent); pointer-events: none; }
-
-  .bank-logos { display: flex; justify-content: center; align-items: center; gap: 10px; margin-bottom: 16px; flex-wrap: wrap; }
-  .bank-logo { padding: 4px 10px; border-radius: 6px; font-size: 12px; font-weight: 700; letter-spacing: 1px; }
-  .visa { background: #1A1F71; color: #fff; font-style: italic; font-size: 15px; }
-  .mc { background: #252525; color: #fff; font-size: 18px; letter-spacing: -4px; }
-  .mir { background: #0EA652; color: #fff; font-size: 13px; }
-  .ssl-badge { display: flex; align-items: center; gap: 4px; background: rgba(0,200,80,0.15); border: 1px solid rgba(0,200,80,0.3); border-radius: 6px; padding: 3px 8px; font-size: 10px; color: #00C850; letter-spacing: 1px; }
-
-  .modal-title { font-family: 'Cinzel Decorative', serif; font-size: 17px; color: #89C4FF; text-align: center; margin-bottom: 4px; letter-spacing: 2px; }
-  .modal-subtitle { text-align: center; font-size: 11px; color: rgba(100,160,255,0.5); letter-spacing: 3px; text-transform: uppercase; margin-bottom: 16px; }
-
-  .deposit-amounts { display: flex; gap: 8px; margin-bottom: 18px; }
-  .dep-amt { flex: 1; padding: 10px 4px; background: rgba(0,100,200,0.15); border: 1px solid rgba(0,140,255,0.2); border-radius: 8px; color: #89C4FF; font-family: 'Rajdhani', sans-serif; font-size: 13px; font-weight: 600; text-align: center; cursor: pointer; transition: all 0.15s; }
-  .dep-amt:hover, .dep-amt.active { background: rgba(0,120,255,0.3); border-color: rgba(0,180,255,0.6); box-shadow: 0 0 15px rgba(0,140,255,0.3); color: #C8E8FF; }
-
-  .card-preview { background: linear-gradient(135deg,#1A2A6C,#B21F1F,#1A2A6C); border-radius: 14px; padding: 16px; margin-bottom: 16px; position: relative; overflow: hidden; min-height: 96px; box-shadow: 0 8px 32px rgba(0,0,0,0.5); }
-  .card-preview::before { content: ''; position: absolute; top: -30px; right: -30px; width: 120px; height: 120px; border-radius: 50%; background: radial-gradient(circle,rgba(255,255,255,0.1),transparent); }
-  .card-chip { width: 34px; height: 26px; background: linear-gradient(135deg,#C8A000,#FFD700,#C8A000); border-radius: 4px; margin-bottom: 10px; box-shadow: inset 0 1px 2px rgba(0,0,0,0.3); }
-  .card-number-preview { font-family: 'Courier New', monospace; font-size: 15px; color: rgba(255,255,255,0.9); letter-spacing: 3px; font-weight: 700; margin-bottom: 8px; }
-  .card-info-row { display: flex; justify-content: space-between; align-items: flex-end; }
-  .card-holder-preview { font-size: 11px; color: rgba(255,255,255,0.7); letter-spacing: 2px; text-transform: uppercase; }
-  .card-expiry-preview { font-size: 12px; color: rgba(255,255,255,0.8); letter-spacing: 2px; font-weight: 600; }
-  .card-logo { position: absolute; bottom: 14px; right: 16px; font-size: 14px; font-weight: 900; font-style: italic; color: #fff; letter-spacing: 1px; }
-
-  .form-group { margin-bottom: 12px; }
-  .form-label { font-size: 10px; letter-spacing: 3px; color: rgba(100,160,255,0.6); text-transform: uppercase; margin-bottom: 5px; display: block; }
-  .form-input { width: 100%; padding: 11px 13px; background: rgba(0,20,60,0.8); border: 1px solid rgba(0,140,255,0.3); border-radius: 10px; color: #C8E8FF; font-family: 'Rajdhani', sans-serif; font-size: 16px; font-weight: 600; letter-spacing: 2px; outline: none; transition: all 0.2s; }
-  .form-input::placeholder { color: rgba(100,160,255,0.25); letter-spacing: 3px; }
-  .form-input:focus { border-color: rgba(0,200,255,0.6); box-shadow: 0 0 15px rgba(0,160,255,0.2); background: rgba(0,30,80,0.9); }
-  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-
-  .btn-pay { width: 100%; padding: 13px; background: linear-gradient(135deg,#004DB3,#0066FF,#0088FF,#0066FF,#004DB3); background-size: 200%; border: none; border-radius: 12px; color: #fff; font-family: 'Rajdhani', sans-serif; font-size: 15px; font-weight: 700; cursor: pointer; letter-spacing: 3px; text-transform: uppercase; box-shadow: 0 4px 20px rgba(0,100,255,0.5); transition: all 0.2s; margin-top: 4px; }
-  .btn-pay:hover { transform: translateY(-2px); box-shadow: 0 6px 30px rgba(0,100,255,0.7); }
-  .btn-modal-close { position: absolute; top: 12px; right: 14px; background: none; border: none; color: rgba(100,160,255,0.5); font-size: 22px; cursor: pointer; transition: color 0.2s; z-index: 1; }
-  .btn-modal-close:hover { color: #89C4FF; }
-
-  .security-strip { display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 14px; padding-top: 12px; border-top: 1px solid rgba(100,100,255,0.15); flex-wrap: wrap; }
-  .sec-item { font-size: 10px; color: rgba(100,160,255,0.35); letter-spacing: 1px; }
-
-  /* ========== 3DS MODAL ========== */
-  .tds-overlay { position: fixed; inset: 0; z-index: 300; background: rgba(0,0,20,0.95); backdrop-filter: blur(10px); display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.3s; }
-  .tds-overlay.show { opacity: 1; pointer-events: auto; }
-  .tds-box { background: linear-gradient(145deg,#0D0D30,#1A1A50); border: 2px solid rgba(100,100,255,0.4); border-radius: 16px; padding: 28px; width: min(380px,90vw); text-align: center; box-shadow: 0 0 60px rgba(50,50,255,0.3); }
-
-  .tds-bank-header { display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 18px; padding-bottom: 14px; border-bottom: 1px solid rgba(100,100,255,0.2); }
-  .tds-bank-icon { width: 40px; height: 40px; background: linear-gradient(135deg,#0050A0,#0080FF); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; }
-  .tds-bank-name { font-family: 'Rajdhani', sans-serif; font-weight: 700; font-size: 15px; color: #89C4FF; letter-spacing: 2px; text-align: left; }
-  .tds-bank-sub { font-size: 9px; color: rgba(100,160,255,0.4); letter-spacing: 1px; text-align: left; }
-
-  .tds-title { font-size: 12px; color: rgba(100,160,255,0.6); letter-spacing: 3px; text-transform: uppercase; margin-bottom: 6px; }
-  .tds-amount { font-family: 'Cinzel Decorative', serif; font-size: 30px; color: #89C4FF; margin-bottom: 4px; text-shadow: 0 0 20px rgba(100,200,255,0.5); }
-  .tds-desc { font-size: 12px; color: rgba(100,160,255,0.45); letter-spacing: 1px; margin-bottom: 20px; }
-
-  .tds-otp-label { font-size: 12px; color: rgba(100,160,255,0.6); letter-spacing: 2px; margin-bottom: 6px; text-transform: uppercase; }
-  .tds-sms-row { font-size: 13px; color: rgba(100,160,255,0.55); margin-bottom: 14px; }
-  .tds-otp-boxes { display: flex; gap: 8px; justify-content: center; margin-bottom: 14px; }
-  .tds-otp-box { width: 42px; height: 50px; background: rgba(0,20,80,0.8); border: 2px solid rgba(100,100,255,0.3); border-radius: 10px; color: #89C4FF; font-size: 22px; font-weight: 700; text-align: center; outline: none; transition: all 0.2s; font-family: 'Courier New', monospace; }
-  .tds-otp-box:focus { border-color: rgba(0,200,255,0.8); box-shadow: 0 0 15px rgba(0,160,255,0.3); background: rgba(0,30,100,0.9); }
-  .tds-otp-box.filled { border-color: rgba(0,200,200,0.6); }
-  .tds-resend { font-size: 11px; color: rgba(100,160,255,0.35); margin-bottom: 18px; }
-
-  .btn-tds-confirm { width: 100%; padding: 13px; background: linear-gradient(135deg,#004DB3,#0066FF,#0088FF); border: none; border-radius: 10px; color: #fff; font-family: 'Rajdhani', sans-serif; font-size: 15px; font-weight: 700; letter-spacing: 3px; cursor: pointer; transition: all 0.2s; box-shadow: 0 3px 15px rgba(0,100,255,0.4); }
-  .btn-tds-confirm:hover { transform: translateY(-1px); box-shadow: 0 5px 25px rgba(0,100,255,0.6); }
-  .btn-tds-confirm:disabled { opacity: 0.35; cursor: not-allowed; transform: none; }
-
-  .tds-processing { display: none; }
-  .tds-processing.show { display: block; }
-  .tds-input-area.hide { display: none; }
-  .tds-spinner { width: 48px; height: 48px; border: 3px solid rgba(100,100,255,0.2); border-top-color: #0088FF; border-radius: 50%; animation: spin360 0.8s linear infinite; margin: 0 auto 16px; }
-  @keyframes spin360 { 100%{transform:rotate(360deg)} }
-  .tds-progress-bar { width: 100%; height: 4px; background: rgba(100,100,255,0.2); border-radius: 2px; overflow: hidden; margin-bottom: 10px; }
-  .tds-progress-fill { height: 100%; background: linear-gradient(90deg,#0044FF,#00CCFF); border-radius: 2px; width: 0%; }
-  .tds-status-text { font-size: 13px; color: rgba(100,160,255,0.7); letter-spacing: 2px; animation: statusPulse 1s ease-in-out infinite; }
-  @keyframes statusPulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
-
-  .tds-success { display: none; }
-  .tds-success.show { display: block; }
-  .tds-check { font-size: 64px; animation: checkPop 0.5s cubic-bezier(0.34,1.56,0.64,1); margin-bottom: 10px; }
-  @keyframes checkPop { 0%{transform:scale(0);opacity:0} 100%{transform:scale(1);opacity:1} }
-  .tds-success-title { font-family: 'Cinzel Decorative', serif; font-size: 22px; color: var(--green); text-shadow: 0 0 20px rgba(0,255,136,0.6); margin-bottom: 6px; }
-  .tds-success-sub { font-size: 13px; color: rgba(100,255,160,0.6); letter-spacing: 2px; }
+.btn-withdraw{width:100%;padding:9px;background:linear-gradient(135deg,#004020,#006030,#00AA55,#006030,#004020);background-size:200% 200%;border:1px solid rgba(0,200,80,0.4);border-radius:11px;color:#C0FFD8;font-family:'Rajdhani',sans-serif;font-size:13px;font-weight:700;cursor:pointer;letter-spacing:3px;text-transform:uppercase;transition:all 0.2s;animation:wbp 4s ease-in-out infinite;}
+@keyframes wbp{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+.btn-withdraw:hover{transform:translateY(-1px);box-shadow:0 4px 18px rgba(0,200,80,0.35);}
+/* WITHDRAW MODAL */
+.wd-overlay{position:fixed;inset:0;z-index:400;background:rgba(0,10,0,0.92);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.3s;}
+.wd-overlay.show{opacity:1;pointer-events:auto;}
+.wd-box{background:linear-gradient(145deg,#041208,#081A10);border:2px solid rgba(0,200,80,0.35);border-radius:18px;padding:24px;width:min(380px,92vw);box-shadow:0 0 60px rgba(0,150,60,0.25);position:relative;animation:mIn 0.4s cubic-bezier(0.34,1.56,0.64,1);}
+.wd-title{font-family:'Cinzel Decorative',serif;font-size:15px;color:#00DD66;text-align:center;margin-bottom:4px;letter-spacing:2px;}
+.wd-sub{text-align:center;font-size:10px;color:rgba(0,200,80,0.4);letter-spacing:3px;text-transform:uppercase;margin-bottom:18px;}
+.wd-balance-row{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:rgba(0,0,0,0.4);border:1px solid rgba(0,200,80,0.15);border-radius:9px;margin-bottom:14px;}
+.wd-bal-label{font-size:10px;letter-spacing:3px;color:rgba(0,200,80,0.5);text-transform:uppercase;}
+.wd-bal-val{font-family:'Cinzel Decorative',serif;font-size:20px;color:#00FF88;text-shadow:0 0 15px rgba(0,255,136,0.5);}
+.wd-amounts{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap;}
+.wd-amt{flex:1;min-width:70px;padding:8px 4px;background:rgba(0,100,50,0.2);border:1px solid rgba(0,200,80,0.2);border-radius:7px;color:#00CC66;font-family:'Rajdhani',sans-serif;font-size:12px;font-weight:600;text-align:center;cursor:pointer;transition:all 0.15s;}
+.wd-amt:hover,.wd-amt.active{background:rgba(0,150,70,0.35);border-color:rgba(0,255,100,0.5);color:#00FF88;}
+.wd-custom{width:100%;margin-bottom:14px;}
+.wd-custom-inp{width:100%;padding:10px 14px;background:rgba(0,20,10,0.7);border:1px solid rgba(0,200,80,0.25);border-radius:9px;color:#00FF88;font-family:'Cinzel Decorative',serif;font-size:18px;outline:none;text-align:center;transition:all 0.2s;}
+.wd-custom-inp:focus{border-color:rgba(0,255,100,0.6);box-shadow:0 0 12px rgba(0,200,80,0.2);}
+.wd-card-row{margin-bottom:14px;}
+.wd-card-inp{width:100%;padding:9px 14px;background:rgba(0,20,10,0.7);border:1px solid rgba(0,200,80,0.2);border-radius:9px;color:#C0FFD8;font-family:'Rajdhani',sans-serif;font-size:14px;font-weight:600;outline:none;letter-spacing:2px;transition:all 0.2s;}
+.wd-card-inp::placeholder{color:rgba(0,200,80,0.2);}
+.wd-card-inp:focus{border-color:rgba(0,255,100,0.5);}
+.btn-wd-confirm{width:100%;padding:12px;background:linear-gradient(135deg,#004D20,#007730,#00AA44,#007730,#004D20);background-size:200%;border:none;border-radius:10px;color:#C0FFD8;font-family:'Cinzel Decorative',serif;font-size:14px;font-weight:700;cursor:pointer;letter-spacing:3px;box-shadow:0 4px 18px rgba(0,150,60,0.4);transition:all 0.2s;}
+.btn-wd-confirm:hover{transform:translateY(-1px);box-shadow:0 6px 28px rgba(0,200,80,0.5);}
+.btn-wd-confirm:disabled{opacity:0.4;cursor:not-allowed;transform:none;}
+.wd-error{font-size:12px;color:#FF6B6B;min-height:14px;text-align:center;margin-top:6px;}
+.wd-proc{display:none;text-align:center;padding:12px 0;}
+.wd-proc.show{display:block;}
+.wd-spinner{width:38px;height:38px;border:3px solid rgba(0,200,80,0.2);border-top-color:#00AA44;border-radius:50%;animation:sp360 0.8s linear infinite;margin:0 auto 10px;}
+.wd-stat{font-size:11px;color:rgba(0,200,80,0.7);letter-spacing:2px;}
+.wd-ok{display:none;text-align:center;padding:8px 0;}
+.wd-ok.show{display:block;}
+.wd-check{font-size:48px;animation:chkPop 0.5s cubic-bezier(0.34,1.56,0.64,1);margin-bottom:6px;}
+.wd-ok-title{font-family:'Cinzel Decorative',serif;font-size:16px;color:#00FF88;margin-bottom:4px;}
+.wd-ok-sub{font-size:11px;color:rgba(0,255,136,0.5);letter-spacing:2px;}
+/* CASINO BALANCE */
+.casino-balance{display:flex;align-items:center;justify-content:center;gap:5px;padding:4px 12px;background:rgba(0,0,0,0.4);border:1px solid rgba(255,215,0,0.15);border-radius:6px;font-size:11px;margin-left:8px;letter-spacing:1px;white-space:nowrap;}
+.casino-balance .value{font-weight:700;color:#FFAA00;text-shadow:0 0 8px rgba(255,170,0,0.4);}
 </style>
 </head>
 <body>
 <div class="bg"></div>
 <div class="bg-stars" id="bgStars"></div>
+
+<!-- AUTH SCREEN -->
+<div class="auth-screen" id="authScreen">
+  <div class="auth-box">
+    <div class="auth-logo">⚜ LIPSI LUDIK ⚜</div>
+    <div class="auth-tagline">CASINO· для пидоров</div>
+    <div class="auth-tabs">
+      <button class="auth-tab active" id="tabLogin" onclick="switchTab('login')">ВОЙТИ</button>
+      <button class="auth-tab" id="tabReg" onclick="switchTab('reg')">РЕГИСТРАЦИЯ</button>
+    </div>
+    <div class="auth-form" id="formLogin">
+      <div class="auth-label">Ник</div>
+      <input class="auth-input" id="loginNick" type="text" placeholder="ваш ник" maxlength="20">
+      <div class="auth-label">Пароль</div>
+      <input class="auth-input" id="loginPass" type="password" placeholder="пароль">
+      <div class="auth-error" id="loginError"></div>
+      <div class="auth-loading" id="loginLoad"></div>
+      <button class="auth-btn" id="loginBtn" onclick="doLogin()">🎰 ВОЙТИ В КАЗИНО</button>
+    </div>
+    <div class="auth-form hidden" id="formReg">
+      <div class="auth-label">Придумай ник</div>
+      <input class="auth-input" id="regNick" type="text" placeholder="уникальный ник" maxlength="20">
+      <div class="auth-label">Пароль</div>
+      <input class="auth-input" id="regPass" type="password" placeholder="минимум 4 символа">
+      <div class="auth-label">Повтори пароль</div>
+      <input class="auth-input" id="regPass2" type="password" placeholder="повтори пароль">
+      <div class="auth-error" id="regError"></div>
+      <div class="auth-loading" id="regLoad"></div>
+      <button class="auth-btn" id="regBtn" onclick="doRegister()">🎉 СОЗДАТЬ АККАУНТ</button>
+    </div>
+    <div class="auth-hint">🔥 Стартовий баланс 100 000 💰 · Данные в frosjkee</div>
+  </div>
+</div>
 
 <!-- WIN OVERLAY -->
 <div class="win-overlay" id="winOverlay" onclick="closeWin()">
@@ -210,14 +338,14 @@
     <div class="win-title" id="winTitle">ПОБЕДА!</div>
     <div class="win-amount" id="winAmount">+500 💰</div>
     <div class="win-combo" id="winCombo">ТРИ СЕМЁРКИ!</div>
-    <div class="win-tap">— Нажмите чтобы продолжить —</div>
+    <div class="win-tap">— нажмите чтобы продолжить —</div>
   </div>
 </div>
 
 <!-- DEPOSIT MODAL -->
 <div class="modal-overlay" id="depositModal">
   <div class="modal-box">
-    <button class="btn-modal-close" onclick="closeDeposit()">✕</button>
+    <button class="btn-mclose" onclick="closeDeposit()">✕</button>
     <div class="bank-logos">
       <span class="bank-logo visa">VISA</span>
       <span class="bank-logo mc">🔴🟡</span>
@@ -225,640 +353,596 @@
       <span class="ssl-badge">🔒 SSL 256</span>
     </div>
     <div class="modal-title">💳 Пополнение счёта</div>
-    <div class="modal-subtitle">Защищённый платёж</div>
-    <div class="deposit-amounts">
-      <div class="dep-amt active" onclick="selectDepAmt(this,5000)">5 000</div>
-      <div class="dep-amt" onclick="selectDepAmt(this,10000)">10 000</div>
-      <div class="dep-amt" onclick="selectDepAmt(this,25000)">25 000</div>
-      <div class="dep-amt" onclick="selectDepAmt(this,50000)">50 000</div>
+    <div class="modal-sub">Защищённый платёж</div>
+    <div class="dep-amounts">
+      <div class="dep-amt active" onclick="selAmt(this,10000)">10 000</div>
+      <div class="dep-amt" onclick="selAmt(this,25000)">25 000</div>
+      <div class="dep-amt" onclick="selAmt(this,50000)">50 000</div>
+      <div class="dep-amt" onclick="selAmt(this,100000)">100 000</div>
     </div>
     <div class="card-preview">
       <div class="card-chip"></div>
-      <div class="card-number-preview" id="prevNumber">•••• •••• •••• ••••</div>
+      <div class="card-num-prev" id="prevNum">•••• •••• •••• ••••</div>
       <div class="card-info-row">
-        <div>
-          <div style="font-size:9px;color:rgba(255,255,255,0.4);letter-spacing:2px;margin-bottom:2px;">ИМЯ</div>
-          <div class="card-holder-preview" id="prevHolder">ВАШЕ ИМЯ</div>
-        </div>
-        <div style="text-align:right">
-          <div style="font-size:9px;color:rgba(255,255,255,0.4);letter-spacing:2px;margin-bottom:2px;">СРОК</div>
-          <div class="card-expiry-preview" id="prevExpiry">ММ/ГГ</div>
-        </div>
+        <div><div style="font-size:8px;color:rgba(255,255,255,0.38);margin-bottom:2px;">ИМЯ</div><div class="card-holder-prev" id="prevHolder">ВАШЕ ИМЯ</div></div>
+        <div style="text-align:right"><div style="font-size:8px;color:rgba(255,255,255,0.38);margin-bottom:2px;">СРОК</div><div class="card-exp-prev" id="prevExp">ММ/ГГ</div></div>
       </div>
-      <div class="card-logo" id="cardLogo">VISA</div>
+      <div class="card-logo-badge" id="cardLogo">VISA</div>
     </div>
-    <div class="form-group">
-      <label class="form-label">Номер карты</label>
-      <input class="form-input" id="cardNumber" type="text" placeholder="0000 0000 0000 0000" maxlength="19" oninput="formatCard(this)" autocomplete="cc-number">
-    </div>
+    <div class="form-group"><label class="form-label">Номер карты</label><input class="form-input" id="cardNum" type="text" placeholder="0000 0000 0000 0000" maxlength="19" oninput="fmtCard(this)"></div>
     <div class="form-row">
-      <div class="form-group">
-        <label class="form-label">Срок действия</label>
-        <input class="form-input" id="cardExpiry" type="text" placeholder="ММ / ГГ" maxlength="7" oninput="formatExpiry(this)" autocomplete="cc-exp">
-      </div>
-      <div class="form-group">
-        <label class="form-label">CVV / CVC</label>
-        <input class="form-input" id="cardCvv" type="password" placeholder="•••" maxlength="3" autocomplete="cc-csc">
-      </div>
+      <div class="form-group"><label class="form-label">Срок</label><input class="form-input" id="cardExp" type="text" placeholder="ММ/ГГ" maxlength="7" oninput="fmtExp(this)"></div>
+      <div class="form-group"><label class="form-label">CVV</label><input class="form-input" id="cardCvv" type="password" placeholder="•••" maxlength="3"></div>
     </div>
-    <div class="form-group">
-      <label class="form-label">Имя держателя</label>
-      <input class="form-input" id="cardHolder" type="text" placeholder="IVAN PETROV" oninput="updateHolder(this)" style="text-transform:uppercase;" autocomplete="cc-name">
-    </div>
-    <button class="btn-pay" id="payBtn" onclick="startPayment()">🔒 Оплатить <span id="payAmountLabel">5 000 ₴</span></button>
-    <div class="security-strip">
-      <span class="sec-item">🛡️ 3-D Secure</span>
-      <span style="color:rgba(100,100,255,0.2)">•</span>
-      <span class="sec-item">🔐 256-bit</span>
-      <span style="color:rgba(100,100,255,0.2)">•</span>
-      <span class="sec-item">✅ PCI DSS</span>
-    </div>
+    <div class="form-group"><label class="form-label">Имя</label><input class="form-input" id="cardName" type="text" placeholder="IVAN PETROV" oninput="fmtName(this)" style="text-transform:uppercase;"></div>
+    <button class="btn-pay" onclick="startPay()">🔒 Оплатити <span id="payLbl">10 000 ₴</span></button>
+    <div class="modal-sec"><span class="sec-item">🛡️ 3-D Secure</span><span style="color:rgba(100,100,255,0.1)">•</span><span class="sec-item">🔐 256-bit</span><span style="color:rgba(100,100,255,0.1)">•</span><span class="sec-item">✅ PCI DSS</span></div>
   </div>
 </div>
 
 <!-- 3DS MODAL -->
 <div class="tds-overlay" id="tdsModal">
   <div class="tds-box">
-    <div class="tds-bank-header">
-      <div class="tds-bank-icon">🏦</div>
-      <div>
-        <div class="tds-bank-name">PRIVATBANK ONLINE</div>
-        <div class="tds-bank-sub">VERIFIED BY VISA / MC SECURECODE</div>
-      </div>
-    </div>
-    <div class="tds-title">Подтверждение оплаты</div>
-    <div class="tds-amount" id="tdsAmount">5 000 ₴</div>
-    <div class="tds-desc">Golden Crown Casino · Пополнение счёта</div>
-
-    <div class="tds-input-area" id="tdsInputArea">
-      <div class="tds-otp-label">Код из SMS</div>
-      <div class="tds-sms-row">📱 +3 (•••) •••-••-<span id="tdsPhoneLast">27</span></div>
-      <div class="tds-otp-boxes">
-        <input class="tds-otp-box" maxlength="1" type="text" inputmode="numeric" oninput="otpInput(this,0)">
-        <input class="tds-otp-box" maxlength="1" type="text" inputmode="numeric" oninput="otpInput(this,1)">
-        <input class="tds-otp-box" maxlength="1" type="text" inputmode="numeric" oninput="otpInput(this,2)">
-        <input class="tds-otp-box" maxlength="1" type="text" inputmode="numeric" oninput="otpInput(this,3)">
-        <input class="tds-otp-box" maxlength="1" type="text" inputmode="numeric" oninput="otpInput(this,4)">
-        <input class="tds-otp-box" maxlength="1" type="text" inputmode="numeric" oninput="otpInput(this,5)">
+    <div class="tds-bank-hdr"><div class="tds-bank-icon">🏦</div><div><div class="tds-bank-name">PRIVATBANK ONLINE</div><div class="tds-bank-sub">VERIFIED BY VISA / MASTERCARD</div></div></div>
+    <div class="tds-ttl">Подтверждение оплаты</div>
+    <div class="tds-amt" id="tdsAmt">10 000 ₴</div>
+    <div class="tds-desc">LIPSI LUDIK CASINO · Пополнение</div>
+    <div class="tds-inp-area" id="tdsInp">
+      <div class="tds-otp-lbl">Код из SMS</div>
+      <div class="tds-sms-row">📱 +38 (0••) •••-••-<span id="tdsPhone">27</span></div>
+      <div class="tds-boxes">
+        <input class="tds-box-inp" maxlength="1" type="text" inputmode="numeric" oninput="otpIn(this,0)">
+        <input class="tds-box-inp" maxlength="1" type="text" inputmode="numeric" oninput="otpIn(this,1)">
+        <input class="tds-box-inp" maxlength="1" type="text" inputmode="numeric" oninput="otpIn(this,2)">
+        <input class="tds-box-inp" maxlength="1" type="text" inputmode="numeric" oninput="otpIn(this,3)">
+        <input class="tds-box-inp" maxlength="1" type="text" inputmode="numeric" oninput="otpIn(this,4)">
+        <input class="tds-box-inp" maxlength="1" type="text" inputmode="numeric" oninput="otpIn(this,5)">
       </div>
       <div class="tds-resend">Повторная отправка через <span id="tdsTimer">60</span>с</div>
-      <button class="btn-tds-confirm" id="tdsConfirmBtn" onclick="confirm3ds()" disabled>ПОДТВЕРДИТЬ</button>
+      <button class="btn-tds" id="tdsBtn" onclick="confirmPay()" disabled>ПОДТВЕРДИТЬ</button>
     </div>
+    <div class="tds-proc" id="tdsProc"><div class="tds-spinner"></div><div class="tds-prog-bar"><div class="tds-prog-fill" id="tdsProg"></div></div><div class="tds-stat" id="tdsStat">Проверка данных...</div></div>
+    <div class="tds-ok" id="tdsOk"><div class="tds-check">✅</div><div class="tds-ok-title">Оплата прошла!</div><div class="tds-ok-sub" id="tdsOkSub">Баланс пополнен</div></div>
+  </div>
+</div>
 
-    <div class="tds-processing" id="tdsProcessing">
-      <div class="tds-spinner"></div>
-      <div class="tds-progress-bar"><div class="tds-progress-fill" id="tdsProg"></div></div>
-      <div class="tds-status-text" id="tdsStatusText">Проверка данных...</div>
+<!-- MAIN APP -->
+<div class="app" id="mainApp" style="display:none;">
+  <div class="top-bar">
+    <div class="top-bar-logo">⚜ LIPSI LUDIK CASINO ⚜</div>
+    <div class="top-bar-right">
+      <div class="casino-balance" id="casinoBalance">
+        <span>🏦 Счет в банке:</span>
+        <span class="value" id="casinoBalanceValue">100,000</span>
+        <span>💰</span>
+      </div>
+      <div class="radio-player" id="radioPlayer" onclick="toggleRadio()">
+        <button class="radio-play-btn" id="radioBtn" onclick="event.stopPropagation();toggleRadio()">▶</button>
+        <span class="radio-label">БУТЫРКА FM</span>
+        <div class="radio-bars paused" id="radioBars"><span></span><span></span><span></span></div>
+      </div>
+      <span class="user-nick-badge" id="topNick">—</span>
+      <span class="user-bal-badge" id="topBal">0 💰</span>
+      <button class="btn-logout" onclick="doLogout()">ВЫЙТИ</button>
     </div>
+  </div>
 
-    <div class="tds-success" id="tdsSuccess">
-      <div class="tds-check">✅</div>
-      <div class="tds-success-title">Оплата прошла!</div>
-      <div class="tds-success-sub" id="tdsSuccessText">Баланс пополнен</div>
+  <div class="left-panel">
+    <div class="panel-header"><div style="font-size:14px;margin-bottom:3px;">🏆</div><div class="panel-title">Топ лудиков</div></div>
+    <div class="leaderboard" id="leaderboard"><div class="lb-empty">Загрузка...</div></div>
+  </div>
+
+  <div class="center-panel">
+    <div class="casino">
+      <div class="header"><h1>⚜ LIPSI LUDIK ⚜</h1><div class="subtitle">Casino Royale Slots</div></div>
+      <div class="machine">
+        <div class="corner corner-tl"></div><div class="corner corner-tr"></div><div class="corner corner-bl"></div><div class="corner corner-br"></div>
+        <div class="jackpot-bar"><div class="jackpot-label">🏆 JACKPOT</div><div class="jackpot-amount" id="jpAmt">250,000</div></div>
+        <div class="divider" style="margin:9px 0;"></div>
+        <div class="lights-strip"><div class="light"></div><div class="light"></div><div class="light"></div><div class="light"></div><div class="light"></div><div class="light"></div><div class="light"></div><div class="light"></div><div class="light"></div><div class="light"></div><div class="light"></div><div class="light"></div></div>
+        <div class="balance-bar">
+          <div><div class="balance-label">Баланс</div><div class="balance-amount" id="balDisp">10,000</div></div>
+          <div style="text-align:right"><div class="balance-label">Последний выигрыш</div><div class="balance-amount" id="lastWin" style="font-size:14px;color:var(--green)">—</div></div>
+        </div>
+        <div class="reels-window">
+          <div class="win-line"></div>
+          <div class="reels-container" id="reelsCont">
+            <div class="reel"><div class="reel-inner" id="inner0"></div></div>
+            <div class="reel"><div class="reel-inner" id="inner1"></div></div>
+            <div class="reel"><div class="reel-inner" id="inner2"></div></div>
+            <div class="reel"><div class="reel-inner" id="inner3"></div></div>
+            <div class="reel"><div class="reel-inner" id="inner4"></div></div>
+          </div>
+        </div>
+        <div class="lights-strip" style="margin-top:3px;"><div class="light"></div><div class="light"></div><div class="light"></div><div class="light"></div><div class="light"></div><div class="light"></div><div class="light"></div><div class="light"></div><div class="light"></div><div class="light"></div><div class="light"></div><div class="light"></div></div>
+        <div class="divider" style="margin:9px 0;"></div>
+        <div class="controls">
+          <div class="bet-row"><div class="bet-label">Ставка:</div><div class="bet-display" id="betDisp">1,000</div><div class="bet-label">💰</div></div>
+          <div class="bet-buttons">
+            <button class="btn-bet" onclick="setBet(100)" data-v="100">100</button>
+            <button class="btn-bet" onclick="setBet(500)" data-v="500">500</button>
+            <button class="btn-bet active" onclick="setBet(1000)" data-v="1000">1,000</button>
+            <button class="btn-bet" onclick="setBet(5000)" data-v="5000">5,000</button>
+            <button class="btn-bet" onclick="setBetAll()" data-v="all">ВСЁ</button>
+          </div>
+          <div class="message" id="msg">🎰 Удачи пидор!</div>
+          <button class="btn-spin" id="spinBtn" onclick="spin()">🎰 КРУТИТЬ! 🎰</button>
+          <button class="btn-deposit" onclick="openDep()">💳 ПОПОВНИТИ РАХУНОК</button>
+          <button class="btn-withdraw" onclick="openWithdraw()">💸 ВИВЕСТИ КОШТИ</button>
+        </div>
+      </div>
+      <div class="paytable">
+        <div class="paytable-title">📋 Таблица выплат</div>
+        <div class="paytable-grid">
+          <div class="pay-row"><span class="pay-symbols">💎×5</span><span class="pay-mult">×500</span></div>
+          <div class="pay-row"><span class="pay-symbols">7️⃣×5</span><span class="pay-mult">×200</span></div>
+          <div class="pay-row"><span class="pay-symbols">👑×5</span><span class="pay-mult">×100</span></div>
+          <div class="pay-row"><span class="pay-symbols">🍀×5</span><span class="pay-mult">×80</span></div>
+          <div class="pay-row"><span class="pay-symbols">⭐×5/4/3</span><span class="pay-mult">×40/20/12</span></div>
+          <div class="pay-row"><span class="pay-symbols">🎰×5/4/3</span><span class="pay-mult">×30/15/8</span></div>
+          <div class="pay-row"><span class="pay-symbols">💰×5/4/3</span><span class="pay-mult">×20/10/5</span></div>
+          <div class="pay-row"><span class="pay-symbols">🍒×3/2</span><span class="pay-mult">×2/×1.5</span></div>
+        </div>
+      </div>
     </div>
+  </div>
 
-    <div class="security-strip">
-      <span class="sec-item">🔒 Защита банка</span>
-      <span style="color:rgba(100,100,255,0.2)">•</span>
-      <span class="sec-item">⏱️ Сессия 10 мин</span>
+  <div class="right-panel">
+    <div class="chat-header-bar">
+      <div style="display:flex;align-items:center;gap:6px;"><span>💬</span><div class="chat-title">Чат</div></div>
+      <div class="online-count"><div class="online-dot"></div><span id="onlineCnt">0</span> онлайн</div>
+    </div>
+    <div class="chat-messages" id="chatMsgs"></div>
+    <div class="chat-input-area">
+      <input class="chat-input" id="chatInp" type="text" placeholder="Сообщение..." maxlength="200" onkeydown="if(event.key==='Enter')sendChat()">
+      <button class="chat-send" onclick="sendChat()">➤</button>
     </div>
   </div>
 </div>
 
-<!-- MACHINE -->
-<div class="casino">
-  <div class="header">
-    <h1>⚜ LIPSI CROWN ⚜</h1>
-    <div class="subtitle">Casino Royale Slots</div>
-  </div>
-  <div class="machine">
-    <div class="corner corner-tl"></div><div class="corner corner-tr"></div>
-    <div class="corner corner-bl"></div><div class="corner corner-br"></div>
-    <div class="jackpot-bar">
-      <div class="jackpot-label">🏆 JACKPOT</div>
-      <div class="jackpot-amount" id="jackpotAmount">250,000</div>
-    </div>
-    <div class="divider" style="margin:12px 0;"></div>
-    <div class="lights-strip">
-      <div class="light"></div><div class="light"></div><div class="light"></div>
-      <div class="light"></div><div class="light"></div><div class="light"></div>
-      <div class="light"></div><div class="light"></div><div class="light"></div>
-      <div class="light"></div><div class="light"></div><div class="light"></div>
-    </div>
-    <div class="balance-bar">
-      <div>
-        <div class="balance-label">Баланс</div>
-        <div class="balance-amount" id="balanceDisplay">10,000</div>
-      </div>
-      <div style="text-align:right">
-        <div class="balance-label">Последний выигрыш</div>
-        <div class="balance-amount" id="lastWin" style="font-size:16px;color:var(--green)">—</div>
-      </div>
-    </div>
-    <div class="reels-window">
-      <div class="win-line"></div>
-      <div class="reels-container" id="reelsContainer">
-        <div class="reel"><div class="reel-inner" id="inner0"></div></div>
-        <div class="reel"><div class="reel-inner" id="inner1"></div></div>
-        <div class="reel"><div class="reel-inner" id="inner2"></div></div>
-        <div class="reel"><div class="reel-inner" id="inner3"></div></div>
-        <div class="reel"><div class="reel-inner" id="inner4"></div></div>
-      </div>
-    </div>
-    <div class="lights-strip" style="margin-top:4px;margin-bottom:0;">
-      <div class="light"></div><div class="light"></div><div class="light"></div>
-      <div class="light"></div><div class="light"></div><div class="light"></div>
-      <div class="light"></div><div class="light"></div><div class="light"></div>
-      <div class="light"></div><div class="light"></div><div class="light"></div>
-    </div>
-    <div class="divider" style="margin:12px 0;"></div>
-    <div class="controls">
-      <div class="bet-row">
-        <div class="bet-label">Ставка:</div>
-        <div class="bet-display" id="betDisplay">1,000</div>
-        <div class="bet-label">💰</div>
-      </div>
-      <div class="bet-buttons">
-        <button class="btn-bet" onclick="setBet(100)" data-bet="100">100</button>
-        <button class="btn-bet" onclick="setBet(500)" data-bet="500">500</button>
-        <button class="btn-bet active" onclick="setBet(1000)" data-bet="1000">1,000</button>
-        <button class="btn-bet" onclick="setBet(5000)" data-bet="5000">5,000</button>
-        <button class="btn-bet" onclick="setBetAll()" data-bet="all">ВСЁ</button>
-      </div>
-      <div class="message" id="message">🎰 Удачи ебучий лудик!</div>
-      <button class="btn-spin" id="spinBtn" onclick="spin()">🎰 КРУТИТЬ! 🎰</button>
-      <button class="btn-deposit" onclick="openDeposit()">💳 ПОПОЛНИТЬ СЧЁТ</button>
-    </div>
-  </div>
-  <div class="paytable">
-    <div class="paytable-title">📋 Таблица выплат</div>
-    <div class="paytable-grid">
-      <div class="pay-row"><span class="pay-symbols">💎💎💎💎💎</span><span class="pay-mult">×500</span></div>
-      <div class="pay-row"><span class="pay-symbols">7️⃣7️⃣7️⃣7️⃣7️⃣</span><span class="pay-mult">×200</span></div>
-      <div class="pay-row"><span class="pay-symbols">👑👑👑👑👑</span><span class="pay-mult">×100</span></div>
-      <div class="pay-row"><span class="pay-symbols">🍀🍀🍀🍀🍀</span><span class="pay-mult">×80</span></div>
-      <div class="pay-row"><span class="pay-symbols">⭐×5, ×4, ×3</span><span class="pay-mult">×40/20/12</span></div>
-      <div class="pay-row"><span class="pay-symbols">🎰×5, ×4, ×3</span><span class="pay-mult">×30/15/8</span></div>
-      <div class="pay-row"><span class="pay-symbols">💰×5, ×4, ×3</span><span class="pay-mult">×20/10/5</span></div>
-      <div class="pay-row"><span class="pay-symbols">🍒×3/×2</span><span class="pay-mult">×2 / ×1.5</span></div>
-    </div>
-  </div>
-</div>
+<script type="module">
+import{initializeApp}from'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
+import{getDatabase,ref,set,get,push,onValue,serverTimestamp,onDisconnect,remove,query,orderByChild,limitToLast}from'https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js';
 
-<script>
-// =========== STATE ===========
-let balance = 10000, bet = 1000, spinning = false, jackpot = 250000, depAmount = 5000;
+const FB={apiKey:"AIzaSyB7dI9IOqQpXIV-4kyPzaUbo9bzd95P36k",authDomain:"alliance-f9696.firebaseapp.com",databaseURL:"https://alliance-f9696-default-rtdb.europe-west1.firebasedatabase.app",projectId:"alliance-f9696",storageBucket:"alliance-f9696.firebasestorage.app",messagingSenderId:"571838881581",appId:"1:571838881581:web:e4f669775a87c3643d3da4"};
+const app=initializeApp(FB);
+const db=getDatabase(app);
 
-const WEIGHTED = [
-  ...Array(5).fill('🍒'), ...Array(4).fill('🍋'), ...Array(3).fill('💰'),
-  ...Array(3).fill('⭐'), ...Array(2).fill('🎰'), ...Array(2).fill('🍀'),
-  '👑','👑','7️⃣','💎'
-];
+// UTILS
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function hp(s){let h=5381;for(let i=0;i<s.length;i++)h=((h<<5)+h)^s.charCodeAt(i);return(h>>>0).toString(36);}
+function nc(n){const c=['#FF6B6B','#FFD93D','#6BCB77','#4D96FF','#FF6FC8','#C77DFF','#FF9F43','#00D2D3','#48DBFB','#FF9FF3'];let h=0;for(let ch of n)h=(h*31+ch.charCodeAt(0))&0xffffffff;return c[Math.abs(h)%c.length];}
 
-const COMBOS = [
-  { syms:['💎','💎','💎','💎','💎'], mult:500, name:'ОХУЕТЬ МЕГА ДЖЕКПОТ!!!', type:'jackpot' },
-  { syms:['7️⃣','7️⃣','7️⃣','7️⃣','7️⃣'], mult:200, name:'ПЯТЬ СЕМЁРОК!', type:'mega' },
-  { syms:['👑','👑','👑','👑','👑'], mult:100, name:'ПЯТЬ КОРОН!', type:'mega' },
-  { syms:['🍀','🍀','🍀','🍀','🍀'], mult:80, name:'ПЯТЬ КЛЕВЕРОВ!', type:'big' },
-  { sym:'⭐', count:5, mult:40, name:'ПЯТЬ ЗВЁЗД!', type:'big' },
-  { sym:'⭐', count:4, mult:20, name:'ЧЕТЫРЕ ЗВЕЗДЫ!', type:'big' },
-  { sym:'⭐', count:3, mult:12, name:'ТРИ ЗВЕЗДЫ!', type:'good' },
-  { sym:'🎰', count:5, mult:30, name:'ПЯТЬ СЛОТОВ!', type:'big' },
-  { sym:'🎰', count:4, mult:15, name:'ЧЕТЫРЕ СЛОТА!', type:'good' },
-  { sym:'🎰', count:3, mult:8, name:'ТРИ СЛОТА!', type:'good' },
-  { sym:'💰', count:5, mult:20, name:'ПЯТЬ МОНЕТ!', type:'big' },
-  { sym:'💰', count:4, mult:10, name:'ЧЕТЫРЕ МОНЕТЫ!', type:'good' },
-  { sym:'💰', count:3, mult:5, name:'ТРИ МОНЕТЫ!', type:'good' },
-  { sym:'🍋', count:5, mult:10, name:'ПЯТЬ ЛИМОНОВ!', type:'good' },
-  { sym:'🍋', count:4, mult:6, name:'ЧЕТЫРЕ ЛИМОНА!', type:'small' },
-  { sym:'🍋', count:3, mult:3, name:'ТРИ ЛИМОНА!', type:'small' },
-  { sym:'🍒', count:5, mult:5, name:'ПЯТЬ ВИШЕН!', type:'good' },
-  { sym:'🍒', count:4, mult:3, name:'ЧЕТЫРЕ ВИШНИ!', type:'small' },
-  { sym:'🍒', count:3, mult:2, name:'ТРИ ВИШНИ!', type:'small' },
-  { sym:'🍒', count:2, mult:1.5, name:'ДВЕ ВИШНИ!', type:'tiny' },
-];
+let CU=null,CC=null,myORef=null,balance=0,bet=1000,spinning=false,jp=250000,depAmt=10000;
+let casinoBalance = 100000; // Баланс кассы казино (из которого пополняют)
 
-// =========== AUDIO — приятные мягкие звуки ===========
-const AudioCtx = window.AudioContext || window.webkitAudioContext;
-let ctx;
-function ensureAudio() { if (!ctx) ctx = new AudioCtx(); }
-
-// Мягкий мелодичный тон с реверберацией
-function mTone(freq, startTime, dur, vol=0.22, type='sine') {
-  if (!ctx) return;
-  const o = ctx.createOscillator();
-  const g = ctx.createGain();
-  const comp = ctx.createDynamicsCompressor();
-  comp.threshold.value = -18; comp.ratio.value = 3;
-  o.connect(g); g.connect(comp); comp.connect(ctx.destination);
-  o.type = type; o.frequency.value = freq;
-  const t = ctx.currentTime + startTime;
-  g.gain.setValueAtTime(0, t);
-  g.gain.linearRampToValueAtTime(vol, t + 0.015);
-  g.gain.setValueAtTime(vol, t + dur * 0.6);
-  g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
-  o.start(t); o.stop(t + dur + 0.05);
-}
-
-// Двойная гармоника для "толстого" звука
-function richNote(freq, startTime, dur, vol=0.2) {
-  mTone(freq, startTime, dur, vol, 'sine');
-  mTone(freq * 2, startTime, dur * 0.7, vol * 0.25, 'sine');
-  mTone(freq * 1.498, startTime, dur * 0.5, vol * 0.12, 'sine'); // квинта
-}
-
-// Тихий клик кнопки — мягкий поп
-function playClick() {
-  ensureAudio();
-  mTone(880, 0, 0.06, 0.08, 'sine');
-  mTone(660, 0.01, 0.05, 0.04, 'sine');
-}
-
-// Прокрутка барабанов — низкий мягкий шум
-function playSpinSound(duration) {
-  ensureAudio();
-  const bufSize = ctx.sampleRate * duration;
-  const buf = ctx.createBuffer(1, bufSize, ctx.sampleRate);
-  const data = buf.getChannelData(0);
-  // Плавный розовый шум (мягче белого)
-  let b0=0,b1=0,b2=0,b3=0,b4=0,b5=0,b6=0;
-  for (let i = 0; i < bufSize; i++) {
-    const wn = Math.random() * 2 - 1;
-    b0=0.99886*b0+wn*0.0555179; b1=0.99332*b1+wn*0.0750759;
-    b2=0.96900*b2+wn*0.1538520; b3=0.86650*b3+wn*0.3104856;
-    b4=0.55000*b4+wn*0.5329522; b5=-0.7616*b5-wn*0.0168980;
-    data[i] = (b0+b1+b2+b3+b4+b5+b6+wn*0.5362)*0.11;
-    b6 = wn * 0.115926;
-  }
-
-  const src = ctx.createBufferSource(); src.buffer = buf;
-  const lp = ctx.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.value = 400; lp.Q.value = 0.7;
-  const hp = ctx.createBiquadFilter(); hp.type = 'highpass'; hp.frequency.value = 80; hp.Q.value = 0.5;
-  const g = ctx.createGain();
-  g.gain.setValueAtTime(0, ctx.currentTime);
-  g.gain.linearRampToValueAtTime(0.3, ctx.currentTime + 0.12);
-  g.gain.setValueAtTime(0.3, ctx.currentTime + duration - 0.4);
-  g.gain.linearRampToValueAtTime(0, ctx.currentTime + duration);
-  src.connect(lp); lp.connect(hp); hp.connect(g); g.connect(ctx.destination);
-  src.start(); src.stop(ctx.currentTime + duration);
-
-  // Добавляем лёгкий механический ритм (тиканье)
-  for (let i = 0; i < Math.floor(duration * 8); i++) {
-    const t = i / 8 + 0.05;
-    if (t < duration - 0.1) mTone(160 + Math.random()*60, t, 0.04, 0.06, 'sine');
-  }
-}
-
-// Стоп барабана — мягкий глухой удар
-function playReelStop() {
-  ensureAudio();
-  mTone(110, 0, 0.12, 0.28, 'sine');
-  mTone(80, 0.01, 0.1, 0.18, 'sine');
-  mTone(220, 0, 0.04, 0.08, 'triangle');
-}
-
-// Победные звуки — мелодичные, приятные
-function playWinSound(type) {
-  ensureAudio();
-  // Все ноты в гамме До мажор
-  if (type === 'jackpot') {
-    const mel = [523,659,784,1047,1319,1568,2093,1568,2093];
-    mel.forEach((f,i) => richNote(f, i*0.13, 0.5, 0.28));
-    // Аккорд под конец
-    setTimeout(() => { [523,659,784,1047].forEach(f => richNote(f, 0, 0.8, 0.2)); }, 1300);
-  } else if (type === 'mega') {
-    [523,659,784,1047,1319,1568].forEach((f,i) => richNote(f, i*0.13, 0.45, 0.25));
-  } else if (type === 'big') {
-    [523,659,784,1047].forEach((f,i) => richNote(f, i*0.14, 0.4, 0.23));
-  } else if (type === 'good') {
-    [523,659,784].forEach((f,i) => richNote(f, i*0.14, 0.35, 0.22));
-  } else if (type === 'small') {
-    [659,784].forEach((f,i) => richNote(f, i*0.14, 0.3, 0.2));
-  } else {
-    richNote(659, 0, 0.28, 0.18);
-  }
-}
-
-// Проигрыш — мягкий низкий спад
-function playLoseSound() {
-  ensureAudio();
-  mTone(330, 0, 0.2, 0.12, 'sine');
-  mTone(277, 0.15, 0.25, 0.1, 'sine');
-}
-
-// Монеты — тихий мелодичный перезвон
-function playCoinSound() {
-  ensureAudio();
-  [1319,1568,1760,2093].forEach((f,i) => mTone(f, i*0.06, 0.18, 0.14, 'sine'));
-}
-
-// UI клик
-function playUIClick() {
-  ensureAudio();
-  mTone(800, 0, 0.04, 0.07, 'sine');
-}
-
-// Успешная оплата — приятный трезвон
-function playPaymentSuccess() {
-  ensureAudio();
-  [880,1109,1319,1760,2217].forEach((f,i) => richNote(f, i*0.14, 0.45, 0.22));
-}
-
-// =========== INIT ===========
-function randSym() { return WEIGHTED[Math.floor(Math.random() * WEIGHTED.length)]; }
-function buildReel(index) {
-  const inner = document.getElementById('inner' + index);
-  inner.innerHTML = '';
-  for (let i = 0; i < 30; i++) {
-    const cell = document.createElement('div'); cell.className = 'symbol-cell'; cell.textContent = randSym(); inner.appendChild(cell);
-  }
-}
-for (let i = 0; i < 5; i++) buildReel(i);
-
-const bgStars = document.getElementById('bgStars');
-for (let i = 0; i < 80; i++) {
-  const s = document.createElement('div'); s.className = 'star';
-  s.style.left = Math.random()*100+'%'; s.style.top = Math.random()*100+'%';
-  s.style.setProperty('--d',(2+Math.random()*4)+'s'); s.style.setProperty('--o',(0.3+Math.random()*0.7));
-  s.style.animationDelay = Math.random()*4+'s'; bgStars.appendChild(s);
-}
-
-setInterval(() => {
-  jackpot += Math.floor(Math.random() * 50);
-  document.getElementById('jackpotAmount').textContent = jackpot.toLocaleString('ru');
-}, 300);
-
-// =========== BET ===========
-function setBet(amount) {
-  ensureAudio(); playClick();
-  bet = Math.min(amount, balance); updateBetDisplay();
-  document.querySelectorAll('.btn-bet').forEach(b => b.classList.toggle('active', +b.dataset.bet === amount));
-  document.querySelector('[data-bet="all"]').classList.remove('active');
-}
-function setBetAll() {
-  ensureAudio(); playClick(); bet = balance; updateBetDisplay();
-  document.querySelectorAll('.btn-bet').forEach(b => b.classList.remove('active'));
-  document.querySelector('[data-bet="all"]').classList.add('active');
-}
-function updateBetDisplay() { document.getElementById('betDisplay').textContent = bet.toLocaleString('ru'); }
-function updateBalance() { document.getElementById('balanceDisplay').textContent = balance.toLocaleString('ru'); }
-
-// =========== WIN CHECK ===========
-function checkWin(results) {
-  for (const c of COMBOS) { if (c.syms && results.every((s,i) => s === c.syms[i])) return c; }
-  for (const c of COMBOS) { if (c.sym && c.count && results.filter(s => s === c.sym).length >= c.count) return c; }
-  return null;
-}
-
-// =========== SPIN ===========
-async function spin() {
-  if (spinning) return;
-  ensureAudio();
-  if (bet > balance) { setMessage('лудик у тя мало фишек! 💸','lose'); return; }
-  if (balance <= 0) { setMessage('ты все проебал лудик, пополняйся повезет','lose'); return; }
-
-  spinning = true; balance -= bet; updateBalance();
-  document.getElementById('spinBtn').disabled = true;
-  document.getElementById('lastWin').textContent = '—';
-  setMessage('🎰 Крутится...','');
-  playSpinSound(1.8);
-
-  const results = Array.from({length:5}, () => randSym());
-  const promises = [];
-  for (let i = 0; i < 5; i++) promises.push(animateReel(i, results[i], i * 200));
-  await Promise.all(promises);
-
-  const win = checkWin(results);
-  if (win) {
-    const winAmount = Math.floor(bet * win.mult);
-    balance += winAmount; updateBalance();
-    document.getElementById('lastWin').textContent = '+' + winAmount.toLocaleString('ru');
-    const balEl = document.getElementById('balanceDisplay');
-    balEl.classList.add('win-flash'); setTimeout(() => balEl.classList.remove('win-flash'), 600);
-    playWinSound(win.type);
-    if (win.type === 'tiny' || win.type === 'small') {
-      setMessage('🎉 ' + win.name + ' +' + winAmount.toLocaleString('ru') + ' 💰', 'win');
-      spawnCoins(5); playCoinSound();
+// Функции для работы с балансом казино
+async function getCasinoBalance() {
+  try {
+    const snap = await get(ref(db, 'casino_balance'));
+    if (snap.exists()) {
+      casinoBalance = snap.val();
     } else {
-      showWinOverlay(win, winAmount);
-      spawnConfetti(win.type === 'jackpot' || win.type === 'mega' ? 120 : 60);
+      // Если нет записи, создаем с начальным балансом 100000
+      await set(ref(db, 'casino_balance'), 100000);
+      casinoBalance = 100000;
     }
-    highlightWin(results, win);
-  } else {
-    playLoseSound();
-    setMessage('Не повезло... Попробуйте ещё! 🎲','lose');
+  } catch (e) {
+    console.error('Error getting casino balance:', e);
   }
-  spinning = false; document.getElementById('spinBtn').disabled = false;
+  updateCasinoBalanceDisplay();
 }
 
-function animateReel(index, finalSymbol, delay) {
-  return new Promise(resolve => {
-    setTimeout(() => {
-      const inner = document.getElementById('inner' + index);
-      inner.querySelectorAll('.symbol-cell').forEach((c,i) => { c.textContent = i < 29 ? randSym() : finalSymbol; });
-      inner.style.transition = 'none'; inner.style.transform = 'translateY(0)';
-      requestAnimationFrame(() => requestAnimationFrame(() => {
-        const totalHeight = 60 * 30 - 180;
-        const duration = 1.2 + Math.random() * 0.4;
-        inner.style.transition = `transform ${duration}s cubic-bezier(0.25,0.46,0.45,0.94)`;
-        inner.style.transform = `translateY(-${totalHeight}px)`;
-        setTimeout(() => {
-          playReelStop(); inner.style.transition = 'none'; inner.innerHTML = '';
-          [randSym(), finalSymbol, randSym()].forEach((sym, i) => {
-            const cell = document.createElement('div');
-            cell.className = 'symbol-cell' + (i===1?' center':'');
-            cell.id = i===1 ? `result-${index}` : '';
-            cell.textContent = sym; inner.appendChild(cell);
-          });
-          inner.style.transform = 'translateY(0)';
-          inner.style.transition = 'transform 0.1s ease-out'; inner.style.transform = 'translateY(-6px)';
-          setTimeout(() => { inner.style.transform = 'translateY(0)'; resolve(); }, 100);
-        }, duration * 1000);
-      }));
-    }, delay);
+async function updateCasinoBalance(amount) {
+  if (amount === undefined) return;
+  casinoBalance = Math.max(0, Math.round(amount));
+  try {
+    await set(ref(db, 'casino_balance'), casinoBalance);
+  } catch (e) {
+    console.error('Error updating casino balance:', e);
+  }
+  updateCasinoBalanceDisplay();
+}
+
+function updateCasinoBalanceDisplay() {
+  document.getElementById('casinoBalanceValue').textContent = casinoBalance.toLocaleString('ru');
+}
+
+// AUTH
+window.switchTab=t=>{
+  ['tabLogin','tabReg'].forEach(id=>document.getElementById(id).classList.toggle('active',id===(t==='login'?'tabLogin':'tabReg')));
+  document.getElementById('formLogin').classList.toggle('hidden',t!=='login');
+  document.getElementById('formReg').classList.toggle('hidden',t!=='reg');
+};
+window.doLogin=async()=>{
+  const nick=document.getElementById('loginNick').value.trim();
+  const pass=document.getElementById('loginPass').value;
+  const errEl=document.getElementById('loginError'),ldEl=document.getElementById('loginLoad'),btn=document.getElementById('loginBtn');
+  if(!nick||!pass){errEl.textContent='Заполни все поля!';return;}
+  errEl.textContent='';ldEl.textContent='Подключение...';btn.disabled=true;
+  try{
+    const snap=await get(ref(db,'casino_users/'+nick.toLowerCase()));
+    if(!snap.exists()){errEl.textContent='Пользователь не найден';return;}
+    const u=snap.val();
+    if(u.passHash!==hp(pass)){errEl.textContent='Неверный пароль';return;}
+    await enterCasino(nick,u);
+  }catch(e){errEl.textContent='Ошибка: '+e.message;}
+  finally{ldEl.textContent='';btn.disabled=false;}
+};
+window.doRegister=async()=>{
+  const nick=document.getElementById('regNick').value.trim();
+  const pass=document.getElementById('regPass').value;
+  const pass2=document.getElementById('regPass2').value;
+  const errEl=document.getElementById('regError'),ldEl=document.getElementById('regLoad'),btn=document.getElementById('regBtn');
+  if(!nick||!pass){errEl.textContent='Заполни все поля!';return;}
+  if(nick.length<2){errEl.textContent='Ник мин. 2 символа';return;}
+  if(/[^a-zA-ZА-Яа-яёЁ0-9_\-.]/.test(nick)){errEl.textContent='Только буквы, цифры, _ - .';return;}
+  if(pass.length<4){errEl.textContent='Пароль мин. 4 символа';return;}
+  if(pass!==pass2){errEl.textContent='Пароли не совпадают!';return;}
+  errEl.textContent='';ldEl.textContent='Регистрация...';btn.disabled=true;
+  try{
+    const snap=await get(ref(db,'casino_users/'+nick.toLowerCase()));
+    if(snap.exists()){errEl.textContent='Ник уже занят!';return;}
+    const ud={passHash:hp(pass),balance:100000,totalWon:0,spins:0,color:nc(nick),createdAt:Date.now()};
+    await set(ref(db,'casino_users/'+nick.toLowerCase()),ud);
+    await enterCasino(nick,ud);
+  }catch(e){errEl.textContent='Ошибка: '+e.message;}
+  finally{ldEl.textContent='';btn.disabled=false;}
+};
+
+async function enterCasino(nick,ud){
+  CU=nick;CC=ud.color||nc(nick);balance=ud.balance||0;
+  await getCasinoBalance(); // Загружаем баланс казино
+  document.getElementById('authScreen').classList.add('hidden');
+  document.getElementById('mainApp').style.display='grid';
+  document.getElementById('topNick').textContent=nick;
+  document.getElementById('topBal').textContent=balance.toLocaleString('ru')+' 💰';
+  document.getElementById('balDisp').textContent=balance.toLocaleString('ru');
+  myORef=ref(db,'casino_online/'+nick.toLowerCase());
+  await set(myORef,{nick,color:CC,ts:serverTimestamp()});
+  onDisconnect(myORef).remove();
+  initReels();listenLB();listenChat();listenOnline();
+  pushMsg({nick:'Casino',text:nick+' зашёл в казино! 🎰',color:'#FFD700',sys:true});
+}
+window.doLogout=async()=>{
+  if(CU){pushMsg({nick:'Casino',text:CU+' покинул казино 👋',color:'#FFD700',sys:true});if(myORef)await remove(myORef);}
+  CU=null;document.getElementById('mainApp').style.display='none';
+  document.getElementById('authScreen').classList.remove('hidden');
+  document.getElementById('chatMsgs').innerHTML='';
+  document.getElementById('loginNick').value='';document.getElementById('loginPass').value='';document.getElementById('loginError').textContent='';
+};
+
+// LEADERBOARD
+function listenLB(){
+  onValue(ref(db,'casino_users'),snap=>{
+    if(!snap.exists()){document.getElementById('leaderboard').innerHTML='<div class="lb-empty">Нет игроков</div>';return;}
+    const users=[];
+    snap.forEach(c=>{const v=c.val();users.push({nick:c.key,balance:v.balance||0,color:v.color||nc(c.key)});});
+    users.sort((a,b)=>b.balance-a.balance);
+    const medals=['🥇','🥈','🥉'];
+    document.getElementById('leaderboard').innerHTML=users.slice(0,30).map((u,i)=>{
+      const me=CU&&u.nick.toLowerCase()===CU.toLowerCase();
+      return`<div class="lb-item${me?' me':''}"><div class="lb-rank">${i>=3?i+1:''}</div><div class="lb-medal">${medals[i]||''}</div><div class="lb-info"><div class="lb-name" style="color:${me?'#FFD700':u.color}">${esc(u.nick)}</div><div class="lb-chips">${u.balance.toLocaleString('ru')} 💰</div></div></div>`;
+    }).join('');
   });
 }
 
-function highlightWin(results, win) {
-  for (let i = 0; i < 5; i++) {
-    const sym = win.sym || win.syms[i];
-    if (results[i] === sym || (win.syms && results[i] === win.syms[i])) {
-      setTimeout(() => { const el = document.getElementById('result-'+i); if(el) el.classList.add('highlight'); }, i*80);
-    }
-  }
-}
+// ONLINE
+function listenOnline(){onValue(ref(db,'casino_online'),snap=>{document.getElementById('onlineCnt').textContent=snap.exists()?snap.size:0;});}
 
-// =========== WIN OVERLAY ===========
-function showWinOverlay(win, amount) {
-  const t = {jackpot:'🏆 ДЖЕКПОТ!! 🏆', mega:'🔥 МЕГА ПОБЕДА! 🔥', big:'⭐ БОЛЬШОЙ ВЫИГРЫШ! ⭐', good:'🎉 ПОБЕДА! 🎉'};
-  document.getElementById('winTitle').textContent = t[win.type] || '🎉 ПОБЕДА!';
-  document.getElementById('winAmount').textContent = '+' + amount.toLocaleString('ru') + ' 💰';
-  document.getElementById('winCombo').textContent = win.name;
-  document.getElementById('winOverlay').classList.add('show');
+// CHAT
+function listenChat(){
+  const q=query(ref(db,'casino_chat'),orderByChild('ts'),limitToLast(80));
+  onValue(q,snap=>{
+    if(!snap.exists())return;
+    const el=document.getElementById('chatMsgs');el.innerHTML='';
+    snap.forEach(c=>appendMsg(c.val()));
+    el.scrollTop=el.scrollHeight;
+  });
 }
-function closeWin() {
-  document.getElementById('winOverlay').classList.remove('show');
-  document.querySelectorAll('.confetti-piece').forEach(c => c.remove());
+function pushMsg(m){push(ref(db,'casino_chat'),{...m,ts:Date.now()});}
+function appendMsg(m){
+  const el=document.getElementById('chatMsgs');
+  const me=CU&&!m.sys&&m.nick.toLowerCase()===CU.toLowerCase();
+  const d=document.createElement('div');
+  if(m.sys){d.className='chat-msg sys'+(m.ev?' event':'');d.innerHTML=`<div class="msg-sys-text">${esc(m.text)}</div>`;}
+  else{const t=new Date(m.ts).toLocaleTimeString('ru',{hour:'2-digit',minute:'2-digit'});d.className='chat-msg'+(me?' mine':'');d.innerHTML=`<div class="msg-header"><span class="msg-nick" style="color:${m.color||nc(m.nick)}">${esc(m.nick)}</span><span class="msg-time">${t}</span></div><div class="msg-text">${esc(m.text)}</div>`;}
+  el.appendChild(d);el.scrollTop=el.scrollHeight;
 }
+window.sendChat=()=>{
+  if(!CU)return;const inp=document.getElementById('chatInp');const txt=inp.value.trim();if(!txt)return;
+  inp.value='';pushMsg({nick:CU,text:txt,ts:Date.now(),color:CC});playClick();
+};
 
-// =========== CONFETTI / COINS ===========
-function spawnConfetti(count) {
-  const colors = ['#FFD700','#FF4500','#00FF88','#FF69B4','#00BFFF','#FF6B00','#ADFF2F'];
-  for (let i = 0; i < count; i++) {
-    const c = document.createElement('div'); c.className = 'confetti-piece';
-    c.style.left = Math.random()*100+'vw';
-    c.style.background = colors[Math.floor(Math.random()*colors.length)];
-    c.style.setProperty('--d',(2+Math.random()*2)+'s');
-    c.style.setProperty('--dx',(Math.random()-0.5)*200+'px');
-    c.style.animationDelay = Math.random()+'s'; c.style.transform = `rotate(${Math.random()*360}deg)`;
-    document.body.appendChild(c); setTimeout(() => c.remove(), 4000);
-  }
-}
-function spawnCoins(count) {
-  const rect = document.getElementById('reelsContainer').getBoundingClientRect();
-  for (let i = 0; i < count; i++) {
-    setTimeout(() => {
-      const coin = document.createElement('div'); coin.className = 'coin'; coin.textContent = '🪙';
-      coin.style.left = (rect.left + Math.random()*rect.width)+'px';
-      coin.style.top = (rect.top + rect.height/2)+'px';
-      coin.style.setProperty('--d',(0.8+Math.random()*0.4)+'s');
-      coin.style.setProperty('--tx',(Math.random()-0.5)*150+'px');
-      coin.style.setProperty('--ty',-(50+Math.random()*100)+'px');
-      document.body.appendChild(coin); setTimeout(() => coin.remove(), 1500);
-    }, i*80);
-  }
-}
-function setMessage(text, type) {
-  const m = document.getElementById('message'); m.textContent = text;
-  m.className = 'message' + (type ? ' '+type : '');
-}
+// BALANCE
+const MAX_BAL=100000;async function saveBal(v){v=Math.min(MAX_BAL,Math.max(0,Math.round(v)));await set(ref(db,'casino_users/'+CU.toLowerCase()+'/balance'),v);balance=v;document.getElementById('balDisp').textContent=v.toLocaleString('ru');document.getElementById('topBal').textContent=v.toLocaleString('ru')+' 💰';}
+function addStat(won){const u=ref(db,'casino_users/'+CU.toLowerCase());get(u).then(s=>{if(!s.exists())return;const v=s.val();set(ref(db,'casino_users/'+CU.toLowerCase()+'/spins'),(v.spins||0)+1);if(won>0)set(ref(db,'casino_users/'+CU.toLowerCase()+'/totalWon'),(v.totalWon||0)+won);});}
 
-// =========== DEPOSIT ===========
-function openDeposit() {
-  ensureAudio(); playUIClick();
-  document.getElementById('depositModal').classList.add('show');
-  resetTDS();
-}
-function closeDeposit() { playUIClick(); document.getElementById('depositModal').classList.remove('show'); }
-function selectDepAmt(el, amt) {
-  playUIClick(); depAmount = amt;
-  document.querySelectorAll('.dep-amt').forEach(b => b.classList.remove('active')); el.classList.add('active');
-  document.getElementById('payAmountLabel').textContent = amt.toLocaleString('ru') + ' ₴';
-}
+// RADIO
+const ra=new Audio('https://stream03.pcradio.ru/Butirka-med');ra.preload='none';let rp=false;
+window.toggleRadio=()=>{if(rp){ra.pause();ra.src='';rp=false;document.getElementById('radioBtn').textContent='▶';document.getElementById('radioBars').classList.add('paused');}else{ra.src='https://stream03.pcradio.ru/Butirka-med';ra.play().catch(()=>{});rp=true;document.getElementById('radioBtn').textContent='⏸';document.getElementById('radioBars').classList.remove('paused');}};
+ra.addEventListener('error',()=>{rp=false;document.getElementById('radioBtn').textContent='▶';document.getElementById('radioBars').classList.add('paused');});
 
-function formatCard(el) {
-  let v = el.value.replace(/\D/g,'').substring(0,16);
-  el.value = v.replace(/(.{4})/g,'$1 ').trim();
-  const raw = v.padEnd(16,'•');
-  document.getElementById('prevNumber').textContent = [raw.slice(0,4),raw.slice(4,8),raw.slice(8,12),raw.slice(12,16)].join(' ');
-  const logo = document.getElementById('cardLogo');
-  if (v.startsWith('4')) logo.textContent = 'VISA';
-  else if (v.startsWith('5')||v.startsWith('2')) logo.textContent = 'MC';
-  else logo.textContent = 'CARD';
-}
-function formatExpiry(el) {
-  let v = el.value.replace(/\D/g,'').substring(0,4);
-  if (v.length >= 2) v = v.slice(0,2) + ' / ' + v.slice(2);
-  el.value = v; document.getElementById('prevExpiry').textContent = v || 'ММ/ГГ';
-}
-function updateHolder(el) {
-  el.value = el.value.toUpperCase(); document.getElementById('prevHolder').textContent = el.value || 'ВАШЕ ИМЯ';
-}
+// AUDIO
+const AC=window.AudioContext||window.webkitAudioContext;let ctx;
+function ea(){if(!ctx)ctx=new AC();}
+function mt(f,s,d,v=0.22,t='sine'){if(!ctx)return;const o=ctx.createOscillator(),g=ctx.createGain(),comp=ctx.createDynamicsCompressor();comp.threshold.value=-18;comp.ratio.value=3;o.connect(g);g.connect(comp);comp.connect(ctx.destination);o.type=t;o.frequency.value=f;const tm=ctx.currentTime+s;g.gain.setValueAtTime(0,tm);g.gain.linearRampToValueAtTime(v,tm+0.015);g.gain.setValueAtTime(v,tm+d*0.6);g.gain.exponentialRampToValueAtTime(0.0001,tm+d);o.start(tm);o.stop(tm+d+0.05);}
+function rn(f,s,d,v=0.2){mt(f,s,d,v,'sine');mt(f*2,s,d*0.7,v*0.25,'sine');mt(f*1.498,s,d*0.5,v*0.12,'sine');}
+function playClick(){ea();mt(880,0,0.06,0.08);}
 
-function startPayment() {
-  ensureAudio();
-  const num = document.getElementById('cardNumber').value.replace(/\s/g,'');
-  const exp = document.getElementById('cardExpiry').value;
-  const cvv = document.getElementById('cardCvv').value;
-  if (num.length < 16 || exp.length < 7 || cvv.length < 3) {
-    playLoseSound();
-    const btn = document.getElementById('payBtn');
-    ['translateX(-6px)','translateX(6px)','translateX(-4px)','translateX(4px)','translateX(0)'].forEach((t,i) =>
-      setTimeout(() => btn.style.transform = t, i*60));
+// MP3 SPIN SOUNDS — 3 файла, рандомно выбирает один
+// Положи файлы spin1.mp3 / spin2.mp3 / spin3.mp3 рядом с casino-slots.html
+const SPIN_MP3=['spin1.mp3','spin2.mp3','spin3.mp3'];
+let spinMp3=null,useMp3Spin=true;
+function tryLoadSpinMp3(){const f=SPIN_MP3[Math.floor(Math.random()*SPIN_MP3.length)];const a=new Audio(f);a.onerror=()=>{useMp3Spin=false;};a.oncanplaythrough=()=>{spinMp3=a;};a.load();}
+tryLoadSpinMp3();
+
+function playReelSynth(d){ea();const bs=ctx.sampleRate*d,buf=ctx.createBuffer(1,bs,ctx.sampleRate),data=buf.getChannelData(0);let b0=0,b1=0,b2=0,b3=0,b4=0,b5=0,b6=0;for(let i=0;i<bs;i++){const w=Math.random()*2-1;b0=0.99886*b0+w*0.0555179;b1=0.99332*b1+w*0.0750759;b2=0.96900*b2+w*0.1538520;b3=0.86650*b3+w*0.3104856;b4=0.55000*b4+w*0.5329522;b5=-0.7616*b5-w*0.0168980;data[i]=(b0+b1+b2+b3+b4+b5+b6+w*0.5362)*0.11;b6=w*0.115926;}const src=ctx.createBufferSource();src.buffer=buf;const lp=ctx.createBiquadFilter();lp.type='lowpass';lp.frequency.value=400;const hp2=ctx.createBiquadFilter();hp2.type='highpass';hp2.frequency.value=80;const gn=ctx.createGain();gn.gain.setValueAtTime(0,ctx.currentTime);gn.gain.linearRampToValueAtTime(0.3,ctx.currentTime+0.12);gn.gain.setValueAtTime(0.3,ctx.currentTime+d-0.4);gn.gain.linearRampToValueAtTime(0,ctx.currentTime+d);src.connect(lp);lp.connect(hp2);hp2.connect(gn);gn.connect(ctx.destination);src.start();src.stop(ctx.currentTime+d);for(let i=0;i<Math.floor(d*8);i++){const t=i/8+0.05;if(t<d-0.1)mt(160+Math.random()*60,t,0.04,0.06);}}
+
+let curSpinAudio=null;
+function playReel(d){
+  // Пробуем MP3, если нет — синтез
+  const mp3file=SPIN_MP3[Math.floor(Math.random()*SPIN_MP3.length)];
+  const a=new Audio(mp3file);
+  a.volume=0.7;
+  const p=a.play();
+  if(p!==undefined){
+    p.then(()=>{curSpinAudio=a;}).catch(()=>{playReelSynth(d);});
+  }else{playReelSynth(d);}
+}
+function stopSpinSound(){if(curSpinAudio){try{curSpinAudio.pause();curSpinAudio.currentTime=0;}catch(e){}curSpinAudio=null;}}
+
+function playStop(){ea();mt(110,0,0.12,0.28);mt(80,0.01,0.1,0.18);mt(220,0,0.04,0.08,'triangle');}
+
+// WIN MP3 SOUNDS — 3 файла, одно случайное при победе
+// Положи файлы win1.mp3 / win2.mp3 / win3.mp3 рядом с casino-slots.html
+const WIN_MP3=['win1.mp3','win2.mp3','win3.mp3'];
+function playWinMp3(){
+  const f=WIN_MP3[Math.floor(Math.random()*WIN_MP3.length)];
+  const a=new Audio(f);a.volume=0.75;
+  a.play().catch(()=>{});// если нет файла — тихо игнорируем
+}
+function playWin(type){
+  ea();stopSpinSound();
+  playWinMp3();// MP3 поверх синтеза
+  if(type==='jackpot'){[523,659,784,1047,1319,1568,2093].forEach((f,i)=>rn(f,i*0.13,0.5,0.28));setTimeout(()=>[523,659,784,1047].forEach(f=>rn(f,0,0.8,0.2)),1300);}
+  else if(type==='mega'){[523,659,784,1047,1319,1568].forEach((f,i)=>rn(f,i*0.13,0.45,0.25));}
+  else if(type==='big'){[523,659,784,1047].forEach((f,i)=>rn(f,i*0.14,0.4,0.23));}
+  else if(type==='good'){[523,659,784].forEach((f,i)=>rn(f,i*0.14,0.35,0.22));}
+  else if(type==='small'){[659,784].forEach((f,i)=>rn(f,i*0.14,0.3,0.2));}
+  else rn(659,0,0.28,0.18);
+}
+function playLose(){ea();stopSpinSound();mt(330,0,0.2,0.12);mt(277,0.15,0.25,0.1);}
+function playCoin(){ea();[1319,1568,1760,2093].forEach((f,i)=>mt(f,i*0.06,0.18,0.14));}
+function playPayOk(){ea();[880,1109,1319,1760,2217].forEach((f,i)=>rn(f,i*0.14,0.45,0.22));}
+
+// SLOTS
+const W=[...Array(5).fill('🍒'),...Array(4).fill('🍋'),...Array(3).fill('💰'),...Array(3).fill('⭐'),...Array(2).fill('🎰'),...Array(2).fill('🍀'),'👑','👑','7️⃣','💎'];
+const COMBOS=[
+  {syms:['💎','💎','💎','💎','💎'],mult:500,name:'МЕГА ДЖЕКПОТ!!!',type:'jackpot'},
+  {syms:['7️⃣','7️⃣','7️⃣','7️⃣','7️⃣'],mult:200,name:'ПЯТЬ СЕМЁРОК!',type:'mega'},
+  {syms:['👑','👑','👑','👑','👑'],mult:100,name:'ПЯТЬ КОРОН!',type:'mega'},
+  {syms:['🍀','🍀','🍀','🍀','🍀'],mult:80,name:'ПЯТЬ КЛЕВЕРОВ!',type:'big'},
+  {sym:'⭐',count:5,mult:40,name:'ПЯТЬ ЗВЁЗД!',type:'big'},{sym:'⭐',count:4,mult:20,name:'ЧЕТЫРЕ ЗВЕЗДЫ!',type:'big'},{sym:'⭐',count:3,mult:12,name:'ТРИ ЗВЕЗДЫ!',type:'good'},
+  {sym:'🎰',count:5,mult:30,name:'ПЯТЬ СЛОТОВ!',type:'big'},{sym:'🎰',count:4,mult:15,name:'ЧЕТЫРЕ СЛОТА!',type:'good'},{sym:'🎰',count:3,mult:8,name:'ТРИ СЛОТА!',type:'good'},
+  {sym:'💰',count:5,mult:20,name:'ПЯТЬ МОНЕТ!',type:'big'},{sym:'💰',count:4,mult:10,name:'ЧЕТЫРЕ МОНЕТЫ!',type:'good'},{sym:'💰',count:3,mult:5,name:'ТРИ МОНЕТЫ!',type:'good'},
+  {sym:'🍋',count:5,mult:10,name:'ПЯТЬ ЛИМОНОВ!',type:'good'},{sym:'🍋',count:4,mult:6,name:'ЧЕТЫРЕ ЛИМОНА!',type:'small'},{sym:'🍋',count:3,mult:3,name:'ТРИ ЛИМОНА!',type:'small'},
+  {sym:'🍒',count:5,mult:5,name:'ПЯТЬ ВИШЕН!',type:'good'},{sym:'🍒',count:4,mult:3,name:'ЧЕТЫРЕ ВИШНИ!',type:'small'},{sym:'🍒',count:3,mult:2,name:'ТРИ ВИШНИ!',type:'small'},{sym:'🍒',count:2,mult:1.5,name:'ДВЕ ВИШНИ!',type:'tiny'},
+];
+function rS(){return W[Math.floor(Math.random()*W.length)];}
+function initReels(){for(let i=0;i<5;i++){const n=document.getElementById('inner'+i);n.innerHTML='';for(let j=0;j<30;j++){const c=document.createElement('div');c.className='symbol-cell';c.textContent=rS();n.appendChild(c);}}}
+function chkWin(r){for(const c of COMBOS){if(c.syms&&r.every((s,i)=>s===c.syms[i]))return c;}for(const c of COMBOS){if(c.sym&&c.count&&r.filter(s=>s===c.sym).length>=c.count)return c;}return null;}
+
+window.setBet=v=>{ea();playClick();bet=Math.min(v,balance);document.getElementById('betDisp').textContent=bet.toLocaleString('ru');document.querySelectorAll('.btn-bet').forEach(b=>b.classList.toggle('active',+b.dataset.v===v));document.querySelector('[data-v="all"]').classList.remove('active');};
+window.setBetAll=()=>{ea();playClick();bet=balance;document.getElementById('betDisp').textContent=bet.toLocaleString('ru');document.querySelectorAll('.btn-bet').forEach(b=>b.classList.remove('active'));document.querySelector('[data-v="all"]').classList.add('active');};
+
+window.spin=async()=>{
+  if(spinning||!CU)return;ea();
+  if(bet>balance){setMsg('мало грошей пацан! 💸','lose');return;}
+  if(balance<=0){setMsg('ты все проебал, пополняйся ебучий лудик 💳','lose');return;}
+  spinning=true;await saveBal(balance-bet);
+  document.getElementById('spinBtn').disabled=true;document.getElementById('lastWin').textContent='—';setMsg('🎰 Крутится...','');
+  playReel(1.8);
+  const res=Array.from({length:5},()=>rS());
+  await Promise.all(Array.from({length:5},(_,i)=>animReel(i,res[i],i*200)));
+  const win=chkWin(res);
+  if(win){
+    const wa=Math.floor(bet*win.mult);
+    await saveBal(balance+wa);addStat(wa);
+    document.getElementById('lastWin').textContent='+'+wa.toLocaleString('ru');
+    const bd=document.getElementById('balDisp');bd.classList.add('win-flash');setTimeout(()=>bd.classList.remove('win-flash'),600);
+    playWin(win.type);
+    const chatTxt=(win.type==='tiny'||win.type==='small')?`🎉 ${CU} выиграл ${wa.toLocaleString('ru')} 💰 — ${win.name}`:`🔥 ${CU} СОРВАЛ КУШ! +${wa.toLocaleString('ru')} 💰 — ${win.name}`;
+    pushMsg({nick:'Casino',text:chatTxt,color:'#FF9500',sys:true,ev:true});
+    if(win.type==='tiny'||win.type==='small'){setMsg('🎉 '+win.name+' +'+wa.toLocaleString('ru')+' 💰','win');spawnCoins(5);playCoin();}
+    else{showWinOvr(win,wa);spawnConf(win.type==='jackpot'||win.type==='mega'?120:60);}
+    hlWin(res,win);
+  }else{playLose();setMsg('Не повезло лудик... крути ёщё раз! 🎲','lose');addStat(0);}
+  spinning=false;document.getElementById('spinBtn').disabled=false;
+};
+
+function animReel(idx,sym,delay){return new Promise(res=>{setTimeout(()=>{const n=document.getElementById('inner'+idx);n.querySelectorAll('.symbol-cell').forEach((c,i)=>{c.textContent=i<29?rS():sym;});n.style.transition='none';n.style.transform='translateY(0)';requestAnimationFrame(()=>requestAnimationFrame(()=>{const h=50*30-150,dur=1.2+Math.random()*0.4;n.style.transition=`transform ${dur}s cubic-bezier(0.25,0.46,0.45,0.94)`;n.style.transform=`translateY(-${h}px)`;setTimeout(()=>{playStop();n.style.transition='none';n.innerHTML='';[rS(),sym,rS()].forEach((s,i)=>{const c=document.createElement('div');c.className='symbol-cell'+(i===1?' center':'');c.id=i===1?'result-'+idx:'';c.textContent=s;n.appendChild(c);});n.style.transform='translateY(0)';n.style.transition='transform 0.1s ease-out';n.style.transform='translateY(-5px)';setTimeout(()=>{n.style.transform='translateY(0)';res();},100);},dur*1000);}));},delay);})}
+function hlWin(res,win){for(let i=0;i<5;i++){const s=win.sym||win.syms[i];if(res[i]===s||(win.syms&&res[i]===win.syms[i])){setTimeout(()=>{const el=document.getElementById('result-'+i);if(el)el.classList.add('highlight');},i*80);}}}
+function showWinOvr(win,amt){const t={jackpot:'🏆 ДЖЕКПОТ!! 🏆',mega:'🔥 МЕГА ПОБЕДА! 🔥',big:'⭐ БОЛЬШОЙ ВЫИГРЫШ! ⭐',good:'🎉 ПОБЕДА! 🎉'};document.getElementById('winTitle').textContent=t[win.type]||'🎉 ПОБЕДА!';document.getElementById('winAmount').textContent='+'+amt.toLocaleString('ru')+' 💰';document.getElementById('winCombo').textContent=win.name;document.getElementById('winOverlay').classList.add('show');}
+window.closeWin=()=>{document.getElementById('winOverlay').classList.remove('show');document.querySelectorAll('.confetti-piece').forEach(c=>c.remove());};
+function spawnConf(n){const cols=['#FFD700','#FF4500','#00FF88','#FF69B4','#00BFFF','#FF6B00'];for(let i=0;i<n;i++){const c=document.createElement('div');c.className='confetti-piece';c.style.left=Math.random()*100+'vw';c.style.background=cols[Math.floor(Math.random()*cols.length)];c.style.setProperty('--d',(2+Math.random()*2)+'s');c.style.setProperty('--dx',(Math.random()-0.5)*200+'px');c.style.animationDelay=Math.random()+'s';c.style.transform=`rotate(${Math.random()*360}deg)`;document.body.appendChild(c);setTimeout(()=>c.remove(),4000);}}
+function spawnCoins(n){const r=document.getElementById('reelsCont').getBoundingClientRect();for(let i=0;i<n;i++){setTimeout(()=>{const c=document.createElement('div');c.className='coin';c.textContent='🪙';c.style.left=(r.left+Math.random()*r.width)+'px';c.style.top=(r.top+r.height/2)+'px';c.style.setProperty('--d',(0.8+Math.random()*0.4)+'s');c.style.setProperty('--tx',(Math.random()-0.5)*150+'px');c.style.setProperty('--ty',-(50+Math.random()*100)+'px');document.body.appendChild(c);setTimeout(()=>c.remove(),1500);},i*80);}}
+function setMsg(t,type){const m=document.getElementById('msg');m.textContent=t;m.className='message'+(type?' '+type:'');}
+
+// DEPOSIT
+window.openDep=()=>{ea();playClick();document.getElementById('depositModal').classList.add('show');resetTds();};
+window.closeDeposit=()=>{playClick();document.getElementById('depositModal').classList.remove('show');};
+window.selAmt=(el,a)=>{playClick();depAmt=a;document.querySelectorAll('.dep-amt').forEach(b=>b.classList.remove('active'));el.classList.add('active');document.getElementById('payLbl').textContent=a.toLocaleString('ru')+' ₴';};
+window.fmtCard=el=>{let v=el.value.replace(/\D/g,'').substring(0,16);el.value=v.replace(/(.{4})/g,'$1 ').trim();const r=v.padEnd(16,'•');document.getElementById('prevNum').textContent=[r.slice(0,4),r.slice(4,8),r.slice(8,12),r.slice(12,16)].join(' ');const l=document.getElementById('cardLogo');l.textContent=v.startsWith('4')?'VISA':(v.startsWith('5')||v.startsWith('2'))?'MC':'CARD';};
+window.fmtExp=el=>{let v=el.value.replace(/\D/g,'').substring(0,4);if(v.length>=2)v=v.slice(0,2)+' / '+v.slice(2);el.value=v;document.getElementById('prevExp').textContent=v||'ММ/ГГ';};
+window.fmtName=el=>{el.value=el.value.toUpperCase();document.getElementById('prevHolder').textContent=el.value||'ВАШЕ ИМЯ';};
+window.startPay=()=>{
+  ea();const num=document.getElementById('cardNum').value.replace(/\s/g,''),exp=document.getElementById('cardExp').value,cvv=document.getElementById('cardCvv').value;
+  if(num.length<16||exp.length<7||cvv.length<3){playLose();const btn=document.querySelector('.btn-pay');['translateX(-6px)','translateX(6px)','translateX(-4px)','translateX(4px)','translateX(0)'].forEach((t,i)=>setTimeout(()=>btn.style.transform=t,i*60));return;}
+  
+  // Проверяем, хватает ли в казино денег
+  if (depAmt > casinoBalance) {
+    playLose();
+    setMsg('❌ В казино недостаточно средств для пополнения!','lose');
+    document.getElementById('depositModal').classList.remove('show');
     return;
   }
-  playUIClick(); closeDeposit();
-  document.getElementById('tdsPhoneLast').textContent = String(Math.floor(Math.random()*90)+10);
-  document.getElementById('tdsAmount').textContent = depAmount.toLocaleString('ru') + ' ₴';
+  
+  playClick();document.getElementById('depositModal').classList.remove('show');
+  document.getElementById('tdsPhone').textContent=String(Math.floor(Math.random()*90)+10);
+  document.getElementById('tdsAmt').textContent=depAmt.toLocaleString('ru')+' ₴';
   document.getElementById('tdsModal').classList.add('show');
-  startOTPTimer();
-  setTimeout(() => autoFillOTP(), 2200);
-}
+  startOtpTimer();setTimeout(autoFillOtp,2200);
+};
+function resetTds(){document.getElementById('tdsInp').classList.remove('hide');document.getElementById('tdsProc').classList.remove('show');document.getElementById('tdsOk').classList.remove('show');document.getElementById('tdsBtn').disabled=true;document.querySelectorAll('.tds-box-inp').forEach(b=>{b.value='';b.classList.remove('filled');});}
+window.otpIn=(el,idx)=>{el.value=el.value.replace(/\D/g,'').slice(0,1);el.classList.toggle('filled',el.value.length>0);if(el.value&&idx<5)document.querySelectorAll('.tds-box-inp')[idx+1].focus();document.getElementById('tdsBtn').disabled=![...document.querySelectorAll('.tds-box-inp')].every(b=>b.value.length===1);};
+function autoFillOtp(){const code=String(Math.floor(Math.random()*900000)+100000).split('');const boxes=document.querySelectorAll('.tds-box-inp');code.forEach((d,i)=>setTimeout(()=>{boxes[i].value=d;boxes[i].classList.add('filled');playClick();if(i===5)document.getElementById('tdsBtn').disabled=false;},i*160));}
+let otpTi;
+function startOtpTimer(){let t=60;document.getElementById('tdsTimer').textContent=t;clearInterval(otpTi);otpTi=setInterval(()=>{t--;document.getElementById('tdsTimer').textContent=t;if(t<=0)clearInterval(otpTi);},1000);}
+window.confirmPay=async()=>{
+  ea();playClick();clearInterval(otpTi);
+  document.getElementById('tdsInp').classList.add('hide');document.getElementById('tdsProc').classList.add('show');
+  const p=document.getElementById('tdsProg');p.style.transition='none';p.style.width='0%';setTimeout(()=>{p.style.transition='width 3s ease-out';p.style.width='100%';},50);
+  const st=['Проверка данных...','Авторизация...','Обработка платежа...','Зачисление средств...'];let si=0;
+  const si2=setInterval(()=>{document.getElementById('tdsStat').textContent=st[si++]||st[st.length-1];if(si>=st.length)clearInterval(si2);},750);
+  
+  // Списываем из казино и зачисляем игроку
+  await updateCasinoBalance(casinoBalance - depAmt);
+  
+  setTimeout(async()=>{
+    document.getElementById('tdsProc').classList.remove('show');document.getElementById('tdsOk').classList.add('show');
+    document.getElementById('tdsOkSub').textContent='Баланс поповнено на '+depAmt.toLocaleString('ru')+' ₴';
+    await saveBal(balance+depAmt);playPayOk();spawnCoins(8);
+    const bd=document.getElementById('balDisp');bd.classList.add('win-flash');setTimeout(()=>bd.classList.remove('win-flash'),600);
+    setTimeout(()=>{document.getElementById('tdsModal').classList.remove('show');setMsg('💳 Поповнено +'+depAmt.toLocaleString('ru')+' ₴!','win');resetTds();},2600);
+  },3100);
+};
 
-function resetTDS() {
-  document.getElementById('tdsInputArea').classList.remove('hide');
-  document.getElementById('tdsProcessing').classList.remove('show');
-  document.getElementById('tdsSuccess').classList.remove('show');
-  document.getElementById('tdsConfirmBtn').disabled = true;
-  document.querySelectorAll('.tds-otp-box').forEach(b => { b.value = ''; b.classList.remove('filled'); });
-}
 
-function otpInput(el, idx) {
-  el.value = el.value.replace(/\D/g,'').slice(0,1);
-  el.classList.toggle('filled', el.value.length > 0);
-  if (el.value && idx < 5) document.querySelectorAll('.tds-otp-box')[idx+1].focus();
-  document.getElementById('tdsConfirmBtn').disabled = ![...document.querySelectorAll('.tds-otp-box')].every(b => b.value.length===1);
-}
+// WITHDRAW
+let wdAmount=0;
+window.openWithdraw=()=>{
+  ea();playClick();
+  if(!CU)return;
+  document.getElementById('wdBalDisp').textContent=balance.toLocaleString('ru')+' 💰';
+  document.getElementById('wdAmtInp').value='';
+  document.getElementById('wdCard').value='';
+  document.getElementById('wdError').textContent='';
+  document.getElementById('wdProc').classList.remove('show');
+  document.getElementById('wdOk').classList.remove('show');
+  document.getElementById('wdBtn').style.display='';
+  document.querySelectorAll('.wd-amt').forEach(b=>b.classList.remove('active'));
+  wdAmount=0;
+  document.getElementById('wdModal').classList.add('show');
+};
+window.closeWithdraw=()=>{playClick();document.getElementById('wdModal').classList.remove('show');};
+window.selWdAmt=(el,a)=>{
+  playClick();
+  const actual=a===0?balance:Math.min(a,balance);
+  wdAmount=actual;
+  document.getElementById('wdAmtInp').value=actual;
+  document.querySelectorAll('.wd-amt').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('wdError').textContent='';
+};
+window.onWdInput=()=>{
+  wdAmount=parseInt(document.getElementById('wdAmtInp').value)||0;
+  document.querySelectorAll('.wd-amt').forEach(b=>b.classList.remove('active'));
+};
+window.fmtWdCard=el=>{let v=el.value.replace(/\D/g,'').substring(0,16);el.value=v.replace(/(.{4})/g,'$1 ').trim();};
+window.confirmWithdraw=async()=>{
+  ea();playClick();
+  const errEl=document.getElementById('wdError');
+  const card=document.getElementById('wdCard').value.replace(/\s/g,'');
+  wdAmount=parseInt(document.getElementById('wdAmtInp').value)||0;
+  if(wdAmount<100){errEl.textContent='Мінімум для виведення — 100 💰';return;}
+  if(wdAmount>balance){errEl.textContent='Недостатньо фішок на балансі!';return;}
+  if(card.length<16){errEl.textContent='Введи повний номер карти';return;}
+  errEl.textContent='';
+  document.getElementById('wdBtn').style.display='none';
+  document.getElementById('wdProc').classList.add('show');
+  const stats=['Перевірка балансу...','Обробка запиту...','Відправка коштів...','Підтвердження...'];
+  let si=0;
+  const ti=setInterval(()=>{document.getElementById('wdStat').textContent=stats[si++]||stats[stats.length-1];if(si>=stats.length)clearInterval(ti);},700);
+  
+  // При выводе деньги возвращаются в казино
+  await updateCasinoBalance(casinoBalance + wdAmount);
+  
+  await new Promise(r=>setTimeout(r,2800));
+  clearInterval(ti);
+  // Deduct from balance
+  const newBal=balance-wdAmount;
+  await saveBal(newBal);
+  document.getElementById('wdBalDisp').textContent=balance.toLocaleString('ru')+' 💰';
+  // Announce in chat
+  pushMsg({nick:'Casino',text:`💸 ${CU} вивів ${wdAmount.toLocaleString('ru')} 💰 на карту *${card.slice(-4)}`,color:'#00DD66',sys:true});
+  document.getElementById('wdProc').classList.remove('show');
+  document.getElementById('wdOk').classList.add('show');
+  document.getElementById('wdOkSub').textContent='Виведено '+wdAmount.toLocaleString('ru')+' ₴ на карту *'+card.slice(-4);
+  playPayOk();
+  setTimeout(()=>{document.getElementById('wdModal').classList.remove('show');},3000);
+};
+document.getElementById('wdModal').addEventListener('click',function(e){if(e.target===this)window.closeWithdraw();});
 
-function autoFillOTP() {
-  const code = String(Math.floor(Math.random()*900000)+100000).split('');
-  const boxes = document.querySelectorAll('.tds-otp-box');
-  code.forEach((digit,i) => setTimeout(() => {
-    boxes[i].value = digit; boxes[i].classList.add('filled'); playUIClick();
-    if (i===5) document.getElementById('tdsConfirmBtn').disabled = false;
-  }, i*160));
-}
+// STARS
+const bs2=document.getElementById('bgStars');
+for(let i=0;i<55;i++){const s=document.createElement('div');s.className='star';s.style.left=Math.random()*100+'%';s.style.top=Math.random()*100+'%';s.style.setProperty('--d',(2+Math.random()*4)+'s');s.style.setProperty('--o',(0.3+Math.random()*0.7));s.style.animationDelay=Math.random()*4+'s';bs2.appendChild(s);}
 
-let otpTimerInterval;
-function startOTPTimer() {
-  let t = 60; document.getElementById('tdsTimer').textContent = t;
-  clearInterval(otpTimerInterval);
-  otpTimerInterval = setInterval(() => { t--; document.getElementById('tdsTimer').textContent = t; if(t<=0) clearInterval(otpTimerInterval); }, 1000);
-}
+// JACKPOT TICKER
+setInterval(()=>{jp+=Math.floor(Math.random()*50);document.getElementById('jpAmt').textContent=jp.toLocaleString('ru');},300);
 
-function confirm3ds() {
-  ensureAudio(); playUIClick(); clearInterval(otpTimerInterval);
-  document.getElementById('tdsInputArea').classList.add('hide');
-  document.getElementById('tdsProcessing').classList.add('show');
-
-  // Анимация прогресс-бара
-  const prog = document.getElementById('tdsProg');
-  prog.style.transition = 'none'; prog.style.width = '0%';
-  setTimeout(() => { prog.style.transition = 'width 3s ease-out'; prog.style.width = '100%'; }, 50);
-
-  const statuses = ['Проверка данных...','Авторизация...','Обработка платежа...','Зачисление средств...'];
-  let si = 0;
-  const si2 = setInterval(() => {
-    document.getElementById('tdsStatusText').textContent = statuses[si++] || statuses[statuses.length-1];
-    if (si >= statuses.length) clearInterval(si2);
-  }, 750);
-
-  setTimeout(() => {
-    document.getElementById('tdsProcessing').classList.remove('show');
-    document.getElementById('tdsSuccess').classList.add('show');
-    document.getElementById('tdsSuccessText').textContent = 'Баланс пополнен на ' + depAmount.toLocaleString('ru') + ' ₴';
-
-    balance += depAmount; updateBalance();
-    playPaymentSuccess(); spawnCoins(8);
-    const balEl = document.getElementById('balanceDisplay');
-    balEl.classList.add('win-flash'); setTimeout(() => balEl.classList.remove('win-flash'), 600);
-
-    setTimeout(() => {
-      document.getElementById('tdsModal').classList.remove('show');
-      setMessage('💳 Счёт пополнен на +' + depAmount.toLocaleString('ru') + ' ₴!', 'win');
-      resetTDS();
-    }, 2600);
-  }, 3100);
-}
-
-// =========== KEYBOARD ===========
-document.addEventListener('keydown', e => {
-  if (document.getElementById('depositModal').classList.contains('show')) return;
-  if (document.getElementById('tdsModal').classList.contains('show')) return;
-  if (e.code === 'Space' || e.code === 'Enter') { e.preventDefault(); spin(); }
-  if (e.code === 'Escape') closeWin();
+// KEYBOARD
+document.addEventListener('keydown',e=>{
+  if(!document.getElementById('authScreen').classList.contains('hidden'))return;
+  if(document.getElementById('depositModal').classList.contains('show'))return;
+  if(document.getElementById('tdsModal').classList.contains('show'))return;
+  const f=document.activeElement;if(f&&(f.tagName==='INPUT'||f.tagName==='TEXTAREA'))return;
+  if(e.code==='Space'||e.code==='Enter'){e.preventDefault();window.spin();}
+  if(e.code==='Escape')window.closeWin();
 });
-document.getElementById('depositModal').addEventListener('click', function(e) { if(e.target===this) closeDeposit(); });
+document.getElementById('depositModal').addEventListener('click',function(e){if(e.target===this)window.closeDeposit();});
+document.getElementById('loginNick').addEventListener('keydown',e=>{if(e.key==='Enter')document.getElementById('loginPass').focus();});
+document.getElementById('loginPass').addEventListener('keydown',e=>{if(e.key==='Enter')window.doLogin();});
+document.getElementById('regNick').addEventListener('keydown',e=>{if(e.key==='Enter')document.getElementById('regPass').focus();});
+document.getElementById('regPass').addEventListener('keydown',e=>{if(e.key==='Enter')document.getElementById('regPass2').focus();});
+document.getElementById('regPass2').addEventListener('keydown',e=>{if(e.key==='Enter')window.doRegister();});
 </script>
+
+<!-- WITHDRAW MODAL -->
+<div class="wd-overlay" id="wdModal">
+  <div class="wd-box">
+    <button class="btn-mclose" onclick="closeWithdraw()" style="color:rgba(0,200,80,0.4);">✕</button>
+    <div class="wd-title">💸 Виведення коштів</div>
+    <div class="wd-sub">Виведення фішок на карту</div>
+    <div class="wd-balance-row">
+      <div class="wd-bal-label">Доступно</div>
+      <div class="wd-bal-val" id="wdBalDisp">0 💰</div>
+    </div>
+    <div class="wd-amounts">
+      <div class="wd-amt" onclick="selWdAmt(this,10000)">10 000</div>
+      <div class="wd-amt" onclick="selWdAmt(this,25000)">25 000</div>
+      <div class="wd-amt" onclick="selWdAmt(this,50000)">50 000</div>
+      <div class="wd-amt" onclick="selWdAmt(this,0)" id="wdAmtAll">ВСЕ</div>
+    </div>
+    <div class="wd-custom">
+      <input class="wd-custom-inp" id="wdAmtInp" type="number" min="100" placeholder="Сума виведення" oninput="onWdInput()">
+    </div>
+    <div class="wd-card-row">
+      <label class="form-label" style="color:rgba(0,200,80,0.5);">Номер карти для виведення</label>
+      <input class="wd-card-inp" id="wdCard" type="text" placeholder="0000 0000 0000 0000" maxlength="19" oninput="fmtWdCard(this)">
+    </div>
+    <div class="wd-error" id="wdError"></div>
+    <div class="wd-proc" id="wdProc">
+      <div class="wd-spinner"></div>
+      <div class="wd-stat" id="wdStat">Обробка...</div>
+    </div>
+    <div class="wd-ok" id="wdOk">
+      <div class="wd-check">✅</div>
+      <div class="wd-ok-title">Виведення успішне!</div>
+      <div class="wd-ok-sub" id="wdOkSub">Кошти на шляху до карти</div>
+    </div>
+    <button class="btn-wd-confirm" id="wdBtn" onclick="confirmWithdraw()">💸 ВИВЕСТИ</button>
+  </div>
+</div>
 </body>
 </html>
