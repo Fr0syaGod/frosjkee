@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OMP Server Status</title>
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Oswald:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #c8a84b;
+    --gold2: #f0d080;
+    --darker: #050508;
+    --panel: #0f0f1a;
+    --border: #1e1e35;
+    --green: #39ff14;
+    --red: #ff2244;
+    --blue: #4db8ff;
+    --text: #c0c8d8;
+    --dim: #4a5568;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--darker);
+    color: var(--text);
+    font-family: 'Share Tech Mono', monospace;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Сетка */
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image:
+      linear-gradient(rgba(200,168,75,0.035) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(200,168,75,0.035) 1px, transparent 1px);
+    background-size: 44px 44px;
+    pointer-events: none; z-index: 0;
+  }
+
+  /* Сканлайны */
+  body::after {
+    content: '';
+    position: fixed; inset: 0;
+    background: repeating-linear-gradient(
+      0deg, transparent, transparent 2px,
+      rgba(0,0,0,0.1) 2px, rgba(0,0,0,0.1) 4px
+    );
+    pointer-events: none; z-index: 100;
+  }
+
+  /* Свечение снизу */
+  .glow-bottom {
+    position: fixed;
+    bottom: -100px; left: 50%;
+    transform: translateX(-50%);
+    width: 600px; height: 200px;
+    background: radial-gradient(ellipse, rgba(200,168,75,0.08) 0%, transparent 70%);
+    pointer-events: none; z-index: 0;
+  }
+
+  .container {
+    position: relative; z-index: 10;
+    width: 90%; max-width: 680px;
+  }
+
+  /* ── Шапка ── */
+  .header {
+    text-align: center;
+    margin-bottom: 32px;
+    animation: fadeDown 0.7s ease both;
+  }
+
+  .logo-row {
+    display: inline-flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 6px;
+  }
+
+  .title {
+    font-family: 'Oswald', sans-serif;
+    font-size: clamp(1.9rem, 5.5vw, 3rem);
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    background: linear-gradient(135deg, #a07830, var(--gold2), #c8a84b, var(--gold2));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    filter: drop-shadow(0 0 24px rgba(200,168,75,0.35));
+  }
+
+  .subtitle {
+    font-size: 0.68rem;
+    letter-spacing: 0.32em;
+    color: var(--dim);
+    text-transform: uppercase;
+  }
+
+  /* ── Основная панель ── */
+  .panel {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    position: relative;
+    padding: 30px 32px;
+    animation: fadeUp 0.7s ease 0.15s both;
+  }
+
+  /* Верхняя золотая линия */
+  .panel::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 15%; right: 15%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  }
+
+  /* Углы */
+  .c { position: absolute; width: 12px; height: 12px; border-color: rgba(200,168,75,0.6); border-style: solid; }
+  .c-tl { top: -1px; left: -1px; border-width: 1.5px 0 0 1.5px; }
+  .c-tr { top: -1px; right: -1px; border-width: 1.5px 1.5px 0 0; }
+  .c-bl { bottom: -1px; left: -1px; border-width: 0 0 1.5px 1.5px; }
+  .c-br { bottom: -1px; right: -1px; border-width: 0 1.5px 1.5px 0; }
+
+  /* ── Статус ── */
+  .status-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 24px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .status-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: 'Oswald', sans-serif;
+    font-size: 1.35rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+  }
+
+  .dot {
+    width: 13px; height: 13px;
+    border-radius: 50%;
+    background: var(--dim);
+    flex-shrink: 0;
+  }
+  .dot.on {
+    background: var(--green);
+    box-shadow: 0 0 10px var(--green);
+    animation: pulse 2s ease-in-out infinite;
+  }
+  .dot.off { background: var(--red); box-shadow: 0 0 8px rgba(255,34,68,0.6); }
+  .dot.wait { animation: dimBlink 1.2s step-start infinite; }
+
+  @keyframes pulse {
+    0%,100% { box-shadow: 0 0 5px var(--green); }
+    50% { box-shadow: 0 0 18px var(--green), 0 0 36px rgba(57,255,20,0.2); transform: scale(1.1); }
+  }
+  @keyframes dimBlink { 0%,100%{opacity:1} 50%{opacity:0.25} }
+
+  .status-text { transition: color 0.3s; }
+  .status-text.on { color: var(--green); }
+  .status-text.off { color: var(--red); }
+  .status-text.wait { color: var(--dim); }
+
+  .addr {
+    font-size: 0.8rem;
+    color: var(--blue);
+    background: rgba(77,184,255,0.06);
+    border: 1px solid rgba(77,184,255,0.15);
+    padding: 6px 12px;
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+  }
+
+  /* ── Имя сервера ── */
+  .name-box {
+    margin-bottom: 22px;
+    padding: 12px 16px;
+    background: rgba(0,0,0,0.35);
+    border-left: 2px solid var(--gold);
+    border: 1px solid var(--border);
+    border-left: 2px solid var(--gold);
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+  }
+
+  #serverName {
+    font-size: 0.92rem;
+    color: var(--gold2);
+    letter-spacing: 0.03em;
+    word-break: break-all;
+    line-height: 1.45;
+  }
+
+  /* ── Карточки статистики ── */
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 22px;
+  }
+
+  .card {
+    background: rgba(0,0,0,0.3);
+    border: 1px solid var(--border);
+    padding: 16px 12px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.25s;
+    cursor: default;
+  }
+  .card:hover { border-color: rgba(200,168,75,0.28); }
+  .card::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0; height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    transform: scaleX(0);
+    transition: transform 0.3s;
+  }
+  .card:hover::after { transform: scaleX(1); }
+
+  .card-label {
+    font-size: 0.58rem;
+    letter-spacing: 0.22em;
+    color: var(--dim);
+    text-transform: uppercase;
+    margin-bottom: 7px;
+  }
+
+  .card-val {
+    font-family: 'Oswald', sans-serif;
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--gold2);
+    line-height: 1;
+  }
+
+  .card-val.small { font-size: 0.78rem; padding-top: 5px; }
+
+  /* ── Полоска игроков ── */
+  .bar-section { margin-bottom: 22px; }
+
+  .bar-label {
+    font-size: 0.58rem;
+    letter-spacing: 0.22em;
+    color: var(--dim);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  #barPct { color: rgba(200,168,75,0.5); }
+
+  .bar-wrap {
+    background: rgba(0,0,0,0.45);
+    border: 1px solid var(--border);
+    height: 8px;
+    overflow: hidden;
+    position: relative;
+  }
+
+  #barFill {
+    height: 100%;
+    width: 0%;
+    transition: width 1.3s cubic-bezier(0.4,0,0.2,1), background 0.5s;
+    background: linear-gradient(90deg, #39aa55, #55ff88);
+    position: relative;
+  }
+  #barFill::after {
+    content: '';
+    position: absolute;
+    right: 0; top: 0; bottom: 0; width: 24px;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3));
+  }
+
+  /* ── Футер ── */
+  .footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .footer-left { display: flex; flex-direction: column; gap: 3px; }
+  #lastUpdate { font-size: 0.6rem; color: var(--dim); letter-spacing: 0.1em; }
+  #srcInfo { font-size: 0.55rem; color: #2a3040; letter-spacing: 0.06em; }
+
+  .btn {
+    background: transparent;
+    border: 1px solid rgba(200,168,75,0.35);
+    color: var(--gold);
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    padding: 7px 16px;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .btn:hover:not(:disabled) {
+    background: rgba(200,168,75,0.08);
+    border-color: var(--gold);
+    box-shadow: 0 0 14px rgba(200,168,75,0.18);
+  }
+  .btn:disabled { opacity: 0.4; cursor: not-allowed; }
+  .btn.spin .ico { animation: spinAnim 0.85s linear infinite; }
+  @keyframes spinAnim { to { transform: rotate(360deg); } }
+
+  /* Скелетон */
+  .sk {
+    display: inline-block;
+    background: linear-gradient(90deg, #141422 25%, #1e1e32 50%, #141422 75%);
+    background-size: 200% 100%;
+    animation: sk 1.4s infinite;
+    border-radius: 2px;
+    color: transparent;
+  }
+  @keyframes sk { 0%{background-position:200% 0} 100%{background-position:-200% 0} }
+
+  /* Анимации появления */
+  @keyframes fadeDown { from { opacity:0; transform:translateY(-16px); } to { opacity:1; transform:none; } }
+  @keyframes fadeUp   { from { opacity:0; transform:translateY(16px);  } to { opacity:1; transform:none; } }
+
+  @media (max-width: 460px) {
+    .stats { grid-template-columns: repeat(2, 1fr); }
+    .panel { padding: 20px 16px; }
+    .title { font-size: 1.7rem; }
+  }
+</style>
+</head>
+<body>
+<div class="glow-bottom"></div>
+
+<div class="container">
+
+  <div class="header">
+    <div class="logo-row">
+      <svg width="44" height="44" viewBox="0 0 44 44" fill="none">
+        <rect x="1" y="1" width="42" height="42" rx="3" stroke="#c8a84b" stroke-width="1.5" fill="rgba(200,168,75,0.05)"/>
+        <path d="M22 7 L36 15 L36 27 Q36 37 22 42 Q8 37 8 27 L8 15 Z"
+          fill="rgba(200,168,75,0.1)" stroke="#c8a84b" stroke-width="1.2"/>
+        <text x="22" y="29" text-anchor="middle"
+          font-family="Oswald,sans-serif" font-weight="700" font-size="11"
+          fill="#f0d080" letter-spacing="0.5">OMP</text>
+      </svg>
+      <div class="title">Server Monitor</div>
+    </div>
+    <div class="subtitle">open.mp — статус в реальном времени</div>
+  </div>
+
+  <div class="panel">
+    <div class="c c-tl"></div><div class="c c-tr"></div>
+    <div class="c c-bl"></div><div class="c c-br"></div>
+
+    <div class="status-row">
+      <div class="status-left">
+        <div class="dot wait" id="dot"></div>
+        <span class="status-text wait" id="statusTxt">ПРОВЕРКА...</span>
+      </div>
+      <div class="addr">217.182.127.213:7777</div>
+    </div>
+
+    <div class="name-box">
+      <div id="serverName"><span class="sk">████████████████████████████████</span></div>
+    </div>
+
+    <div class="stats">
+      <div class="card">
+        <div class="card-label">Игроков</div>
+        <div class="card-val" id="valPlayers"><span class="sk">000</span></div>
+      </div>
+      <div class="card">
+        <div class="card-label">Слотов</div>
+        <div class="card-val" id="valMax"><span class="sk">000</span></div>
+      </div>
+      <div class="card">
+        <div class="card-label">Режим</div>
+        <div class="card-val small" id="valMode"><span class="sk">████████</span></div>
+      </div>
+    </div>
+
+    <div class="bar-section">
+      <div class="bar-label">
+        <span>Заполненность</span>
+        <span id="barPct">0%</span>
+      </div>
+      <div class="bar-wrap">
+        <div id="barFill"></div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <div class="footer-left">
+        <div id="lastUpdate">Ожидание...</div>
+        <div id="srcInfo"></div>
+      </div>
+      <button class="btn" id="refreshBtn" onclick="load()">
+        <svg class="ico" width="11" height="11" viewBox="0 0 24 24"
+          fill="none" stroke="currentColor" stroke-width="2.5">
+          <polyline points="23 4 23 10 17 10"/>
+          <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/>
+        </svg>
+        ОБНОВИТЬ
+      </button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+// ─── Настройки ────────────────────────────────────────────────────────────────
+const SERVER_IP   = '217.182.127.213';
+const SERVER_PORT = 7777;
+
+// Путь к proxy.php (лежит рядом с index.html)
+const PROXY = `proxy.php?ip=${SERVER_IP}&port=${SERVER_PORT}`;
+
+let timer = null;
+
+// ─── Очистка цветовых кодов SA-MP / OMP ──────────────────────────────────────
+function strip(s) {
+  return s ? s.replace(/!?\{[0-9A-Fa-f]{6}\}/g, '').trim() : '';
+}
+
+// ─── UI хелперы ───────────────────────────────────────────────────────────────
+function setWait() {
+  const dot = document.getElementById('dot');
+  dot.className = 'dot wait';
+  const st = document.getElementById('statusTxt');
+  st.className = 'status-text wait';
+  st.textContent = 'ПРОВЕРКА...';
+  const btn = document.getElementById('refreshBtn');
+  btn.classList.add('spin');
+  btn.disabled = true;
+}
+
+function setOnline(data) {
+  // dot + статус
+  document.getElementById('dot').className = 'dot on';
+  const st = document.getElementById('statusTxt');
+  st.className = 'status-text on';
+  st.textContent = 'ONLINE';
+
+  // имя сервера
+  document.getElementById('serverName').textContent =
+    strip(data.hostname) || `${SERVER_IP}:${SERVER_PORT}`;
+
+  // игроки
+  const players = data.players ?? 0;
+  const max     = data.max_players ?? 0;
+  document.getElementById('valPlayers').textContent = players;
+  document.getElementById('valMax').textContent     = max;
+
+  // режим
+  const modeEl  = document.getElementById('valMode');
+  const modeStr = strip(data.gamemode) || '—';
+  modeEl.textContent = modeStr;
+  modeEl.className   = 'card-val' + (modeStr.length > 10 ? ' small' : '');
+
+  // полоска
+  const pct  = max > 0 ? Math.min(Math.round(players / max * 100), 100) : 0;
+  const fill = document.getElementById('barFill');
+  fill.style.width = pct + '%';
+  fill.style.background =
+    pct > 80 ? 'linear-gradient(90deg,#cc5500,#ffaa00)' :
+    pct > 50 ? 'linear-gradient(90deg,var(--gold),var(--gold2))' :
+               'linear-gradient(90deg,#39aa55,#55ff88)';
+  document.getElementById('barPct').textContent = pct + '%';
+}
+
+function setOffline() {
+  document.getElementById('dot').className = 'dot off';
+  const st = document.getElementById('statusTxt');
+  st.className = 'status-text off';
+  st.textContent = 'OFFLINE';
+
+  document.getElementById('serverName').textContent = 'Сервер недоступен';
+  ['valPlayers','valMax','valMode'].forEach(id =>
+    document.getElementById(id).textContent = '—');
+  document.getElementById('barFill').style.width = '0%';
+  document.getElementById('barPct').textContent  = '0%';
+}
+
+function setDone(src) {
+  const btn = document.getElementById('refreshBtn');
+  btn.classList.remove('spin');
+  btn.disabled = false;
+
+  const now = new Date();
+  document.getElementById('lastUpdate').textContent =
+    `Обновлено: ${now.toLocaleTimeString('ru-RU')}`;
+  document.getElementById('srcInfo').textContent =
+    src ? `источник: ${src}` : '';
+}
+
+// ─── Основной запрос ──────────────────────────────────────────────────────────
+async function load() {
+  setWait();
+  clearTimeout(timer);
+
+  try {
+    const res = await fetch(PROXY + '&_=' + Date.now(), {
+      signal: AbortSignal.timeout(10000)
+    });
+
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+
+    const data = await res.json();
+
+    if (data.online === true) {
+      setOnline(data);
+      setDone('proxy.php → UDP → server');
+    } else {
+      setOffline();
+      setDone(data.error ? `ошибка: ${data.error}` : '');
+    }
+
+  } catch (e) {
+    console.error('Fetch failed:', e);
+    setOffline();
+    setDone('proxy.php недоступен');
+    document.getElementById('srcInfo').textContent =
+      'proxy.php не найден — положи его рядом с index.html';
+  }
+
+  // Автообновление каждые 60 секунд
+  timer = setTimeout(load, 60000);
+}
+
+// ─── Старт ────────────────────────────────────────────────────────────────────
+load();
+</script>
+</body>
+</html>
