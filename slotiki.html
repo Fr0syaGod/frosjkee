@@ -292,7 +292,7 @@
 
     <div class="tds-input-area" id="tdsInputArea">
       <div class="tds-otp-label">Код из SMS</div>
-      <div class="tds-sms-row">📱 +7 (•••) •••-••-<span id="tdsPhoneLast">27</span></div>
+      <div class="tds-sms-row">📱 +3 (•••) •••-••-<span id="tdsPhoneLast">27</span></div>
       <div class="tds-otp-boxes">
         <input class="tds-otp-box" maxlength="1" type="text" inputmode="numeric" oninput="otpInput(this,0)">
         <input class="tds-otp-box" maxlength="1" type="text" inputmode="numeric" oninput="otpInput(this,1)">
@@ -779,7 +779,7 @@ function startPayment() {
   }
   playUIClick(); closeDeposit();
   document.getElementById('tdsPhoneLast').textContent = String(Math.floor(Math.random()*90)+10);
-  document.getElementById('tdsAmount').textContent = depAmount.toLocaleString('ru') + ' ₽';
+  document.getElementById('tdsAmount').textContent = depAmount.toLocaleString('ru') + ' ₴';
   document.getElementById('tdsModal').classList.add('show');
   startOTPTimer();
   setTimeout(() => autoFillOTP(), 2200);
