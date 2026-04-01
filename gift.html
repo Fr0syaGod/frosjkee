@@ -198,7 +198,6 @@
             margin-top: 24px;
         }
 
-        /* === SPECIAL GIFT MODAL === */
         .sg-overlay {
             position: fixed;
             inset: 0;
@@ -452,7 +451,6 @@
             }
             .sg-title { font-size: 16px; }
         }
-        /* === END SPECIAL GIFT MODAL === */
 
         .commission-info {
             display: inline-flex;
@@ -822,7 +820,7 @@
                     <button class="sort-btn" data-sort="price-desc"><span>↓</span><span>Дороже</span></button>
                     <button class="sort-btn" data-sort="reset"><span>🔄</span><span>Сбросить</span></button>
                 </div>
-                <div class="search-count" id="virtualSearchCount">// Всего подарков: 105</div>
+                <div class="search-count" id="virtualSearchCount"></div>
                 <nav class="category-nav" id="virtualCategoryNav"></nav>
                 <div id="virtualCategorySections"></div>
             </section>
@@ -1215,6 +1213,7 @@
         function flattenVirtualGifts() {
             allVirtualGifts = [];
             virtualCategories.forEach(category => {
+                if (category === 'Special Gift') return;
                 virtualGiftData[category].forEach(gift => {
                     allVirtualGifts.push({ ...gift, category });
                 });
@@ -1433,7 +1432,6 @@
             }
         }
 
-        // Initialize
         flattenVirtualGifts();
         generateVirtualCategoryNav();
         generateVirtualCategorySections();
@@ -1466,7 +1464,6 @@
                 if (e.key === 'Escape') closeSGModal();
             });
 
-            // Привязка к кнопке Special Gift — после того как nav уже сгенерирован
             const allCatBtns = document.querySelectorAll('#virtualCategoryNav .category-btn');
             allCatBtns.forEach(function(btn) {
                 if (btn.textContent.trim() === 'Special Gift') {
@@ -1693,5 +1690,143 @@
         });
     })();
     </script>
+
+    <style>
+        .fh-wrap {
+            position: fixed;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            z-index: 8000;
+        }
+
+        .fh-item {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+        }
+
+        .fh-tab {
+            width: 40px;
+            height: 56px;
+            background: linear-gradient(180deg, rgba(124,58,237,0.18), rgba(6,182,212,0.12));
+            border: 1px solid rgba(124,58,237,0.35);
+            border-right: none;
+            border-radius: 12px 0 0 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            cursor: pointer;
+            flex-shrink: 0;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            transition: background 0.25s, border-color 0.25s, width 0.25s;
+            box-shadow: -4px 0 20px rgba(124,58,237,0.12), inset 0 1px 0 rgba(255,255,255,0.06);
+        }
+
+        .fh-item:hover .fh-tab {
+            background: linear-gradient(180deg, rgba(124,58,237,0.32), rgba(6,182,212,0.22));
+            border-color: rgba(124,58,237,0.65);
+            box-shadow: -6px 0 28px rgba(124,58,237,0.28), inset 0 1px 0 rgba(255,255,255,0.1);
+        }
+
+        .fh-card {
+            position: absolute;
+            right: 40px;
+            width: 270px;
+            background: linear-gradient(145deg, #0f1729 0%, #0a0f1a 100%);
+            border: 1px solid rgba(124,58,237,0.32);
+            border-right: none;
+            border-radius: 16px 0 0 16px;
+            padding: 16px 18px 16px 18px;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            box-shadow:
+                -8px 0 40px rgba(0,0,0,0.55),
+                -2px 0 0 rgba(124,58,237,0.08),
+                0 0 40px rgba(124,58,237,0.1),
+                inset 0 1px 0 rgba(255,255,255,0.05);
+            pointer-events: none;
+            opacity: 0;
+            transform: translateX(16px);
+            transition: opacity 0.28s cubic-bezier(0.4,0,0.2,1), transform 0.28s cubic-bezier(0.4,0,0.2,1);
+        }
+
+        .fh-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 20%;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(124,58,237,0.7), rgba(6,182,212,0.5), transparent);
+            border-radius: 999px;
+        }
+
+        .fh-item:hover .fh-card {
+            opacity: 1;
+            transform: translateX(0);
+            pointer-events: auto;
+        }
+
+        .fh-card-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 3px 10px;
+            background: linear-gradient(135deg, rgba(124,58,237,0.28), rgba(6,182,212,0.18));
+            border: 1px solid rgba(124,58,237,0.38);
+            border-radius: 999px;
+            font-size: 9px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.4px;
+            color: #c4b5fd;
+            margin-bottom: 10px;
+        }
+
+        .fh-card-label::before {
+            content: '';
+            width: 5px;
+            height: 5px;
+            background: #f472b6;
+            border-radius: 50%;
+            animation: sgPulse 1.5s ease-in-out infinite;
+        }
+
+        .fh-card-text {
+            font-family: 'Outfit', sans-serif;
+            font-size: 13px;
+            line-height: 1.65;
+            color: #94a3b8;
+        }
+
+        .fh-card-text strong {
+            color: #e2e8f0;
+            font-weight: 600;
+        }
+    </style>
+
+    <div class="fh-wrap">
+        <div class="fh-item">
+            <div class="fh-card">
+                <div class="fh-card-label">Совет</div>
+                <div class="fh-card-text">Просите подарки когда общение с TU идёт уже <strong>третий день</strong> — установленная эмоциональная связь путь к успеху</div>
+            </div>
+            <div class="fh-tab">💡</div>
+        </div>
+        <div class="fh-item">
+            <div class="fh-card">
+                <div class="fh-card-label">Фидбек</div>
+                <div class="fh-card-text">Видите на сайте несоответствие? <strong>Напишите разработчику</strong> — фидбек всегда важен</div>
+            </div>
+            <div class="fh-tab">✉️</div>
+        </div>
+    </div>
 </body>
 </html>
