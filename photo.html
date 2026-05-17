@@ -1546,13 +1546,16 @@
                 a.href = url;
                 a.download = `compressed_photos_${Date.now()}.zip`;
                 document.body.appendChild(a);
+                
+                // Добавляем небольшую задержку перед кликом для стабильности
+                await new Promise(resolve => setTimeout(resolve, 100));
                 a.click();
                 document.body.removeChild(a);
                 
-                // Clean up URL after download
+                // Clean up URL после достаточно долгой задержки
                 setTimeout(() => {
                     URL.revokeObjectURL(url);
-                }, 1000);
+                }, 5000);
 
             } catch (error) {
                 console.error('Ошибка обработки:', error);
@@ -1874,6 +1877,78 @@
         .jkee-menu-sidebar::-webkit-scrollbar-thumb:hover {
             background: rgba(124, 58, 237, 0.7);
         }
+
+        .hub-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(3,7,18,0.88);
+            backdrop-filter: blur(16px);
+            z-index: 3000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .hub-overlay.open { display: flex; }
+        .hub-box {
+            position: relative;
+            background: linear-gradient(160deg, #0d1526 0%, #0a0f1a 100%);
+            border: 1px solid rgba(124,58,237,0.35);
+            border-radius: 28px;
+            padding: 52px 44px 44px;
+            max-width: 380px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 0 60px rgba(124,58,237,0.15), 0 24px 64px rgba(0,0,0,0.6);
+            animation: hubPop 0.35s cubic-bezier(0.34,1.56,0.64,1);
+        }
+        @keyframes hubPop { from{opacity:0;transform:scale(0.88)} to{opacity:1;transform:scale(1)} }
+        .hub-close {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.1);
+            color: #94a3b8;
+            border-radius: 50%;
+            width: 32px;
+            height: 32px;
+            font-size: 14px;
+            cursor: pointer;
+            line-height: 1;
+            transition: background 0.2s, color 0.2s;
+        }
+        .hub-close:hover { background: rgba(244,114,182,0.15); color: #f472b6; }
+        .hub-icon { font-size: 3.5rem; margin-bottom: 16px; animation: hubBob 2s ease-in-out infinite; }
+        @keyframes hubBob { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-6px)} }
+        .hub-title {
+            font-size: 2rem;
+            font-weight: 900;
+            letter-spacing: -0.03em;
+            background: linear-gradient(90deg, #7c3aed, #06b6d4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+        }
+        .hub-wip {
+            display: inline-block;
+            background: rgba(244,114,182,0.15);
+            border: 1px solid rgba(244,114,182,0.3);
+            color: #f472b6;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            padding: 4px 14px;
+            margin-bottom: 20px;
+        }
+        .hub-desc {
+            font-size: 15px;
+            color: #64748b;
+            line-height: 1.7;
+        }
     </style>
 
     <button class="jkee-menu-trigger" id="jkeeMenuTrigger">☰</button>
@@ -1885,7 +1960,27 @@
         </div>
         <div class="jkee-menu-list">
             <div class="jkee-menu-section-title">Инструменты</div>
-			
+            <a href="chat.html" class="jkee-menu-item" data-page="chat">
+                <div class="jkee-menu-item-icon">💬</div>
+                <div class="jkee-menu-item-content">
+                    <div class="jkee-menu-item-title">CHAT</div>
+                    <div class="jkee-menu-item-desc">Анонимный чат</div>
+                </div>
+            </a>
+            <div class="jkee-menu-item" data-page="hub" style="cursor:pointer" onclick="openHubOverlay()">
+                <div class="jkee-menu-item-icon">📚</div>
+                <div class="jkee-menu-item-content">
+                    <div class="jkee-menu-item-title">HUB</div>
+                    <div class="jkee-menu-item-desc">База знаний</div>
+                </div>
+            </div>
+            <a href="calculator.html" class="jkee-menu-item" data-page="calculator">
+                <div class="jkee-menu-item-icon">🧮</div>
+                <div class="jkee-menu-item-content">
+                    <div class="jkee-menu-item-title">CALCULATOR</div>
+                    <div class="jkee-menu-item-desc">Расчёт дохода</div>
+                </div>
+            </a>
             <a href="gift.html" class="jkee-menu-item" data-page="gift">
                 <div class="jkee-menu-item-icon">🎁</div>
                 <div class="jkee-menu-item-content">
@@ -1926,6 +2021,27 @@
             if (e.key === 'Escape' && sidebar.classList.contains('active')) closeMenu();
         });
     })();
+
+    function openHubOverlay() {
+        document.getElementById('hubOverlay').classList.add('open');
+        document.getElementById('jkeeMenuSidebar')?.classList.remove('active');
+        document.getElementById('jkeeMenuOverlay')?.classList.remove('active');
+        document.getElementById('jkeeMenuTrigger')?.classList.remove('active');
+    }
+
+    function closeHubOverlay() {
+        document.getElementById('hubOverlay').classList.remove('open');
+    }
     </script>
+
+    <div class="hub-overlay" id="hubOverlay" onclick="if(event.target===this)closeHubOverlay()">
+        <div class="hub-box">
+            <button class="hub-close" onclick="closeHubOverlay()">✕</button>
+            <div class="hub-icon">🚧</div>
+            <div class="hub-title">HUB</div>
+            <div class="hub-wip">В разработке</div>
+            <div class="hub-desc">Этот раздел пока что недоступен.<br>Скоро здесь появится база знаний.</div>
+        </div>
+    </div>
 </body>
 </html>

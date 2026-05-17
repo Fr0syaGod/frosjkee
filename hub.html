@@ -1,0 +1,997 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📚 HUB | by jkee</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #7c3aed;
+            --primary-glow: rgba(124, 58, 237, 0.4);
+            --secondary: #06b6d4;
+            --accent: #f472b6;
+            --bg-deep: #030712;
+            --bg-main: #0a0f1a;
+            --bg-card: rgba(30, 41, 59, 0.6);
+            --glass: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --text-hero: #ffffff;
+            --text-primary: #f1f5f9;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            --success: #22c55e;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --radius-sm: 8px;
+            --radius-md: 16px;
+            --radius-lg: 24px;
+            --radius-full: 9999px;
+        }
+
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-deep);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .bg-aurora {
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            background:
+                radial-gradient(ellipse 80% 50% at 50% -20%, rgba(124, 58, 237, 0.12), transparent),
+                radial-gradient(ellipse 60% 40% at 80% 50%, rgba(6, 182, 212, 0.08), transparent),
+                radial-gradient(ellipse 50% 30% at 20% 80%, rgba(244, 114, 182, 0.06), transparent),
+                var(--bg-main);
+        }
+
+        .container { max-width: 1400px; margin: 0 auto; padding: 0 clamp(16px, 4vw, 48px); }
+        .app { padding: clamp(20px, 4vh, 40px) 0; animation: appReveal 0.6s ease-out forwards; }
+        @keyframes appReveal { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* ── HEADER ── */
+        .header { text-align: center; margin-bottom: clamp(30px, 6vh, 60px); }
+
+        .header-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 20px;
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-full);
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            margin-bottom: 24px;
+        }
+        .header-badge::before { content: ''; width: 8px; height: 8px; background: var(--success); border-radius: 50%; box-shadow: 0 0 8px var(--success); }
+
+        .header-title {
+            font-size: clamp(2.4rem, 8vw, 5rem);
+            font-weight: 900;
+            letter-spacing: -0.03em;
+            margin-bottom: 16px;
+            background: linear-gradient(90deg, #ff0080, #ff00ff, #8000ff, #0080ff, #00ffff, #00ff80, #80ff00, #ffff00, #ff8000, #ff0080);
+            background-size: 400% 100%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradientShift 8s linear infinite;
+        }
+        @keyframes gradientShift { 0% { background-position: 0% 50%; } 100% { background-position: 400% 50%; } }
+
+        .header-subtitle {
+            font-size: clamp(1rem, 2.5vw, 1.25rem);
+            color: var(--text-secondary);
+            max-width: 560px;
+            margin: 0 auto 32px;
+            font-weight: 400;
+        }
+
+        /* ── SIDEBAR MENU ── */
+        .jkee-menu-trigger {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            background: rgba(30, 41, 59, 0.8);
+            border: 1px solid rgba(255,255,255,0.08);
+            color: #f1f5f9;
+            font-size: 20px;
+            cursor: pointer;
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(12px);
+            transition: all 0.3s;
+        }
+        .jkee-menu-trigger:hover {
+            background: rgba(124,58,237,0.3);
+            border-color: #7c3aed;
+            box-shadow: 0 0 20px rgba(124,58,237,0.3);
+        }
+        .jkee-menu-trigger.active { background: rgba(124,58,237,0.4); border-color: #7c3aed; }
+
+        .jkee-menu-overlay {
+            position: fixed; inset: 0;
+            background: rgba(3,7,18,0.6);
+            backdrop-filter: blur(4px);
+            z-index: 9998;
+            opacity: 0; pointer-events: none;
+            transition: opacity 0.3s;
+        }
+        .jkee-menu-overlay.active { opacity: 1; pointer-events: all; }
+
+        .jkee-menu-sidebar {
+            position: fixed;
+            top: 0; right: -400px;
+            width: 350px; height: 100vh;
+            background: linear-gradient(180deg, #0a0f1a 0%, #030712 100%);
+            border-left: 1px solid rgba(255,255,255,0.08);
+            z-index: 9999;
+            transition: right 0.4s cubic-bezier(0.4,0,0.2,1);
+            overflow-y: auto;
+            box-shadow: -10px 0 40px rgba(0,0,0,0.5);
+        }
+        .jkee-menu-sidebar.active { right: 0; }
+
+        .jkee-menu-header {
+            padding: 30px 25px;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+            background: linear-gradient(135deg, rgba(124,58,237,0.15), rgba(6,182,212,0.15));
+        }
+        .jkee-menu-logo {
+            font-size: 28px; font-weight: 900;
+            background: linear-gradient(90deg, #ff0080, #ff00ff, #8000ff, #0080ff, #00ffff);
+            background-size: 200% 100%;
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+            animation: jkeeGradientShift 5s linear infinite;
+            margin-bottom: 8px; letter-spacing: -0.02em;
+        }
+        @keyframes jkeeGradientShift { 0%{background-position:0% 50%} 100%{background-position:200% 50%} }
+        .jkee-menu-subtitle { font-size: 13px; color: #94a3b8; }
+
+        .jkee-menu-list { padding: 20px 15px; }
+        .jkee-menu-section-title {
+            font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px;
+            color: #64748b; padding: 0 10px 10px; font-weight: 600;
+        }
+        .jkee-menu-item {
+            display: flex; align-items: center; gap: 15px;
+            padding: 15px; margin-bottom: 8px; border-radius: 12px;
+            background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08);
+            text-decoration: none; color: #f1f5f9;
+            transition: all 0.3s; position: relative; overflow: hidden;
+        }
+        .jkee-menu-item::before {
+            content: ''; position: absolute; top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(124,58,237,0.1), transparent);
+            transition: left 0.5s;
+        }
+        .jkee-menu-item:hover::before { left: 100%; }
+        .jkee-menu-item:hover {
+            background: rgba(124,58,237,0.2); border-color: #7c3aed;
+            transform: translateX(-5px); box-shadow: 0 4px 20px rgba(124,58,237,0.3);
+        }
+        .jkee-menu-item.active {
+            background: linear-gradient(135deg, rgba(124,58,237,0.3), rgba(6,182,212,0.3));
+            border-color: #7c3aed;
+        }
+        .jkee-menu-item-icon {
+            font-size: 24px; width: 40px; height: 40px;
+            display: flex; align-items: center; justify-content: center;
+            background: rgba(255,255,255,0.05); border-radius: 8px; flex-shrink: 0;
+        }
+        .jkee-menu-item-content { flex: 1; }
+        .jkee-menu-item-title { font-size: 15px; font-weight: 600; margin-bottom: 2px; }
+        .jkee-menu-item-desc { font-size: 12px; color: #94a3b8; }
+
+        .jkee-menu-footer {
+            padding: 20px 25px;
+            border-top: 1px solid rgba(255,255,255,0.08);
+            text-align: center;
+        }
+        .jkee-menu-footer-text { font-size: 12px; color: #64748b; }
+        .jkee-menu-footer-author {
+            background: linear-gradient(135deg, #7c3aed, #06b6d4);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+            font-weight: 700;
+        }
+        .jkee-menu-sidebar::-webkit-scrollbar { width: 6px; }
+        .jkee-menu-sidebar::-webkit-scrollbar-track { background: rgba(0,0,0,0.2); }
+        .jkee-menu-sidebar::-webkit-scrollbar-thumb { background: rgba(124,58,237,0.5); border-radius: 3px; }
+        .jkee-menu-sidebar::-webkit-scrollbar-thumb:hover { background: rgba(124,58,237,0.7); }
+
+        @media (max-width: 500px) {
+            .jkee-menu-sidebar { width: 100%; right: -100%; }
+            .jkee-menu-trigger { width: 45px; height: 45px; top: 15px; right: 15px; }
+        }
+
+        /* ── SEARCH + FILTERS ── */
+        .controls {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+
+        .search-wrap {
+            position: relative;
+        }
+        .search-icon {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            font-size: 16px;
+            pointer-events: none;
+        }
+        .search-input {
+            width: 100%;
+            padding: 14px 16px 14px 44px;
+            background: var(--bg-card);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-md);
+            color: var(--text-primary);
+            font-family: 'Outfit', sans-serif;
+            font-size: 15px;
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        .search-input::placeholder { color: var(--text-muted); }
+        .search-input:focus {
+            border-color: rgba(124, 58, 237, 0.5);
+            box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.1);
+        }
+
+        .filter-tabs {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .filter-tab {
+            padding: 7px 16px;
+            border-radius: var(--radius-full);
+            border: 1px solid var(--glass-border);
+            background: var(--glass);
+            color: var(--text-secondary);
+            font-family: 'Outfit', sans-serif;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .filter-tab:hover { border-color: rgba(124,58,237,0.4); color: var(--text-primary); }
+        .filter-tab.active {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: white;
+            box-shadow: 0 0 16px rgba(124,58,237,0.4);
+        }
+
+        /* ── STATS ── */
+        .stats-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            padding: 0 2px;
+        }
+        .stats-count {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+        .stats-count span { color: var(--text-secondary); font-weight: 600; }
+
+        /* ── GRID ── */
+        .topics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        /* ── CARD ── */
+        .topic-card {
+            background: var(--bg-card);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            cursor: pointer;
+            transition: all 0.25s;
+            text-decoration: none;
+            color: inherit;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(12px);
+        }
+        .topic-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, var(--card-color-a, rgba(124,58,237,0.06)), var(--card-color-b, rgba(6,182,212,0.03)));
+            opacity: 0;
+            transition: opacity 0.25s;
+        }
+        .topic-card:hover {
+            border-color: rgba(124,58,237,0.35);
+            transform: translateY(-3px);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.4), 0 0 0 1px rgba(124,58,237,0.15);
+        }
+        .topic-card:hover::before { opacity: 1; }
+
+        .card-top {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 12px;
+        }
+
+        .card-emoji {
+            font-size: 2rem;
+            line-height: 1;
+            flex-shrink: 0;
+        }
+
+        .card-badge {
+            padding: 4px 10px;
+            border-radius: var(--radius-full);
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            flex-shrink: 0;
+        }
+
+        .card-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--text-hero);
+            line-height: 1.3;
+        }
+
+        .card-desc {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.5;
+            flex: 1;
+        }
+
+        .card-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 4px;
+            padding-top: 12px;
+            border-top: 1px solid var(--glass-border);
+        }
+
+        .card-tags {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+        .card-tag {
+            padding: 3px 8px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-sm);
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+
+        .card-arrow {
+            color: var(--text-muted);
+            font-size: 18px;
+            transition: transform 0.2s, color 0.2s;
+        }
+        .topic-card:hover .card-arrow {
+            transform: translateX(4px);
+            color: var(--primary);
+        }
+
+        /* category badge colors */
+        .badge-operator { background: rgba(124,58,237,0.2); color: #a78bfa; border: 1px solid rgba(124,58,237,0.3); }
+        .badge-tech     { background: rgba(6,182,212,0.15); color: #67e8f9; border: 1px solid rgba(6,182,212,0.25); }
+        .badge-rules    { background: rgba(239,68,68,0.15); color: #fca5a5; border: 1px solid rgba(239,68,68,0.25); }
+        .badge-guide    { background: rgba(34,197,94,0.15); color: #86efac; border: 1px solid rgba(34,197,94,0.25); }
+        .badge-faq      { background: rgba(245,158,11,0.15); color: #fcd34d; border: 1px solid rgba(245,158,11,0.25); }
+
+        /* ── EMPTY STATE ── */
+        .empty-state {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--text-muted);
+        }
+        .empty-state .empty-icon { font-size: 3rem; margin-bottom: 16px; }
+        .empty-state p { font-size: 15px; }
+
+        /* ── MODAL (страница темы) ── */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(3,7,18,0.85);
+            backdrop-filter: blur(8px);
+            z-index: 1000;
+            display: none;
+            align-items: flex-start;
+            justify-content: center;
+            padding: 20px;
+            overflow-y: auto;
+        }
+        .modal-overlay.open { display: flex; }
+
+        .modal {
+            background: #0d1526;
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-lg);
+            width: 100%;
+            max-width: 820px;
+            margin: auto;
+            animation: modalIn 0.3s ease-out;
+            position: relative;
+        }
+        @keyframes modalIn { from { opacity:0; transform:translateY(24px) scale(0.97); } to { opacity:1; transform:none; } }
+
+        .modal-header {
+            padding: 28px 32px 24px;
+            border-bottom: 1px solid var(--glass-border);
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+        }
+        .modal-emoji { font-size: 2.5rem; line-height: 1; flex-shrink: 0; }
+        .modal-header-text { flex: 1; }
+        .modal-title { font-size: 1.6rem; font-weight: 800; color: var(--text-hero); margin-bottom: 6px; }
+        .modal-meta { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+        .modal-close {
+            width: 36px; height: 36px; border-radius: 50%;
+            background: var(--glass); border: 1px solid var(--glass-border);
+            color: var(--text-muted); font-size: 18px; cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            transition: all 0.2s; flex-shrink: 0;
+        }
+        .modal-close:hover { background: rgba(239,68,68,0.15); border-color: rgba(239,68,68,0.3); color: #fca5a5; }
+
+        .modal-body {
+            padding: 28px 32px 32px;
+        }
+
+        /* ── CONTENT BLOCKS (для статей) ── */
+        .content-section { margin-bottom: 28px; }
+        .content-section:last-child { margin-bottom: 0; }
+
+        .section-title {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--text-hero);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .section-title::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--glass-border);
+        }
+
+        .info-block {
+            background: rgba(124,58,237,0.08);
+            border: 1px solid rgba(124,58,237,0.2);
+            border-radius: var(--radius-md);
+            padding: 16px 20px;
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
+
+        .step-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .step-item {
+            display: flex;
+            gap: 14px;
+            align-items: flex-start;
+            background: var(--bg-card);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-md);
+            padding: 14px 16px;
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+        .step-num {
+            width: 26px; height: 26px;
+            background: var(--primary);
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 12px; font-weight: 700; color: white;
+            flex-shrink: 0; margin-top: 1px;
+        }
+
+        .warn-block {
+            background: rgba(245,158,11,0.08);
+            border: 1px solid rgba(245,158,11,0.25);
+            border-radius: var(--radius-md);
+            padding: 14px 18px;
+            font-size: 14px;
+            color: #fcd34d;
+            line-height: 1.6;
+            display: flex; gap: 10px; align-items: flex-start;
+        }
+
+        .code-block {
+            background: rgba(0,0,0,0.4);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-md);
+            padding: 14px 18px;
+            font-family: 'Space Mono', monospace;
+            font-size: 13px;
+            color: #a5f3fc;
+            overflow-x: auto;
+            white-space: pre;
+        }
+
+        /* ── FOOTER ── */
+        .footer {
+            text-align: center;
+            padding: 40px 0 20px;
+            color: var(--text-muted);
+            font-size: 13px;
+        }
+
+        @media (max-width: 600px) {
+            .modal-header { padding: 20px; }
+            .modal-body { padding: 20px; }
+            .modal-title { font-size: 1.3rem; }
+        }
+    </style>
+</head>
+<body>
+<div class="bg-aurora"></div>
+
+<div class="app">
+<div class="container">
+
+    <!-- HEADER -->
+    <div class="header">
+        <div class="header-badge">База знаний оператора</div>
+        <h1 class="header-title">HUB</h1>
+        <p class="header-subtitle">Темы, решения, инструкции — всё в одном месте</p>
+
+    </div>
+
+    <!-- CONTROLS -->
+    <div class="controls">
+        <div class="search-wrap">
+            <span class="search-icon">🔍</span>
+            <input class="search-input" id="searchInput" type="text" placeholder="Поиск по темам и описаниям...">
+        </div>
+        <div class="filter-tabs" id="filterTabs">
+            <button class="filter-tab active" data-cat="all">Все</button>
+        </div>
+    </div>
+
+    <!-- STATS -->
+    <div class="stats-bar">
+        <div class="stats-count">Показано: <span id="countShown">0</span> / <span id="countTotal">0</span></div>
+    </div>
+
+    <!-- GRID -->
+    <div class="topics-grid" id="topicsGrid"></div>
+
+    <!-- FOOTER -->
+    <div class="footer">by jkee · Hub v1.0</div>
+
+</div>
+</div>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modalOverlay">
+    <div class="modal" id="modal">
+        <div class="modal-header">
+            <div class="modal-emoji" id="modalEmoji"></div>
+            <div class="modal-header-text">
+                <div class="modal-title" id="modalTitle"></div>
+                <div class="modal-meta" id="modalMeta"></div>
+            </div>
+            <button class="modal-close" id="modalClose">✕</button>
+        </div>
+        <div class="modal-body" id="modalBody"></div>
+    </div>
+</div>
+
+<!-- SIDEBAR -->
+<button class="jkee-menu-trigger" id="jkeeMenuTrigger">☰</button>
+<div class="jkee-menu-overlay" id="jkeeMenuOverlay"></div>
+<div class="jkee-menu-sidebar" id="jkeeMenuSidebar">
+    <div class="jkee-menu-header">
+        <div class="jkee-menu-logo">JKEE TOOLS</div>
+        <div class="jkee-menu-subtitle">Коллекция инструментов</div>
+    </div>
+    <div class="jkee-menu-list">
+        <div class="jkee-menu-section-title">Инструменты</div>
+        <a href="hub.html" class="jkee-menu-item" data-page="hub">
+            <div class="jkee-menu-item-icon">📚</div>
+            <div class="jkee-menu-item-content">
+                <div class="jkee-menu-item-title">HUB</div>
+                <div class="jkee-menu-item-desc">База знаний</div>
+            </div>
+        </a>
+        <a href="gift.html" class="jkee-menu-item" data-page="gift">
+            <div class="jkee-menu-item-icon">🎁</div>
+            <div class="jkee-menu-item-content">
+                <div class="jkee-menu-item-title">GIFT</div>
+                <div class="jkee-menu-item-desc">Каталог подарков</div>
+            </div>
+        </a>
+        <a href="photo.html" class="jkee-menu-item" data-page="photo">
+            <div class="jkee-menu-item-icon">📸</div>
+            <div class="jkee-menu-item-content">
+                <div class="jkee-menu-item-title">COMPRESS</div>
+                <div class="jkee-menu-item-desc">Сжатие фотографий</div>
+            </div>
+        </a>
+        <a href="helperapp.html" class="jkee-menu-item" data-page="helperapp">
+            <div class="jkee-menu-item-icon">🔧</div>
+            <div class="jkee-menu-item-content">
+                <div class="jkee-menu-item-title">HELPER APP</div>
+                <div class="jkee-menu-item-desc">Инструкция по расширению</div>
+            </div>
+        </a>
+    </div>
+    <div class="jkee-menu-footer">
+        <div class="jkee-menu-footer-text">Made by <span class="jkee-menu-footer-author">jkee</span></div>
+    </div>
+</div>
+
+<script>
+(function() {
+    const trigger = document.getElementById('jkeeMenuTrigger');
+    const overlay = document.getElementById('jkeeMenuOverlay');
+    const sidebar = document.getElementById('jkeeMenuSidebar');
+    function openMenu() { trigger.classList.add('active'); overlay.classList.add('active'); sidebar.classList.add('active'); document.body.style.overflow = 'hidden'; }
+    function closeMenu() { trigger.classList.remove('active'); overlay.classList.remove('active'); sidebar.classList.remove('active'); document.body.style.overflow = ''; }
+    trigger.addEventListener('click', () => sidebar.classList.contains('active') ? closeMenu() : openMenu());
+    overlay.addEventListener('click', closeMenu);
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeMenu(); });
+    const currentPage = window.location.pathname.split('/').pop().replace('.html','');
+    document.querySelectorAll('.jkee-menu-item').forEach(item => {
+        if (currentPage.includes(item.dataset.page)) item.classList.add('active');
+    });
+})();
+</script>
+
+<script>
+// ══════════════════════════════════════════════════════════
+//  📝 ДАННЫЕ — добавляй новые темы сюда
+//  Поля:
+//    id       — уникальный идентификатор (любой)
+//    emoji    — иконка карточки
+//    title    — название темы
+//    desc     — короткое описание (на карточке)
+//    cat      — категория: "operator" | "tech" | "rules" | "guide" | "faq"
+//    tags     — массив тегов (строки)
+//    content  — HTML-содержимое страницы (используй блоки ниже)
+// ══════════════════════════════════════════════════════════
+
+const TOPICS = [
+
+    {
+        id: "cabinet-assign",
+        emoji: "🗂️",
+        title: "Назначение кабинетов",
+        desc: "Как правильно назначать кабинеты операторам, очерёдность и правила распределения.",
+        cat: "operator",
+        tags: ["кабинет", "назначение", "смена"],
+        content: `
+        <div class="content-section">
+            <div class="section-title">ℹ️ Общая информация</div>
+            <div class="info-block">
+                Кабинеты назначаются в начале каждой смены. Оператор несёт ответственность за свой кабинет в течение всей смены.
+            </div>
+        </div>
+        <div class="content-section">
+            <div class="section-title">📋 Порядок действий</div>
+            <div class="step-list">
+                <div class="step-item"><div class="step-num">1</div><div>Открой панель управления и перейди в раздел «Кабинеты».</div></div>
+                <div class="step-item"><div class="step-num">2</div><div>Выбери свободный кабинет из списка (статус <b style="color:#86efac">Available</b>).</div></div>
+                <div class="step-item"><div class="step-num">3</div><div>Нажми «Назначить себе» и подтверди действие.</div></div>
+                <div class="step-item"><div class="step-num">4</div><div>Отметь в журнале время начала работы с кабинетом.</div></div>
+            </div>
+        </div>
+        <div class="content-section">
+            <div class="section-title">⚠️ Важно</div>
+            <div class="warn-block">⚠️ <span>Нельзя брать кабинет без согласования, если он помечен как <b>Reserved</b>. Обратись к старшему оператору.</span></div>
+        </div>
+        `
+    },
+
+    {
+        id: "response-speed",
+        emoji: "⚡",
+        title: "Скорость ответов",
+        desc: "Нормативы по времени ответа, как влияет на рейтинг и что делать при перегрузке.",
+        cat: "operator",
+        tags: ["скорость", "метрики", "рейтинг"],
+        content: `
+        <div class="content-section">
+            <div class="section-title">📊 Нормативы</div>
+            <div class="step-list">
+                <div class="step-item"><div class="step-num" style="background:#22c55e">✓</div><div><b>Хорошо:</b> ответ до 2 минут</div></div>
+                <div class="step-item"><div class="step-num" style="background:#f59e0b">!</div><div><b>Допустимо:</b> ответ до 5 минут</div></div>
+                <div class="step-item"><div class="step-num" style="background:#ef4444">✕</div><div><b>Нарушение:</b> ответ свыше 5 минут — фиксируется в метриках</div></div>
+            </div>
+        </div>
+        <div class="content-section">
+            <div class="section-title">💡 Советы</div>
+            <div class="info-block">
+                Используй шаблоны ответов для типовых вопросов. При перегрузке сообщи старшему оператору о необходимости перераспределения.
+            </div>
+        </div>
+        `
+    },
+
+    {
+        id: "payroll-calc",
+        emoji: "💰",
+        title: "Расчёт зарплаты",
+        desc: "Формула расчёта выплат, бонусы за показатели, штрафы и сроки.",
+        cat: "operator",
+        tags: ["зарплата", "бонус", "расчёт"],
+        content: `
+        <div class="content-section">
+            <div class="section-title">📐 Формула</div>
+            <div class="info-block">
+                <b>Итог = Ставка + Бонусы − Штрафы</b><br><br>
+                Ставка рассчитывается за отработанные часы. Бонусы начисляются при превышении плана. Штрафы за нарушения нормативов.
+            </div>
+        </div>
+        <div class="content-section">
+            <div class="section-title">🏆 Бонусы</div>
+            <div class="step-list">
+                <div class="step-item"><div class="step-num">+</div><div>Рейтинг ответов выше 95% → +10% к ставке</div></div>
+                <div class="step-item"><div class="step-num">+</div><div>Выполнение плана по подаркам → фиксированный бонус</div></div>
+            </div>
+        </div>
+        <div class="content-section">
+            <div class="section-title">⚠️ Штрафы</div>
+            <div class="warn-block">⚠️ <span>Опоздание на смену без уведомления — вычет из ставки. Повторные нарушения — дополнительные штрафные баллы.</span></div>
+        </div>
+        `
+    },
+	
+	    {
+        id: "new-topic",
+        emoji: "📌",
+        title: "решение",
+        desc: "",
+        cat: "guide",
+        tags: [],
+        content: `
+        <div class="content-section">
+            <div class="section-title">сосал</div>
+            <div class="step-list">
+                <div class="step-item"><div class="step-num">1</div><div>не</div></div>
+                <div class="step-item"><div class="step-num">2</div><div>да</div></div>
+                <div class="step-item"><div class="step-num">3</div><div>нет</div></div>
+            </div>
+        </div>
+        <div class="content-section">
+            <div class="section-title">куку</div>
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQHcbdUR4wyA1axRO3-XPArgiOQuaQKoC3vZg&s" style="width:100%;border-radius:12px;border:1px solid var(--glass-border)" alt="куку">
+            <div style="font-size:12px;color:var(--text-muted);text-align:center;margin-top:6px">куку</div>
+        </div>
+        `
+    },
+	
+{
+        id: "new-zap",
+        emoji: "📌",
+        title: "Как сосать",
+        desc: "нужно просто отсосать хуй",
+        cat: "guide",
+        tags: [],
+        content: `
+        <div class="content-section">
+            <div class="section-title">сосать хуй так</div>
+            <video src="HBEStFuB1Y.mp4" controls style="width:100%;border-radius:12px;border:1px solid var(--glass-border)"></video>
+        </div>
+        `
+    },
+
+    {
+        id: "gift-rules",
+        emoji: "🎁",
+        title: "Правила обработки подарков",
+        desc: "Когда и как принимать запросы на подарки, лимиты и запрещённые позиции.",
+        cat: "rules",
+        tags: ["подарок", "лимит", "запрос"],
+        content: `
+        <div class="content-section">
+            <div class="section-title">📋 Правила</div>
+            <div class="step-list">
+                <div class="step-item"><div class="step-num">1</div><div>Проверь ID клиента перед обработкой запроса.</div></div>
+                <div class="step-item"><div class="step-num">2</div><div>Убедись, что позиция есть в каталоге и регион доставки поддерживается.</div></div>
+                <div class="step-item"><div class="step-num">3</div><div>Проверь дневной лимит подарков для клиента.</div></div>
+                <div class="step-item"><div class="step-num">4</div><div>Подтверди заказ и сообщи клиенту трек-номер.</div></div>
+            </div>
+        </div>
+        <div class="content-section">
+            <div class="section-title">🚫 Запрещено</div>
+            <div class="warn-block">⚠️ <span>Нельзя оформлять подарки на заблокированных клиентов и на адреса из стоп-листа. Перед отправкой всегда проверяй статус аккаунта.</span></div>
+        </div>
+        `
+    },
+
+    {
+        id: "extension-install",
+        emoji: "🔧",
+        title: "Установка расширения Helper App",
+        desc: "Пошаговая инструкция по установке и настройке браузерного расширения.",
+        cat: "tech",
+        tags: ["расширение", "установка", "браузер"],
+        content: `
+        <div class="content-section">
+            <div class="section-title">📦 Установка</div>
+            <div class="step-list">
+                <div class="step-item"><div class="step-num">1</div><div>Скачай архив расширения по ссылке от администратора.</div></div>
+                <div class="step-item"><div class="step-num">2</div><div>Открой Chrome → Расширения → Режим разработчика → Вкл.</div></div>
+                <div class="step-item"><div class="step-num">3</div><div>Нажми «Загрузить распакованное расширение» и выбери папку.</div></div>
+                <div class="step-item"><div class="step-num">4</div><div>Расширение появится в панели и автоматически активируется на Helper App.</div></div>
+            </div>
+        </div>
+        <div class="content-section">
+            <div class="section-title">🛠 Если что-то пошло не так</div>
+            <div class="info-block">
+                Проверь, что версия Chrome актуальная. Если расширение не загружается — убедись, что папка не заархивирована. Подробная инструкция: <a href="helperapp.html" style="color:#a78bfa">helperapp.html</a>
+            </div>
+        </div>
+        `
+    },
+
+    {
+        id: "faq-common",
+        emoji: "❓",
+        title: "Частые вопросы",
+        desc: "Ответы на самые популярные вопросы от новых операторов.",
+        cat: "faq",
+        tags: ["FAQ", "новичок", "вопросы"],
+        content: `
+        <div class="content-section">
+            <div class="section-title">❓ Вопросы и ответы</div>
+            <div class="step-list">
+                <div class="step-item"><div class="step-num">Q</div><div><b>Что делать если клиент не отвечает?</b><br><span style="color:var(--text-muted)">Отправь 2 повторных сообщения с интервалом 5 минут, затем закрой диалог со статусом «Нет ответа».</span></div></div>
+                <div class="step-item"><div class="step-num">Q</div><div><b>Как перенести диалог на другого оператора?</b><br><span style="color:var(--text-muted)">Открой опции диалога → «Передать» → выбери доступного оператора.</span></div></div>
+                <div class="step-item"><div class="step-num">Q</div><div><b>Не работает кнопка отправки?</b><br><span style="color:var(--text-muted)">Перезагрузи страницу. Если не помогло — сообщи в тех. поддержку.</span></div></div>
+            </div>
+        </div>
+        `
+    },
+
+];
+
+// ══════════════════════════════════════════════════════════
+// Не трогай ниже — логика рендера
+// ══════════════════════════════════════════════════════════
+
+const BADGE_LABELS = {
+    operator: "Оператор",
+    tech:     "Техника",
+    rules:    "Правила",
+    guide:    "Гайд",
+    faq:      "FAQ",
+};
+
+let activeFilter = "all";
+
+function renderFilterTabs() {
+    const cats = [...new Set(TOPICS.map(t => t.cat))];
+    const tabs = document.getElementById("filterTabs");
+    cats.forEach(cat => {
+        const btn = document.createElement("button");
+        btn.className = "filter-tab";
+        btn.dataset.cat = cat;
+        btn.textContent = BADGE_LABELS[cat] || cat;
+        tabs.appendChild(btn);
+    });
+    tabs.addEventListener("click", e => {
+        const tab = e.target.closest(".filter-tab");
+        if (!tab) return;
+        activeFilter = tab.dataset.cat;
+        tabs.querySelectorAll(".filter-tab").forEach(t => t.classList.toggle("active", t === tab));
+        renderGrid();
+    });
+}
+
+function getFiltered() {
+    const q = document.getElementById("searchInput").value.toLowerCase().trim();
+    return TOPICS.filter(t => {
+        const matchCat = activeFilter === "all" || t.cat === activeFilter;
+        const matchQ = !q || t.title.toLowerCase().includes(q) || t.desc.toLowerCase().includes(q) || t.tags.some(tag => tag.toLowerCase().includes(q));
+        return matchCat && matchQ;
+    });
+}
+
+function renderGrid() {
+    const grid = document.getElementById("topicsGrid");
+    const items = getFiltered();
+    document.getElementById("countShown").textContent = items.length;
+    document.getElementById("countTotal").textContent = TOPICS.length;
+
+    if (!items.length) {
+        grid.innerHTML = `<div class="empty-state"><div class="empty-icon">🔍</div><p>Ничего не найдено по запросу</p></div>`;
+        return;
+    }
+
+    grid.innerHTML = items.map(t => `
+        <a class="topic-card" href="#" data-id="${t.id}" onclick="openModal('${t.id}');return false;">
+            <div class="card-top">
+                <div class="card-emoji">${t.emoji}</div>
+                <div class="card-badge badge-${t.cat}">${BADGE_LABELS[t.cat] || t.cat}</div>
+            </div>
+            <div class="card-title">${t.title}</div>
+            <div class="card-desc">${t.desc}</div>
+            <div class="card-footer">
+                <div class="card-tags">${t.tags.map(tag => `<span class="card-tag">${tag}</span>`).join("")}</div>
+                <div class="card-arrow">→</div>
+            </div>
+        </a>
+    `).join("");
+}
+
+function openModal(id) {
+    const t = TOPICS.find(x => x.id === id);
+    if (!t) return;
+    document.getElementById("modalEmoji").textContent = t.emoji;
+    document.getElementById("modalTitle").textContent = t.title;
+    document.getElementById("modalMeta").innerHTML = `
+        <span class="card-badge badge-${t.cat}">${BADGE_LABELS[t.cat] || t.cat}</span>
+        ${t.tags.map(tag => `<span class="card-tag">${tag}</span>`).join("")}
+    `;
+    document.getElementById("modalBody").innerHTML = t.content;
+    document.getElementById("modalOverlay").classList.add("open");
+    document.body.style.overflow = "hidden";
+}
+
+function closeModal() {
+    document.getElementById("modalOverlay").classList.remove("open");
+    document.body.style.overflow = "";
+}
+
+document.getElementById("modalClose").addEventListener("click", closeModal);
+document.getElementById("modalOverlay").addEventListener("click", e => {
+    if (e.target === document.getElementById("modalOverlay")) closeModal();
+});
+document.addEventListener("keydown", e => { if (e.key === "Escape") closeModal(); });
+document.getElementById("searchInput").addEventListener("input", renderGrid);
+
+// Init
+renderFilterTabs();
+renderGrid();
+</script>
+</body>
+</html>

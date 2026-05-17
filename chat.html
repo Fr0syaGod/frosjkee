@@ -216,32 +216,39 @@
 
         /* ── MESSAGES ── */
         .messages-wrap {
-            flex: 1; overflow-y: auto; padding: 20px 24px;
-            display: flex; flex-direction: column; gap: 6px;
+            flex: 1; overflow-y: auto; padding: 22px 24px;
+            display: flex; flex-direction: column; gap: 12px;
+            background: rgba(10,15,26,0.55);
+            border-top: 1px solid rgba(255,255,255,0.08);
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+            backdrop-filter: blur(18px);
         }
         .messages-wrap::-webkit-scrollbar { width: 6px; }
         .messages-wrap::-webkit-scrollbar-track { background: transparent; }
-        .messages-wrap::-webkit-scrollbar-thumb { background: rgba(124,58,237,0.3); border-radius: 3px; }
+        .messages-wrap::-webkit-scrollbar-thumb { background: rgba(124,58,237,0.25); border-radius: 3px; }
 
         /* date divider */
         .date-divider {
             display: flex; align-items: center; gap: 12px;
-            margin: 12px 0; color: var(--text-muted); font-size: 11px;
+            margin: 16px 0; color: var(--text-muted); font-size: 11px;
         }
         .date-divider::before, .date-divider::after {
-            content: ''; flex: 1; height: 1px; background: var(--glass-border);
+            content: ''; flex: 1; height: 1px; background: rgba(255,255,255,0.08);
         }
 
         /* system message */
         .sys-msg {
             text-align: center; font-size: 12px; color: var(--text-muted);
-            padding: 4px 0; animation: msgIn 0.3s ease-out;
+            padding: 6px 14px; border-radius: 999px;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.08);
+            animation: msgIn 0.3s ease-out;
         }
 
         /* message */
         .msg {
             display: flex; gap: 10px; align-items: flex-end;
-            animation: msgIn 0.25s ease-out;
+            animation: msgIn 0.2s ease-out;
             padding: 2px 0;
         }
         @keyframes msgIn { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:none} }
@@ -249,35 +256,37 @@
         .msg.own { flex-direction: row-reverse; }
 
         .msg-avatar {
-            width: 40px; height: 40px; border-radius: 50%;
+            width: 42px; height: 42px; border-radius: 50%;
             display: flex; align-items: center; justify-content: center;
             font-size: 15px; font-weight: 700; flex-shrink: 0;
             margin-bottom: 2px;
+            background: rgba(124,58,237,0.18);
+            border: 1px solid rgba(255,255,255,0.12);
+            color: #eef2ff;
         }
 
-        .msg-content { max-width: 65%; display: flex; flex-direction: column; gap: 4px; }
+        .msg-content { max-width: 72%; display: flex; flex-direction: column; gap: 6px; }
         .msg.own .msg-content { align-items: flex-end; }
 
         .msg-nick {
-            font-size: 12px; font-weight: 600; color: var(--text-muted);
-            padding: 0 6px;
+            font-size: 12px; font-weight: 600; color: var(--text-secondary);
+            padding: 0 4px;
         }
 
         .msg-bubble {
-            padding: 12px 18px; border-radius: 20px;
-            font-size: 15px; line-height: 1.55; word-break: break-word;
-            position: relative;
+            padding: 13px 18px; border-radius: 18px;
+            font-size: 15px; line-height: 1.65; word-break: break-word;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.16);
         }
         .msg:not(.own) .msg-bubble {
-            background: var(--bg-card);
-            border: 1px solid var(--glass-border);
-            border-bottom-left-radius: 4px;
+            background: rgba(15,23,42,0.95);
+            border: 1px solid rgba(255,255,255,0.08);
             color: var(--text-primary);
         }
         .msg.own .msg-bubble {
-            background: linear-gradient(135deg, var(--primary), #6d28d9);
-            border-bottom-right-radius: 4px;
+            background: linear-gradient(135deg, rgba(124,58,237,0.92), rgba(59,130,246,0.95));
             color: white;
+            border: 1px solid rgba(255,255,255,0.1);
         }
 
         .msg-time {
@@ -790,11 +799,18 @@ const IS_CONFIGURED = FIREBASE_CONFIG.apiKey !== "ВСТАВЬ_СЮДА";
         </div>
 
         <div class="jkee-menu-section-title" style="margin-top:16px">🔗 Инструменты</div>
-        <a href="hub.html" class="jkee-menu-item" data-page="hub">
+        <div class="jkee-menu-item" data-page="hub" style="cursor:pointer" onclick="openHubOverlay()">
             <div class="jkee-menu-item-icon">📚</div>
             <div class="jkee-menu-item-content">
                 <div class="jkee-menu-item-title">HUB</div>
                 <div class="jkee-menu-item-desc">База знаний</div>
+            </div>
+        </div>
+        <a href="calculator.html" class="jkee-menu-item" data-page="calculator">
+            <div class="jkee-menu-item-icon">🧮</div>
+            <div class="jkee-menu-item-content">
+                <div class="jkee-menu-item-title">CALCULATOR</div>
+                <div class="jkee-menu-item-desc">Расчёт дохода</div>
             </div>
         </a>
         <a href="gift.html" class="jkee-menu-item" data-page="gift">
@@ -816,13 +832,6 @@ const IS_CONFIGURED = FIREBASE_CONFIG.apiKey !== "ВСТАВЬ_СЮДА";
             <div class="jkee-menu-item-content">
                 <div class="jkee-menu-item-title">HELPER APP</div>
                 <div class="jkee-menu-item-desc">Инструкция по расширению</div>
-            </div>
-        </a>
-        <a href="chat.html" class="jkee-menu-item active" data-page="chat">
-            <div class="jkee-menu-item-icon">💬</div>
-            <div class="jkee-menu-item-content">
-                <div class="jkee-menu-item-title">CHAT</div>
-                <div class="jkee-menu-item-desc">Анонимный чат</div>
             </div>
         </a>
     </div>
@@ -1890,5 +1899,75 @@ window.addEventListener('beforeunload', () => {
     if (db && myNick) pushSystemMsg(`${myNick} покинул чат`);
 });
 </script>
+
+<script>
+function openHubOverlay() {
+    document.getElementById('hubOverlay').classList.add('open');
+    document.getElementById('jkeeMenuSidebar')?.classList.remove('active');
+    document.getElementById('jkeeMenuOverlay')?.classList.remove('active');
+    document.getElementById('jkeeMenuTrigger')?.classList.remove('active');
+}
+function closeHubOverlay() {
+    document.getElementById('hubOverlay').classList.remove('open');
+}
+</script>
+
+<!-- ── HUB OVERLAY ── -->
+<div class="hub-overlay" id="hubOverlay" onclick="if(event.target===this)closeHubOverlay()">
+    <div class="hub-box">
+        <button class="hub-close" onclick="closeHubOverlay()">✕</button>
+        <div class="hub-icon">🚧</div>
+        <div class="hub-title">HUB</div>
+        <div class="hub-wip">В разработке</div>
+        <div class="hub-desc">Этот раздел пока что недоступен.<br>Скоро здесь появится база знаний.</div>
+    </div>
+</div>
+
+<style>
+.hub-overlay {
+    position: fixed; inset: 0; z-index: 3000;
+    background: rgba(3,7,18,0.88); backdrop-filter: blur(16px);
+    display: none; align-items: center; justify-content: center; padding: 20px;
+}
+.hub-overlay.open { display: flex; }
+.hub-box {
+    position: relative;
+    background: linear-gradient(160deg, #0d1526 0%, #0a0f1a 100%);
+    border: 1px solid rgba(124,58,237,0.35);
+    border-radius: 28px;
+    padding: 52px 44px 44px;
+    max-width: 380px; width: 100%;
+    text-align: center;
+    box-shadow: 0 0 60px rgba(124,58,237,0.15), 0 24px 64px rgba(0,0,0,0.6);
+    animation: hubPop 0.35s cubic-bezier(0.34,1.56,0.64,1);
+}
+@keyframes hubPop { from{opacity:0;transform:scale(0.88)} to{opacity:1;transform:scale(1)} }
+.hub-close {
+    position: absolute; top: 16px; right: 16px;
+    background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);
+    color: #94a3b8; border-radius: 50%; width: 32px; height: 32px;
+    font-size: 14px; cursor: pointer; line-height: 1;
+    transition: background 0.2s, color 0.2s;
+}
+.hub-close:hover { background: rgba(244,114,182,0.15); color: #f472b6; }
+.hub-icon { font-size: 3.5rem; margin-bottom: 16px; animation: hubBob 2s ease-in-out infinite; }
+@keyframes hubBob { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-6px)} }
+.hub-title {
+    font-size: 2rem; font-weight: 900; letter-spacing: -0.03em;
+    background: linear-gradient(90deg, #7c3aed, #06b6d4);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    margin-bottom: 10px;
+}
+.hub-wip {
+    display: inline-block;
+    background: rgba(244,114,182,0.15); border: 1px solid rgba(244,114,182,0.3);
+    color: #f472b6; border-radius: 999px;
+    font-size: 12px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+    padding: 4px 14px; margin-bottom: 20px;
+}
+.hub-desc {
+    font-size: 15px; color: #64748b; line-height: 1.7;
+}
+</style>
 </body>
 </html>

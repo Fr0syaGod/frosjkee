@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🧮 CALCULATOR | by jkee</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #7c3aed;
+            --secondary: #06b6d4;
+            --accent: #f472b6;
+            --bg-deep: #030712;
+            --bg-main: #0a0f1a;
+            --bg-card: rgba(30, 41, 59, 0.72);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --text-primary: #f1f5f9;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            --success: #22c55e;
+            --radius-sm: 10px;
+            --radius-md: 20px;
+            --radius-lg: 28px;
+            --radius-full: 9999px;
+        }
+
+        *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            min-height: 100vh;
+            font-family: 'Outfit', sans-serif;
+            background: var(--bg-deep);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .bg-aurora {
+            position: fixed; inset: 0; z-index: -1;
+            background:
+                radial-gradient(ellipse 80% 50% at 50% -20%, rgba(124,58,237,0.12), transparent),
+                radial-gradient(ellipse 60% 40% at 80% 50%, rgba(6,182,212,0.08), transparent),
+                radial-gradient(ellipse 50% 30% at 20% 80%, rgba(244,114,182,0.06), transparent),
+                var(--bg-main);
+        }
+
+        .container { max-width: 1300px; margin: 0 auto; padding: 0 clamp(18px, 4vw, 48px); }
+        .app { padding: clamp(24px, 5vh, 60px) 0; }
+
+        .header { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 24px; align-items: flex-start; margin-bottom: 40px; }
+        .header-main { max-width: 720px; }
+        .header-badge { display: inline-flex; align-items: center; gap: 8px; padding: 8px 20px; border: 1px solid var(--glass-border); border-radius: var(--radius-full); background: rgba(255,255,255,0.03); color: var(--text-secondary); font-size: 13px; }
+        .header-title { font-size: clamp(2.7rem, 5vw, 4.8rem); line-height: 1; font-weight: 900; letter-spacing: -0.04em; margin: 20px 0 12px; background: linear-gradient(90deg, #ff0080, #ff00ff, #8000ff, #0080ff, #00ffff); background-size: 300% 100%; -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .header-subtitle { max-width: 660px; color: var(--text-secondary); font-size: 1rem; line-height: 1.8; }
+
+        .header-actions { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; }
+        .calc-tab-btn { display: inline-flex; align-items: center; gap: 10px; padding: 14px 24px; background: var(--bg-card); border: 1px solid var(--glass-border); border-radius: var(--radius-full); color: var(--text-secondary); font-weight: 600; cursor: pointer; transition: all 0.25s ease; }
+        .calc-tab-btn.active { background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; }
+        .calc-tab-btn:hover { transform: translateY(-1px); }
+
+        .layout { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(320px, 0.9fr); gap: 30px; }
+        .calc-panel, .info-panel { background: var(--bg-card); border: 1px solid var(--glass-border); border-radius: var(--radius-lg); padding: 28px; backdrop-filter: blur(20px); }
+        .panel-title { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 24px; }
+        .panel-title h2 { font-size: 1.5rem; margin: 0; font-weight: 800; }
+        .panel-title span { font-size: 0.9rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; }
+
+        .calc-input-group { margin-bottom: 24px; }
+        .calc-input-label { display: block; margin-bottom: 10px; color: var(--text-secondary); font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
+        .calc-input-wrapper { position: relative; }
+        .calc-input { width: 100%; padding: 22px 24px 22px 20px; background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border); border-radius: var(--radius-md); color: var(--text-primary); font-family: 'Space Mono', monospace; font-size: 2rem; font-weight: 700; outline: none; }
+        .calc-input::placeholder { color: rgba(255,255,255,0.42); }
+        .calc-input-suffix { position: absolute; top: 50%; right: 20px; transform: translateY(-50%); color: var(--text-secondary); font-size: 1rem; }
+
+        .calc-result { padding: 24px; border-radius: var(--radius-lg); background: linear-gradient(180deg, rgba(124,58,237,0.15), rgba(6,182,212,0.12)); border: 1px solid rgba(124,58,237,0.24); }
+        .calc-result-label { color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px; font-size: 12px; margin-bottom: 12px; }
+        .calc-result-value { font-family: 'Space Mono', monospace; font-size: clamp(3rem, 6vw, 4.2rem); line-height: 1; font-weight: 800; margin-bottom: 8px; background: linear-gradient(135deg, var(--success), var(--secondary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .calc-result-currency { color: var(--text-secondary); font-size: 14px; }
+        .calc-formula { margin-top: 20px; padding: 18px; background: rgba(255,255,255,0.06); border-radius: var(--radius-sm); border: 1px solid rgba(255,255,255,0.08); }
+        .calc-formula-title { text-transform: uppercase; letter-spacing: 1px; font-size: 11px; color: var(--text-muted); margin-bottom: 8px; }
+        .calc-formula-text { font-family: 'Space Mono', monospace; color: var(--text-secondary); font-size: 0.95rem; line-height: 1.7; }
+
+        .tip-card { display: grid; gap: 18px; }
+        .tip-card-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 12px; }
+        .tip-item { display: flex; gap: 14px; align-items: flex-start; padding: 18px; border-radius: var(--radius-md); background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); }
+        .tip-icon { width: 44px; height: 44px; display: grid; place-items: center; border-radius: 16px; background: rgba(124,58,237,0.18); color: #c4b5fd; font-size: 1.25rem; }
+        .tip-text { color: var(--text-secondary); line-height: 1.7; font-size: 0.96rem; }
+        .tip-text strong { color: var(--text-primary); }
+
+        .jkee-menu-trigger { position: fixed; top: 20px; right: 20px; width: 50px; height: 50px; background: linear-gradient(135deg, #7c3aed, #06b6d4); border: none; border-radius: 12px; cursor: pointer; z-index: 9998; box-shadow: 0 4px 20px rgba(124, 58, 237, 0.4); color: white; font-size: 24px; display: flex; align-items: center; justify-content: center; transition: transform 0.2s ease; }
+        .jkee-menu-trigger:hover { transform: translateY(-2px) scale(1.05); }
+        .jkee-menu-trigger.active { transform: rotate(90deg); }
+        .jkee-menu-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); backdrop-filter: blur(5px); z-index: 9997; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
+        .jkee-menu-overlay.active { opacity: 1; pointer-events: all; }
+        .jkee-menu-sidebar { position: fixed; top: 0; right: -400px; width: 350px; height: 100vh; background: linear-gradient(180deg, #0a0f1a 0%, #030712 100%); border-left: 1px solid rgba(255,255,255,0.08); z-index: 9999; transition: right 0.4s cubic-bezier(0.4,0,0.2,1); overflow-y: auto; box-shadow: -10px 0 40px rgba(0,0,0,0.5); }
+        .jkee-menu-sidebar.active { right: 0; }
+        .jkee-menu-header { padding: 30px 25px; border-bottom: 1px solid rgba(255,255,255,0.08); background: linear-gradient(135deg, rgba(124,58,237,0.15), rgba(6,182,212,0.15)); }
+        .jkee-menu-logo { font-size: 28px; font-weight: 900; background: linear-gradient(90deg, #ff0080, #ff00ff, #8000ff, #0080ff, #00ffff); background-size: 200% 100%; -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; animation: jkeeGradientShift 5s linear infinite; margin-bottom: 8px; letter-spacing: -0.02em; }
+        @keyframes jkeeGradientShift { 0% { background-position: 0% 50%; } 100% { background-position: 200% 50%; } }
+        .jkee-menu-subtitle { font-size: 13px; color: #94a3b8; }
+        .jkee-menu-list { padding: 20px 15px; }
+        .jkee-menu-section-title { font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px; color: #64748b; padding: 0 10px 10px; font-weight: 600; }
+        .jkee-menu-item { display: flex; align-items: center; gap: 15px; padding: 15px; margin-bottom: 8px; border-radius: 12px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); text-decoration: none; color: #f1f5f9; transition: all 0.3s ease; position: relative; overflow: hidden; }
+        .jkee-menu-item::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(124,58,237,0.1), transparent); transition: left 0.5s; }
+        .jkee-menu-item:hover::before { left: 100%; }
+        .jkee-menu-item:hover { background: rgba(124,58,237,0.2); border-color: #7c3aed; transform: translateX(-5px); box-shadow: 0 4px 20px rgba(124,58,237,0.3); }
+        .jkee-menu-item.active { background: linear-gradient(135deg, rgba(124,58,237,0.3), rgba(6,182,212,0.3)); border-color: #7c3aed; }
+        .jkee-menu-item-icon { font-size: 24px; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.05); border-radius: 8px; flex-shrink: 0; }
+        .jkee-menu-item-content { flex: 1; }
+        .jkee-menu-item-title { font-size: 15px; font-weight: 600; margin-bottom: 2px; }
+        .jkee-menu-item-desc { font-size: 12px; color: #94a3b8; }
+        .jkee-menu-footer { padding: 20px 25px; border-top: 1px solid rgba(255,255,255,0.08); text-align: center; }
+        .jkee-menu-footer-text { font-size: 12px; color: #64748b; }
+        .jkee-menu-footer-author { background: linear-gradient(135deg, #7c3aed, #06b6d4); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; font-weight: 700; }
+        .hub-overlay { position: fixed; inset: 0; background: rgba(3,7,18,0.88); backdrop-filter: blur(16px); z-index: 3000; display: none; align-items: center; justify-content: center; padding: 20px; }
+        .hub-overlay.open { display: flex; }
+        .hub-box { position: relative; background: linear-gradient(160deg, #0d1526 0%, #0a0f1a 100%); border: 1px solid rgba(124,58,237,0.35); border-radius: 28px; padding: 52px 44px 44px; max-width: 380px; width: 100%; text-align: center; box-shadow: 0 0 60px rgba(124,58,237,0.15), 0 24px 64px rgba(0,0,0,0.6); animation: hubPop 0.35s cubic-bezier(0.34,1.56,0.64,1); }
+        .hub-close { position: absolute; top: 16px; right: 16px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); color: #94a3b8; border-radius: 50%; width: 32px; height: 32px; font-size: 14px; cursor: pointer; line-height: 1; transition: background 0.2s, color 0.2s; }
+        .hub-close:hover { background: rgba(244,114,182,0.15); color: #f472b6; }
+        .hub-icon { font-size: 3.5rem; margin-bottom: 16px; animation: hubBob 2s ease-in-out infinite; }
+        @keyframes hubBob { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-6px)} }
+        .hub-title { font-size: 2rem; font-weight: 900; letter-spacing: -0.03em; background: linear-gradient(90deg, #7c3aed, #06b6d4); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 10px; }
+        .hub-wip { display: inline-block; background: rgba(244,114,182,0.15); border: 1px solid rgba(244,114,182,0.3); color: #f472b6; border-radius: 999px; font-size: 12px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: 4px 14px; margin-bottom: 20px; }
+        .hub-desc { font-size: 15px; color: #64748b; line-height: 1.7; }
+        .jkee-menu-sidebar::-webkit-scrollbar { width: 6px; }
+        .jkee-menu-sidebar::-webkit-scrollbar-track { background: rgba(0,0,0,0.2); }
+        .jkee-menu-sidebar::-webkit-scrollbar-thumb { background: rgba(124,58,237,0.5); border-radius: 3px; }
+        .jkee-menu-sidebar::-webkit-scrollbar-thumb:hover { background: rgba(124,58,237,0.7); }
+        @media (max-width: 980px) { .layout { grid-template-columns: 1fr; } }
+        @media (max-width: 640px) { .header { flex-direction: column; } .header-actions { width: 100%; justify-content: flex-start; } .calc-input { font-size: 1.6rem; } }
+    </style>
+</head>
+<body>
+    <div class="bg-aurora"></div>
+    <div class="app">
+        <div class="container">
+            <div class="header">
+                <div class="header-main">
+                    <div class="header-badge">Универсальный калькулятор</div>
+                    <h1 class="header-title">CALCULATOR</h1>
+                    <p class="header-subtitle">Простая страница для расчёта дохода с подарков. Поддерживается режим виртуальных и реальных подарков.</p>
+                </div>
+                <div class="header-actions">
+                    <button class="calc-tab-btn active" id="calcVirtualBtn">🎮 Виртуальные 40%</button>
+                    <button class="calc-tab-btn" id="calcRealBtn">📦 Реальные 30%</button>
+                </div>
+            </div>
+
+            <div class="layout">
+                <section class="calc-panel">
+                    <div class="panel-title">
+                        <h2>Калькулятор дохода</h2>
+                        <span>Сделай расчёт быстро</span>
+                    </div>
+
+                    <div class="calc-input-group">
+                        <label class="calc-input-label" for="calcInput">Стоимость подарка, 💎</label>
+                        <div class="calc-input-wrapper">
+                            <input id="calcInput" class="calc-input" type="number" min="0" placeholder="0">
+                            <span class="calc-input-suffix">💎</span>
+                        </div>
+                    </div>
+
+                    <div class="calc-result">
+                        <div class="calc-result-label">Вы получите</div>
+                        <div class="calc-result-value" id="calcResultValue">$0.00</div>
+                        <div class="calc-result-currency">долларов США</div>
+                    </div>
+
+                    <div class="calc-formula">
+                        <div class="calc-formula-title">Формула расчёта</div>
+                        <div class="calc-formula-text" id="calcFormulaText"><span>0</span> × $0.06 × <span>40%</span> = $0.00</div>
+                    </div>
+                </section>
+
+                <aside class="info-panel">
+                    <div class="tip-card">
+                        <div class="tip-card-title">Полезные советы</div>
+                        <div class="tip-item">
+                            <div class="tip-icon">💡</div>
+                            <div class="tip-text">Если сумма подарка больше <strong>2000 💎</strong>, отправляйте предложение только проверенным TU. Высокая стоимость требует дополнительной осторожности.</div>
+                        </div>
+                        <div class="tip-item">
+                            <div class="tip-icon">🚀</div>
+                            <div class="tip-text">В режиме виртуальных подарков комиссия фиксирована на уровне <strong>40%</strong>, в реальном — <strong>30%</strong>. Это помогает быстро сравнивать доход.</div>
+                        </div>
+                        <div class="tip-item">
+                            <div class="tip-icon">🧭</div>
+                            <div class="tip-text">Для мобильных устройств достаточно ввести сумму и переключиться между режимами, результат обновится автоматически.</div>
+                        </div>
+                    </div>
+                </aside>
+            </div>
+        </div>
+    </div>
+
+    <button class="jkee-menu-trigger" id="jkeeMenuTrigger">☰</button>
+    <div class="jkee-menu-overlay" id="jkeeMenuOverlay"></div>
+    <div class="jkee-menu-sidebar" id="jkeeMenuSidebar">
+        <div class="jkee-menu-header">
+            <div class="jkee-menu-logo">JKEE TOOLS</div>
+            <div class="jkee-menu-subtitle">Коллекция инструментов</div>
+        </div>
+        <div class="jkee-menu-list">
+            <div class="jkee-menu-section-title">Инструменты</div>
+            <a href="chat.html" class="jkee-menu-item" data-page="chat">
+                <div class="jkee-menu-item-icon">💬</div>
+                <div class="jkee-menu-item-content">
+                    <div class="jkee-menu-item-title">CHAT</div>
+                    <div class="jkee-menu-item-desc">Анонимный чат</div>
+                </div>
+            </a>
+            <div class="jkee-menu-item" data-page="hub" style="cursor:pointer" onclick="openHubOverlay()">
+                <div class="jkee-menu-item-icon">📚</div>
+                <div class="jkee-menu-item-content">
+                    <div class="jkee-menu-item-title">HUB</div>
+                    <div class="jkee-menu-item-desc">База знаний</div>
+                </div>
+            </div>
+            <a href="gift.html" class="jkee-menu-item" data-page="gift">
+                <div class="jkee-menu-item-icon">🎁</div>
+                <div class="jkee-menu-item-content">
+                    <div class="jkee-menu-item-title">GIFT</div>
+                    <div class="jkee-menu-item-desc">Каталог подарков</div>
+                </div>
+            </a>
+            <a href="photo.html" class="jkee-menu-item" data-page="photo">
+                <div class="jkee-menu-item-icon">📸</div>
+                <div class="jkee-menu-item-content">
+                    <div class="jkee-menu-item-title">COMPRESS</div>
+                    <div class="jkee-menu-item-desc">Сжатие фотографий</div>
+                </div>
+            </a>
+        </div>
+        <div class="jkee-menu-footer">
+            <div class="jkee-menu-footer-text">Made by <span class="jkee-menu-footer-author">jkee</span></div>
+        </div>
+    </div>
+
+    <div class="hub-overlay" id="hubOverlay" onclick="if(event.target===this)closeHubOverlay()">
+        <div class="hub-box">
+            <button class="hub-close" onclick="closeHubOverlay()">✕</button>
+            <div class="hub-icon">🚧</div>
+            <div class="hub-title">HUB</div>
+            <div class="hub-wip">В разработке</div>
+            <div class="hub-desc">Этот раздел пока что недоступен.<br>Скоро здесь появится база знаний.</div>
+        </div>
+    </div>
+
+    <script>
+        const calcVirtualBtn = document.getElementById('calcVirtualBtn');
+        const calcRealBtn = document.getElementById('calcRealBtn');
+        const calcInput = document.getElementById('calcInput');
+        const calcResultValue = document.getElementById('calcResultValue');
+        const calcFormulaText = document.getElementById('calcFormulaText');
+        let isVirtualCalc = true;
+
+        function updateCalculator() {
+            const credits = Math.max(0, parseFloat(calcInput.value) || 0);
+            const rate = 0.06;
+            const commission = isVirtualCalc ? 0.40 : 0.30;
+            const earned = credits * rate * commission;
+            const modeLabel = isVirtualCalc ? '40%' : '30%';
+            calcResultValue.textContent = '$' + earned.toFixed(2);
+            calcFormulaText.innerHTML = `<span>${credits}</span> × $0.06 × <span>${modeLabel}</span> = $${earned.toFixed(2)}`;
+        }
+
+        function setCalcMode(isVirtual) {
+            isVirtualCalc = isVirtual;
+            calcVirtualBtn.classList.toggle('active', isVirtual);
+            calcRealBtn.classList.toggle('active', !isVirtual);
+            updateCalculator();
+        }
+
+        calcVirtualBtn.addEventListener('click', () => setCalcMode(true));
+        calcRealBtn.addEventListener('click', () => setCalcMode(false));
+        calcInput.addEventListener('input', updateCalculator);
+
+        (function() {
+            const trigger = document.getElementById('jkeeMenuTrigger');
+            const overlay = document.getElementById('jkeeMenuOverlay');
+            const sidebar = document.getElementById('jkeeMenuSidebar');
+            function openMenu() { trigger.classList.add('active'); overlay.classList.add('active'); sidebar.classList.add('active'); document.body.style.overflow = 'hidden'; }
+            function closeMenu() { trigger.classList.remove('active'); overlay.classList.remove('active'); sidebar.classList.remove('active'); document.body.style.overflow = ''; }
+            trigger.addEventListener('click', () => sidebar.classList.contains('active') ? closeMenu() : openMenu());
+            overlay.addEventListener('click', closeMenu);
+            document.addEventListener('keydown', e => {
+                if (e.key === 'Escape') closeMenu();
+            });
+            const currentPage = window.location.pathname.split('/').pop().replace('.html','');
+            document.querySelectorAll('.jkee-menu-item').forEach(item => {
+                if (currentPage.includes(item.dataset.page)) item.classList.add('active');
+            });
+        })();
+
+        function openHubOverlay() {
+            document.getElementById('hubOverlay').classList.add('open');
+            document.getElementById('jkeeMenuSidebar')?.classList.remove('active');
+            document.getElementById('jkeeMenuOverlay')?.classList.remove('active');
+            document.getElementById('jkeeMenuTrigger')?.classList.remove('active');
+        }
+
+        function closeHubOverlay() {
+            document.getElementById('hubOverlay').classList.remove('open');
+        }
+
+        updateCalculator();
+    </script>
+</body>
+</html>
