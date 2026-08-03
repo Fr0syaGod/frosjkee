@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-  <Response>
-    <Say>Please come to the computer. This is an automated alert.</Say>
-  </Response>
+<Response>
+    <Say>
+      This message must be nested in a Response element
+      in order for Twilio to say it to your caller.
+    </Say>
+</Response>
