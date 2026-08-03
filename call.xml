@@ -1,4 +1,4 @@
- <?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
   <Response>
-    <Say>Внимание! какой-то пидорас вылетел со смены, нужно срочно подойти к компьютеру.</Say>
+    <Say>Please come to the computer. This is an automated alert.</Say>
   </Response>
