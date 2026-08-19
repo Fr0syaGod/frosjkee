@@ -38,7 +38,7 @@
 
         *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
         html { scroll-behavior: smooth; }
-        
+
         body {
             font-family: var(--font-main);
             background: var(--bg-deep);
@@ -49,7 +49,6 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        /* Dynamic Aurora Background */
         .bg-aurora {
             position: fixed;
             inset: 0;
@@ -76,7 +75,6 @@
         .app { padding: clamp(24px, 4vh, 48px) 0; animation: appReveal 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
         @keyframes appReveal { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* Header Redesign */
         .header { text-align: center; margin-bottom: clamp(36px, 6vh, 64px); position: relative; padding-top: 10px; }
 
         .header-title-wrap {
@@ -156,7 +154,6 @@
             font-weight: 400;
         }
 
-        /* Mode Switcher Segmented Control */
         .mode-switcher-container {
             display: flex;
             flex-direction: column;
@@ -223,7 +220,6 @@
             font-weight: 700;
         }
 
-        /* Commission Info Widget */
         .header-actions {
             display: flex;
             align-items: center;
@@ -270,12 +266,10 @@
             color: var(--text-muted);
         }
 
-        /* Sections */
         .gifts-section { display: none; }
         .gifts-section.active { display: block; animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* Modern Toolbar (Search + Sort + Stats) */
         .toolbar-wrapper {
             max-width: 860px;
             margin: 0 auto 36px;
@@ -373,7 +367,6 @@
         .search-count { color: var(--text-muted); font-size: 14px; font-weight: 600; font-family: var(--font-mono); display: flex; align-items: center; gap: 8px; }
         .search-count-badge { padding: 4px 12px; background: rgba(124, 58, 237, 0.15); border: 1px solid rgba(124, 58, 237, 0.3); border-radius: 999px; color: #c4b5fd; }
 
-        /* Category Nav */
         .category-nav-wrapper {
             position: relative;
             margin-bottom: 40px;
@@ -455,14 +448,12 @@
             border-radius: 999px;
         }
 
-        /* Gifts Grid */
         .gifts-grid { 
             display: grid; 
             grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); 
             gap: 24px;
         }
 
-        /* Gift Card Architecture */
         .gift-card {
             position: relative;
             background: var(--bg-card);
@@ -538,17 +529,24 @@
         .image-zoom-overlay {
             position: absolute;
             inset: 0;
-            background: rgba(124, 58, 237, 0.25);
+            background: rgba(124, 58, 237, 0.35);
             display: flex;
             align-items: center;
             justify-content: center;
             opacity: 0;
             transition: opacity 0.25s ease;
             color: white;
-            font-size: 24px;
-            backdrop-filter: blur(2px);
+            backdrop-filter: blur(3px);
+        }
+        .image-zoom-overlay svg {
+            width: 28px;
+            height: 28px;
+            filter: drop-shadow(0 2px 6px rgba(0,0,0,0.4));
+            transform: scale(0.85);
+            transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
         }
         .gift-image-container:hover .image-zoom-overlay { opacity: 1; }
+        .gift-image-container:hover .image-zoom-overlay svg { transform: scale(1); }
 
         .gift-name { 
             font-size: 14.5px; 
@@ -647,7 +645,6 @@
 
         .gift-card.search-hidden, .category-section.search-hidden { display: none !important; }
 
-        /* Region Exclusive Filters Bar */
         .exclusive-filter-wrapper {
             display: flex;
             gap: 12px;
@@ -686,18 +683,15 @@
             box-shadow: 0 4px 20px var(--primary-glow);
         }
 
-        /* Footer */
         .footer { text-align: center; margin-top: 90px; padding: 40px 0; border-top: 1px solid var(--glass-border); }
         .footer p { color: var(--text-muted); font-size: 14px; }
         .footer-brand { font-weight: 800; background: linear-gradient(135deg, var(--primary), var(--secondary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
 
-        /* Scrollbars */
         ::-webkit-scrollbar { width: 10px; }
         ::-webkit-scrollbar-track { background: var(--bg-deep); }
         ::-webkit-scrollbar-thumb { background: rgba(124, 58, 237, 0.5); border-radius: 10px; }
         ::-webkit-scrollbar-thumb:hover { background: var(--primary); }
 
-        /* Special Gift Modal Overlay */
         .sg-overlay {
             position: fixed;
             inset: 0;
@@ -848,7 +842,6 @@
         }
         .sg-x-btn:hover { background: rgba(255,255,255,0.15); color: #ffffff; }
 
-        /* Image Lightbox Modal */
         .lightbox-overlay {
             position: fixed;
             inset: 0;
@@ -887,7 +880,6 @@
         }
         .lightbox-close:hover { background: rgba(244,114,182,0.3); }
 
-        /* Responsive Breakpoints */
         @media (max-width: 768px) {
             .mode-btn { padding: 14px 24px; font-size: 14px; }
             .gifts-grid { grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 16px; }
@@ -960,12 +952,11 @@
                 </div>
             </header>
 
-            <!-- Virtual Gifts Section -->
             <section class="gifts-section active" id="virtualGifts">
                 <div class="toolbar-wrapper">
                     <div class="search-wrapper">
                         <input type="text" id="virtualSearchInput" class="search-box" placeholder="Поиск по всем виртуальным подаркам...">
-                        <span class="search-icon">🔍</span>
+                        <span class="search-icon"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg></span>
                         <span class="search-shortcut-hint">/</span>
                         <button class="search-clear-btn" id="virtualSearchClear">✕</button>
                     </div>
@@ -986,7 +977,6 @@
                 <div id="virtualCategorySections"></div>
             </section>
 
-            <!-- Real Gifts Section -->
             <section class="gifts-section" id="realGifts">
                 <div class="exclusive-filter-wrapper">
                     <button class="exclusive-filter-btn active" onclick="filterByExclusive('all', this)">🌟 ВСЕ ПОДАРКИ</button>
@@ -1008,7 +998,6 @@
         </div>
     </div>
 
-    <!-- Special Gift Modal -->
     <div class="sg-overlay" id="sgOverlay">
         <div class="sg-modal">
             <button class="sg-x-btn" id="sgXBtn" aria-label="Закрыть">✕</button>
@@ -1040,7 +1029,6 @@
         </div>
     </div>
 
-    <!-- Image Lightbox Modal -->
     <div class="lightbox-overlay" id="imageLightbox" onclick="if(event.target===this)closeLightbox()">
         <button class="lightbox-close" onclick="closeLightbox()">✕</button>
         <div class="lightbox-content">
@@ -1049,7 +1037,6 @@
         </div>
     </div>
 
-    <!-- Drawer Menu & Hub Scripts & Styles -->
     <style>
         .jkee-menu-trigger {
             position: fixed;
@@ -1149,7 +1136,6 @@
         .jkee-menu-footer-text { font-size: 12px; color: #64748b; }
         .jkee-menu-footer-author { background: linear-gradient(135deg, #7c3aed, #06b6d4); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; font-weight: 700; }
 
-        /* Floating Helper Cards (Side Tabs) */
         .fh-wrap {
             position: fixed;
             right: 0;
@@ -1230,7 +1216,6 @@
         .fh-card-text { font-size: 13.5px; line-height: 1.65; color: #94a3b8; }
         .fh-card-text strong { color: #e2e8f0; font-weight: 600; }
 
-        /* Hub Overlay Modal */
         .hub-overlay {
             position: fixed;
             inset: 0;
@@ -1691,7 +1676,6 @@
         function flattenVirtualGifts() {
             allVirtualGifts = [];
             virtualCategories.forEach(category => {
-                if (category === 'Special Gift') return;
                 virtualGiftData[category].forEach(gift => {
                     allVirtualGifts.push({ ...gift, category });
                 });
@@ -1734,7 +1718,7 @@
             html += virtualCategories.map(cat => {
                 const count = virtualGiftData[cat].length;
                 const isSpecial = cat === 'Special Gift';
-                return `<button class="category-btn ${isSpecial ? 'special-cat-btn' : ''}" onclick="${isSpecial ? 'openSGModal()' : `showVirtualCategory('${cat}', this)`}">${cat.trim()} <span class="cat-badge">${count}</span></button>`;
+                return `<button class="category-btn ${isSpecial ? 'special-cat-btn' : ''}" onclick="showVirtualCategory('${cat.replace(/'/g, "\\'")}', this); ${isSpecial ? 'openSGModal();' : ''}">${cat.trim()} <span class="cat-badge">${count}</span></button>`;
             }).join('');
             nav.innerHTML = html;
         }
@@ -1753,10 +1737,10 @@
             const imgSrc = gift.image?.startsWith('http') ? gift.image : baseUrl + gift.image;
             let imageHtml = gift.noImage 
                 ? '<div class="gift-placeholder">🎬</div>' 
-                : `<img src="${imgSrc}" alt="${gift.name}" class="gift-image" loading="lazy"><div class="image-zoom-overlay">🔍</div>`;
-            
+                : `<img src="${imgSrc}" alt="${gift.name}" class="gift-image" loading="lazy"><div class="image-zoom-overlay"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg></div>`;
+
             const copyIcon = `<span class="copy-icon" title="Скопировать название" onclick="copyGiftName(event, '${gift.name.replace(/'/g, "\'")}')"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8 4v12a2 2 0 002 2h8a2 2 0 002-2V7.242a2 2 0 00-.602-1.43L16.083 2.57A2 2 0 0014.685 2H10a2 2 0 00-2 2z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M16 18v2a2 2 0 01-2 2H6a2 2 0 01-2-2V9a2 2 0 012-2h2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>`;
-            
+
             const formattedPrice = gift.price.toLocaleString('ru-RU');
 
             return `
@@ -1849,7 +1833,6 @@
             applyFilters();
         });
 
-        // Keyboard Shortcut (/ or Ctrl+K to search)
         document.addEventListener('keydown', (e) => {
             if ((e.key === '/' || (e.ctrlKey && e.key === 'k')) && document.activeElement !== virtualSearchInput) {
                 e.preventDefault();
@@ -1903,14 +1886,14 @@
                         badge = '<div class="exclusive-badge badge-latam">🌎 LATAM ONLY</div>';
                         exclusiveType = 'latam';
                     }
-                    const copyIcon = `<span class="copy-icon" title="Скопировать название" onclick="copyGiftName(event, '${gift.name.replace(/'/g, "\'")}')"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8 4v12a2 2 0 002 2h8a2 2 0 002-2V7.242a2 2 0 00-.602-1.43L16.083 2.57A2 2 0 0014.685 2H10a2 2 0 00-2 2z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M16 18v2a2 2 0 01-2 2H6a2 2 0 01-2-2V9a2 2 0 012-2h2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>`;
+                    const copyIcon = `<span class="copy-icon" title="Скопировать название" onclick="copyGiftName(event, '${gift.name.replace(/'/g, "\'")}')"><svg viewBox="0 0 24 24" fill="none" xmlns="http:
 
                     return `
                     <div class="gift-card" data-exclusive="${exclusiveType}" data-raw-name="${gift.name}">
                         ${badge}
                         <div class="gift-image-container" onclick="openLightbox('${gift.image}', '${gift.name.replace(/'/g, "\'")}')">
                             <img src="${gift.image}" alt="${gift.name}" class="gift-image" loading="lazy">
-                            <div class="image-zoom-overlay">🔍</div>
+                            <div class="image-zoom-overlay"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg></div>
                         </div>
                         <div class="gift-name">${gift.name}${copyIcon}</div>
                         <div class="regional-prices">
@@ -1983,10 +1966,9 @@
             }
         }
 
-        // Enable Horizontal Wheel and Drag Scrolling for Category Navigation
         function initCategoryScroll() {
             document.querySelectorAll('.category-nav').forEach(nav => {
-                // Wheel scroll horizontally
+
                 nav.addEventListener('wheel', (evt) => {
                     if (evt.deltaY !== 0) {
                         evt.preventDefault();
@@ -1994,7 +1976,6 @@
                     }
                 }, { passive: false });
 
-                // Click and drag scroll
                 let isDown = false;
                 let startX;
                 let scrollLeft;
@@ -2016,7 +1997,6 @@
             });
         }
 
-        // Lightbox Functions
         function openLightbox(src, name) {
             const overlay = document.getElementById('imageLightbox');
             const img = document.getElementById('lightboxImg');
@@ -2068,7 +2048,6 @@
             });
         })();
 
-        // Drawer Menu Logic
         (function() {
             const trigger = document.getElementById('jkeeMenuTrigger');
             const overlay = document.getElementById('jkeeMenuOverlay');
