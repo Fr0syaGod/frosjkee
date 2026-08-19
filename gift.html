@@ -1886,7 +1886,7 @@
                         badge = '<div class="exclusive-badge badge-latam">🌎 LATAM ONLY</div>';
                         exclusiveType = 'latam';
                     }
-                    const copyIcon = `<span class="copy-icon" title="Скопировать название" onclick="copyGiftName(event, '${gift.name.replace(/'/g, "\'")}')"><svg viewBox="0 0 24 24" fill="none" xmlns="http:
+                    const copyIcon = `<span class="copy-icon" title="Скопировать название" onclick="copyGiftName(event, '${gift.name.replace(/'/g, "\\'")}')"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8 4v12a2 2 0 002 2h8a2 2 0 002-2V7.242a2 2 0 00-.602-1.43L16.083 2.57A2 2 0 0014.685 2H10a2 2 0 00-2 2z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M16 18v2a2 2 0 01-2 2H6a2 2 0 01-2-2V9a2 2 0 012-2h2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>`;
 
                     return `
                     <div class="gift-card" data-exclusive="${exclusiveType}" data-raw-name="${gift.name}">
