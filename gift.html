@@ -1688,6 +1688,7 @@
         function flattenVirtualGifts() {
             allVirtualGifts = [];
             virtualCategories.forEach(category => {
+                if (category === 'Special Gift') return;
                 virtualGiftData[category].forEach(gift => {
                     allVirtualGifts.push({ ...gift, category });
                 });
@@ -1813,14 +1814,12 @@
         function applyFilters() {
             const searchTerm = virtualSearchInput.value.toLowerCase().trim();
             virtualSearchClear.style.display = searchTerm ? 'flex' : 'none';
-            let totalVisible = 0;
 
             document.querySelectorAll('#virtualCategorySections .gift-card').forEach(card => {
                 const giftName = card.getAttribute('data-gift-name');
                 const visible = giftName.includes(searchTerm);
 
                 card.classList.toggle('search-hidden', !visible);
-                if (visible) totalVisible++;
             });
 
             document.querySelectorAll('#virtualCategorySections .category-section').forEach(section => {
@@ -1829,6 +1828,8 @@
             });
 
             if (searchTerm) {
+                const activeSection = document.querySelector('#virtualCategorySections .category-section.active');
+                const totalVisible = activeSection ? activeSection.querySelectorAll('.gift-card:not(.search-hidden)').length : 0;
                 virtualSearchCount.innerHTML = `<span class="search-count-badge"> Найдено: ${totalVisible}</span>`;
             } else {
                 virtualSearchCount.textContent = `// Всего подарков: ${allVirtualGifts.length}`;
