@@ -375,23 +375,15 @@
 
         .category-nav {
             display: flex;
+            flex-wrap: wrap;
             gap: 10px;
             padding: 16px 20px;
             background: var(--bg-card);
             border-radius: var(--radius-lg);
             border: 1px solid var(--glass-border);
-            overflow-x: auto;
             backdrop-filter: blur(16px);
-            scrollbar-width: thin;
-            scrollbar-color: var(--primary) transparent;
-            cursor: grab;
             user-select: none;
         }
-        .category-nav:active { cursor: grabbing; }
-        .category-nav::-webkit-scrollbar { height: 6px; }
-        .category-nav::-webkit-scrollbar-track { background: transparent; }
-        .category-nav::-webkit-scrollbar-thumb { background: rgba(124, 58, 237, 0.4); border-radius: 4px; }
-        .category-nav::-webkit-scrollbar-thumb:hover { background: var(--primary); }
 
         .category-btn {
             padding: 12px 22px;
@@ -409,7 +401,6 @@
             gap: 8px;
             transition: all 0.25s ease;
             border: 1px solid var(--glass-border);
-            flex-shrink: 0;
         }
         .category-btn:hover { border-color: rgba(124, 58, 237, 0.4); color: var(--text-primary); transform: translateY(-1px); }
         .category-btn.active { background: linear-gradient(135deg, var(--primary), var(--secondary)); border-color: transparent; color: var(--text-hero); box-shadow: 0 4px 20px var(--primary-glow); }
@@ -1415,7 +1406,7 @@
 			  {name:"Grab my fruit",price:32,image:"1cbcf9c434085ce69cefbb9ce97b85291771265643.rng.png"},
 			  {name:"Tasty buns",price:150,image:"7b1f30c066fe6cdaef56eafd84b24c541771266067.rng.png"},
 			],
-            " Популярные": [
+            "Популярные": [
                 {name:"Aged whiskey",price:199,image:"0b32381982173d44e5a3e43564a86c6f1720180259.rng.png"},
                 {name:"Superyacht",price:1100,image:"bccdac2d1955d3a30b82c8359f9c82701720180436.rng.png"},
                 {name:"Black & gold ring",price:250,image:"12e65b131033613722d7e08cbdec11071720180311.rng.png"},
@@ -1438,7 +1429,7 @@
                 {name:"Red passion",price:89,image:"b5d31cd77bed5731e3f0a6247cf224561720525925.rng.png"},
                 {name:"Glowing green",price:1000,image:"e9c556d5150e4c17332b781c3fb114421720181082.rng.png"}
             ],
-            " Специальные ": [
+            "Специальные": [
                 {name:"Gold tone watch",price:1450,image:"928d4fe458b4aebeb672763db39f4ba01719506491.rng.png"},
                 {name:"Silver turbo car",price:2490,image:"80a1382be05fc56b78f4de8fd597bbe71719506435.rng.png"},
                 {name:"Champion helmet",price:820,image:"85a186b5b852f581294efdd22670ded21719506543.rng.png"},
@@ -1457,7 +1448,7 @@
                 {name:"Candy box",price:200,image:"558076b80336d4b9f2a40afd16da017c1680182061.rng.png"},
                 {name:"Pearl",price:554,image:"38b71624b319679a87bc5bb53abca9ef1680182118.rng.png"}
             ],
-            " Цветы ": [
+            "Цветы": [
                 {name:"Blooming cactus",price:450,image:"5c775dd988032de0649dd6b84f6401cc1720089144.rng.png"},
                 {name:"Cotton elegance",price:189,image:"37e426a13a54a5c985901669a4007e5e1720089172.rng.png"},
                 {name:"Violet blossom",price:379,image:"fcfc95042be78dce1845f2ef8e3aaf091720089208.rng.png"},
@@ -1474,7 +1465,7 @@
                 {name:"Chamomile charm",price:99,image:"fa2699511454fcb2de32ad56208ef7da1720088941.rng.png"},
                 {name:"Summer fresh",price:79,image:"c7ffa339546811a7b9fe5d2fb852a72e1720526121.rng.png"}
             ],
-            " Хобби": [
+            "Хобби": [
                 {name:"Chess set",price:650,image:"ef942dc1519bd6f030bcc48b47efa2261719904895.rng.png"},
                 {name:"Book collection",price:600,image:"9bd966e939fbbe14be88509ae31f2c0d1719904939.rng.png"},
                 {name:"Soccer ball",price:1450,image:"4cee33aad7c3736602e8cee7f686aeab1719905603.rng.png"},
@@ -1495,17 +1486,16 @@
                 {name:"Chic puppy",price:110,image:"375d69f5b7ff9bb063906871841aca4d1741196721.rng.png"},
                 {name:"Caramel popcorn",price:120,image:"17fe73b62be07d71c7e86e5d722118841741196740.rng.png"}
             ],
-            " Открытки ": [
+            "Открытки": [
                 {name:"Have a nice day!",price:69,image:"d6b85069b875f93cd6293fc98ef5a9751719850247.rng.png"},
                 {name:"Miss you",price:189,image:"47542219649e8fa0a137ce67f13fa9541719850276.rng.png"},
                 {name:"Happy bday!",price:69,image:"3d756e10c5cc5b8808fcef325317a6141719850220.rng.png"},
                 {name:"Good luck!",price:44,image:"b1ff02f99cbf1ce6f3e00562aefd9f381719850078.rng.png"},
                 {name:"Good morning!",price:44,image:"02cd3f460ee185ca0dded6d0c88556871719850101.rng.png"},
                 {name:"Good night!",price:44,image:"169c02d1e50c1df8ff3e9c413d59f1f71719850187.rng.png"},
-                {name:"You are beautiful",price:189,image:"f394400ec0ec258e5d0f8d70184ad93b1719850301.rng.png"},
                 {name:"Get well soon!",price:44,image:"393a7ced6aa0bfc666b3fcd4b0a9e7051719849970.rng.png"}
             ],
-            " Анимированные": [
+            "Анимированные": [
                 {name:"I am flushing!",price:119,image:"https://i.ibb.co/B2r8N4ND/svg-image-10-1.png"},
                 {name:"Cheers to you!",price:98,image:"https://i.ibb.co/Tx0xw4CJ/svg-image-11-1.png"},
                 {name:"You did it!",price:89,image:"https://i.ibb.co/7NYNRVLR/svg-image-12-1.png"},
@@ -1516,7 +1506,7 @@
         };
 
         const giftData = {
-			" Мода": [
+			"Мода": [
 				{ name: "Premium brand dress", image: "https://i.gstatvb.com/shpzkl2t1jg34olet.939e67b0.jpg", eu: 7290, asia: 0, latam: 0, euExclusive: true },
 				{ name: "Premium brand knitted sweater", image: "https://i.gstatvb.com/shpzkl1evtjj9rino.c892de63.jpg", eu: 7290, asia: 0, latam: 0, euExclusive: true },
 				{ name: "Leather jacket/tranch (faux or genuine)", image: "https://i.gstatvb.com/shpzkl5lbcfljaatb.65da5902.jpg", eu: 13240, asia: 0, latam: 0, euExclusive: true },
@@ -1559,7 +1549,7 @@
 				{ name: "Golden Earrings with Diamond", image: "https://i.gstatvb.com/shpzkl6tmb61tr6ou.5e1c3af1.jpg", eu: 52810, asia: 52810, latam: 52810 },
 				{ name: "Golden Necklace with Diamond", image: "https://i.gstatvb.com/shpzkl7ieirs38v2d.63099904.jpg", eu: 81280, asia: 81280, latam: 81280 }
 			],
-			" Парфюмерия и косметика": [
+			"Парфюмерия и косметика": [
 				{ name: "Kilian Black Phantom, EDP, 50 ml", image: "https://i.gstatvb.com/shpzkl7fgns51q9hm.a3605fa6.jpg", eu: 8800, asia: 7470, latam: 14000 },
 				{ name: "DIOR Poison Girl, EDP, 100 ml", image: "https://i.gstatvb.com/shpzkllg0tdcoa45q.87f270fa.jpg", eu: 4920, asia: 3740, latam: 5530 },
 				{ name: "Chance by Chanel, 100 ml", image: "https://i.gstatvb.com/shpzkl1d6lq713ung.178f8771.jpg", eu: 3520, asia: 4860, latam: 5950 },
@@ -1586,7 +1576,7 @@
 				{ name: "Yves Saint Laurent - Y Intense, 60 ml", image: "https://i.gstatvb.com/shpzkl5a2n6dn5ola.9dc8b78d.jpg", eu: 5110, asia: 5710, latam: 7710 },
 				{ name: "Tom Ford Lost Cherry, 50 ml", image: "https://i.gstatvb.com/shpzkl2ph6rdr9sbl.fc14fb27.jpg", eu: 8550, asia: 7710, latam: 8550 }
 			],
-			" Сладкие наборы": [
+			"Сладкие наборы": [
 				{ name: "Raffaello box + flowers", image: "https://i.gstatvb.com/shpzkl5elmbt3u4mk.ffe52e31.jpg", eu: 3160, asia: 2820, latam: 3230 },
 				{ name: "Raffaello box + wine", image: "https://i.gstatvb.com/shpzkliq3nen3mca5.991ffeaa.jpg", eu: 2550, asia: 2550, latam: 2830 },
 				{ name: "Ferrero 24 pieces box + flowers", image: "https://i.gstatvb.com/shpzkl4niln9e1eqn.9c3837ec.jpg", eu: 3380, asia: 3160, latam: 5050 },
@@ -1605,7 +1595,7 @@
 				{ name: "Tabby Shoulder Bag 26", image: "https://i.gstatvb.com/shpzkl1vu65fvmhgt.3cb7d093.jpg", eu: 0, asia: 10790, latam: 16810 },
 				{ name: "Jacquemus Handbag", image: "https://i.gstatvb.com/shpzkl1lb7m2klhm3.1f595cfb.jpg", eu: 24060, asia: 24060, latam: 24060 }
 			],
-			" Устройства": [
+			"Устройства": [
 				{ name: "Instax Mini 12", image: "https://i.gstatvb.com/shpzkl1o87bs53338.87da841f.jpg", eu: 4110, asia: 4110, latam: 4110 },
 				{ name: "Polaroid Now+", image: "https://i.gstatvb.com/shpzkl7b6hbqat1mp.4d18ad69.jpg", eu: 7310, asia: 5110, latam: 4510 },
 				{ name: "GoPro Hero 12", image: "https://i.gstatvb.com/shpzkl3ve4n690gai.e0a1d2d3.jpg", eu: 9880, asia: 11120, latam: 13700 },
@@ -1635,7 +1625,7 @@
 				{ name: "Samsung Galaxy Watch 8", image: "https://i.gstatvb.com/shpzkl1bptq5dvfg9.2b1fec04.jpg", eu: 8800, asia: 7390, latam: 8130 },
 				{ name: "Synthesizer Yamaha PSS E360", image: "https://i.gstatvb.com/shpzkli326jadcr44.92e2ff5d.jpg", eu: 0, asia: 0, latam: 7390, latamExclusive: true }
 			],
-			" Бытовая техника": [
+			"Бытовая техника": [
 				{ name: "Automatic coffee maker", image: "https://i.gstatvb.com/shpzkl7iar6hjhj46.15f77614.jpg", eu: 4110, asia: 4110, latam: 4110 },
 				{ name: "Robot cleaner", image: "https://i.gstatvb.com/shpzkl6m2jif2qjs3.6e24bccf.jpg", eu: 7310, asia: 7310, latam: 7310 },
 				{ name: "Dyson Supersonic™ hair dryer", image: "https://i.gstatvb.com/shpzkltl7soj5hlag.22c058e6.jpg", eu: 10140, asia: 11310, latam: 19360 },
@@ -1660,7 +1650,7 @@
 				{ name: "A bouquet of 100 roses and Gold Ring with 1 Diamond (1 Сr)", image: "https://i.gstatvb.com/shpzkl7ogpitjnlon.70ca12d3.jpg", eu: 0, asia: 0, latam: 48810, latamExclusive: true },
 				{ name: "A bouquet of 100 roses and Gold Ring with Diamond & Sapphire", image: "https://i.gstatvb.com/shpzklig9kjs90mlk.520cd9a8.jpg", eu: 0, asia: 0, latam: 50810, latamExclusive: true }
 			],
-			" Уют для дома": [
+			"Уют для дома": [
 				{ name: "UFO heater", image: "https://i.gstatvb.com/shpzkl49ojumvogkp.fb173e78.jpg", eu: 4310, asia: 0, latam: 0, euExclusive: true },
 				{ name: "Jackery Portable power station", image: "https://i.gstatvb.com/shpzkl2v7cp5ii0hf.5f0ca7f9.jpg", eu: 25060, asia: 0, latam: 0, euExclusive: true },
 				{ name: "Bluetti portable power station", image: "https://i.gstatvb.com/shpzkl2dp4n9hnuau.44ced641.jpg", eu: 8550, asia: 0, latam: 0, euExclusive: true },
@@ -1669,7 +1659,7 @@
 				{ name: "Könner&Söhnen portable power generator", image: "https://i.gstatvb.com/shpzkl3cquq2mksu1.a4e601f1.jpg", eu: 10220, asia: 0, latam: 0, euExclusive: true },
 				{ name: "XO Power Bank 50000mAh", image: "https://i.gstatvb.com/shpzkl2ia97edsch8.cf0a5038.jpg", eu: 2310, asia: 0, latam: 0, euExclusive: true }
 			],
-			" Сертификаты": [
+			"Сертификаты": [
 				{ name: "Spa/massage certificate (2 visits)", image: "https://i.gstatvb.com/shpzkl7hl577i693g.b80dca0a.jpg", eu: 3200, asia: 3200, latam: 3200 },
 				{ name: "Gym Membership (3 month)", image: "https://i.gstatvb.com/shpzklnckq1slr512.cc156783.jpg", eu: 9800, asia: 9800, latam: 9800 },
 				{ name: "Language course (10 classes)", image: "https://i.gstatvb.com/shpzkl7jjmcvbptg7.4344e1bd.jpg", eu: 4900, asia: 4900, latam: 4900 },
@@ -1728,10 +1718,10 @@
         function generateVirtualCategoryNav() {
             const nav = document.getElementById('virtualCategoryNav');
             let html = `<button class="category-btn active" onclick="showAllVirtualGifts(this)"><svg class="svg-icon svg-star" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg> ВСЕ ПОДАРКИ <span class="cat-badge">${allVirtualGifts.length}</span></button>`;
-            html += virtualCategories.map(cat => {
+            html += virtualCategories.map((cat, index) => {
                 const count = virtualGiftData[cat].length;
                 const isSpecial = cat === 'Special Gift';
-                return `<button class="category-btn ${isSpecial ? 'special-cat-btn' : ''}" onclick="showVirtualCategory('${cat.replace(/'/g, "\\'")}', this); ${isSpecial ? 'openSGModal();' : ''}">${cat.trim()} <span class="cat-badge">${count}</span></button>`;
+                return `<button class="category-btn ${isSpecial ? 'special-cat-btn' : ''}" onclick="showVirtualCategory(${index}, this); ${isSpecial ? 'openSGModal();' : ''}">${cat.trim()} <span class="cat-badge">${count}</span></button>`;
             }).join('');
             nav.innerHTML = html;
         }
@@ -1739,9 +1729,9 @@
         function generateVirtualCategorySections() {
             const container = document.getElementById('virtualCategorySections');
             let allHtml = `<div class="category-section active" id="virtual-all"><div class="category-header"><h2><svg class="svg-icon svg-star" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg> ВСЕ ПОДАРКИ</h2></div><div class="gifts-grid">${allVirtualGifts.map(gift => createVirtualGiftCard(gift)).join('')}</div></div>`;
-            const categorySections = virtualCategories.map(category => {
+            const categorySections = virtualCategories.map((category, index) => {
                 const gifts = virtualGiftData[category];
-                return `<div class="category-section" id="virtual-category-${category.replace(/[^a-zA-Z0-9]/g, '-')}"><div class="category-header"><h2>${category.trim()}</h2></div><div class="gifts-grid">${gifts.map(gift => createVirtualGiftCard(gift)).join('')}</div></div>`;
+                return `<div class="category-section" id="virtual-category-${index}"><div class="category-header"><h2>${category.trim()}</h2></div><div class="gifts-grid">${gifts.map(gift => createVirtualGiftCard(gift)).join('')}</div></div>`;
             }).join('');
             container.innerHTML = allHtml + categorySections;
         }
@@ -1775,11 +1765,12 @@
             document.getElementById('virtual-all').classList.add('active');
         }
 
-        function showVirtualCategory(category, button) {
+        function showVirtualCategory(index, button) {
             document.querySelectorAll('#virtualCategoryNav .category-btn').forEach(btn => btn.classList.remove('active'));
             button.classList.add('active');
             document.querySelectorAll('#virtualCategorySections .category-section').forEach(section => section.classList.remove('active'));
-            document.getElementById(`virtual-category-${category.replace(/[^a-zA-Z0-9]/g, '-')}`).classList.add('active');
+            const sec = document.getElementById(`virtual-category-${index}`);
+            if (sec) sec.classList.add('active');
         }
 
         function copyGiftName(event, giftName) {
@@ -1878,7 +1869,7 @@
             const nav = document.getElementById('realCategoryNav');
             nav.innerHTML = realCategories.map((cat, index) => {
                 const count = giftData[cat].length;
-                return `<button class="category-btn ${index === 0 ? 'active' : ''}" onclick="showRealCategory('${cat}', this)">${cat} <span class="cat-badge">${count}</span></button>`;
+                return `<button class="category-btn ${index === 0 ? 'active' : ''}" onclick="showRealCategory(${index}, this)">${cat.trim()} <span class="cat-badge">${count}</span></button>`;
             }).join('');
         }
 
@@ -1886,7 +1877,7 @@
             const container = document.getElementById('realCategorySections');
             container.innerHTML = realCategories.map((category, index) => {
                 const gifts = giftData[category];
-                return `<div class="category-section ${index === 0 ? 'active' : ''}" id="real-category-${category.replace(/[^a-zA-Z0-9]/g, '-')}"><div class="category-header"><h2>${category}</h2></div><div class="gifts-grid">${gifts.map(gift => {
+                return `<div class="category-section ${index === 0 ? 'active' : ''}" id="real-category-${index}"><div class="category-header"><h2>${category.trim()}</h2></div><div class="gifts-grid">${gifts.map(gift => {
                     let badge = '';
                     let exclusiveType = 'none';
                     if (gift.euExclusive) {
@@ -1928,11 +1919,12 @@
             }).join('');
         }
 
-        function showRealCategory(category, button) {
+        function showRealCategory(index, button) {
             document.querySelectorAll('#realCategoryNav .category-btn').forEach(btn => btn.classList.remove('active'));
             button.classList.add('active');
             document.querySelectorAll('#realCategorySections .category-section').forEach(section => section.classList.remove('active'));
-            document.getElementById(`real-category-${category.replace(/[^a-zA-Z0-9]/g, '-')}`).classList.add('active');
+            const sec = document.getElementById(`real-category-${index}`);
+            if (sec) sec.classList.add('active');
             document.querySelectorAll('.exclusive-filter-btn').forEach(btn => btn.classList.remove('active'));
             document.querySelector('.exclusive-filter-btn[onclick*="all"]').classList.add('active');
             document.querySelectorAll('#realCategorySections .gift-card').forEach(card => {
@@ -1954,14 +1946,12 @@
                     card.style.display = '';
                 });
                 const activeCategory = document.querySelector('#realCategoryNav .category-btn.active');
-                if (activeCategory) {
-                    const categoryName = activeCategory.textContent.split(' ')[0];
-                    const sec = document.getElementById(`real-category-${categoryName.replace(/[^a-zA-Z0-9]/g, '-')}`);
-                    if (sec) sec.classList.add('active');
-                } else {
-                    document.querySelectorAll('#realCategorySections .category-section')[0].classList.add('active');
-                    document.querySelectorAll('#realCategoryNav .category-btn')[0].classList.add('active');
-                }
+                const categoryButtons = Array.from(document.querySelectorAll('#realCategoryNav .category-btn'));
+                const activeIndex = activeCategory ? categoryButtons.indexOf(activeCategory) : 0;
+                const targetIndex = activeIndex >= 0 ? activeIndex : 0;
+                const sec = document.getElementById(`real-category-${targetIndex}`);
+                if (sec) sec.classList.add('active');
+                if (categoryButtons[targetIndex]) categoryButtons[targetIndex].classList.add('active');
             } else {
                 categoryNav.style.display = 'none';
                 document.querySelectorAll('#realCategorySections .category-section').forEach(section => {
@@ -1980,34 +1970,7 @@
         }
 
         function initCategoryScroll() {
-            document.querySelectorAll('.category-nav').forEach(nav => {
-
-                nav.addEventListener('wheel', (evt) => {
-                    if (evt.deltaY !== 0) {
-                        evt.preventDefault();
-                        nav.scrollLeft += evt.deltaY * 1.2;
-                    }
-                }, { passive: false });
-
-                let isDown = false;
-                let startX;
-                let scrollLeft;
-
-                nav.addEventListener('mousedown', (e) => {
-                    isDown = true;
-                    startX = e.pageX - nav.offsetLeft;
-                    scrollLeft = nav.scrollLeft;
-                });
-                nav.addEventListener('mouseleave', () => { isDown = false; });
-                nav.addEventListener('mouseup', () => { isDown = false; });
-                nav.addEventListener('mousemove', (e) => {
-                    if (!isDown) return;
-                    e.preventDefault();
-                    const x = e.pageX - nav.offsetLeft;
-                    const walk = (x - startX) * 2;
-                    nav.scrollLeft = scrollLeft - walk;
-                });
-            });
+            // Category navigation now uses multi-line flex wrapping, so horizontal scroll event handlers are no longer needed.
         }
 
         function openLightbox(src, name) {
